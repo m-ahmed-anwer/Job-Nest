@@ -22,8 +22,8 @@ function Navbar() {
       link: "/contact",
     },
     {
-      title: "Service",
-      link: "/service",
+      title: "Post Job",
+      link: "/post",
     },
   ];
 
