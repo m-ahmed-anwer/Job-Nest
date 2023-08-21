@@ -76,10 +76,6 @@ function ContactUs() {
                 <div className="flex flex-col">
                   <h2 className="text-2xl">Call Us</h2>
                   <p className="text-gray-400">Tel: +9768242884</p>
-<<<<<<< HEAD
-=======
-
->>>>>>> aff82e03132fc361a792b511783a48c28b6f3182
                   <p className="text-gray-400">Fax: +9378242884</p>
                 </div>
               </div>
