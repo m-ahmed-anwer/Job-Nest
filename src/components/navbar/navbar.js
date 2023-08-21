@@ -1,34 +1,13 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 //import { a } from "react-router-dom";
 import image from "../../images/suitcase.png";
 
 function Navbar() {
   const [profileView, setProfileView] = useState(false);
   const [menuBar, setMenuBar] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
   const location = useLocation();
 
-  useEffect(() => {
-    const isDark = localStorage.getItem("darkMode") === "true";
-    setDarkMode(isDark);
-    if (isDark) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, []);
-
-  const toggleDarkMode = () => {
-    const newDarkMode = !darkMode;
-    setDarkMode(newDarkMode);
-    localStorage.setItem("darkMode", newDarkMode);
-    if (newDarkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  };
   const data = [
     {
       title: "Home",
@@ -105,7 +84,7 @@ function Navbar() {
                   <img
                     class="w-8 h-8 rounded-full"
                     src="https://img.freepik.com/free-icon/user-image-with-black-background_318-34564.jpg"
-                    alt="user photo"
+                    alt="Phot"
                   />
                 </button>
 
@@ -140,14 +119,7 @@ function Navbar() {
                         Settings
                       </Link>
                     </li>
-                    <li>
-                      <p
-                        class="hover:rounded-md block cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                        onClick={toggleDarkMode}
-                      >
-                        Switch to {darkMode ? "Light Mode" : "Dark Mode"}
-                      </p>
-                    </li>
+
                     <li>
                       <Link
                         to={"/"}
@@ -215,7 +187,6 @@ function Navbar() {
           </div>
         </div>
       </nav>
-      <Outlet />
     </Fragment>
   );
 }
