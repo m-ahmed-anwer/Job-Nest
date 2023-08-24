@@ -4,7 +4,7 @@ function SingleJob({ id }) {
   return (
     <a
       href="#"
-      class={`relative block overflow-hidden rounded-lg border border-gray-100 p-4 sm:p-6 lg:p-8 mx-5 mt-7 ${
+      class={` relative block overflow-hidden rounded-lg border border-gray-100 p-4 sm:p-6 lg:p-8 mx-5 mt-7 ${
         id == 1 && "mt-0"
       } `}
     >

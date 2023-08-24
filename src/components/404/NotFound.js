@@ -1,13 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 function NotFound() {
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <>
       <section class="bg-white dark:bg-gray-900 ">
-        <div class="container min-h-screen px-6 py-12 mx-auto lg:flex lg:items-center lg:gap-12">
+        <div class="container  px-6 py-12 mx-auto lg:flex lg:items-center lg:gap-12">
           <div class="wf-ull lg:w-1/2">
             <p class="text-md font-medium text-blue-500 dark:text-blue-400">
               404 error

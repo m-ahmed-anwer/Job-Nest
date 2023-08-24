@@ -1,12 +1,22 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-//import { a } from "react-router-dom";
+import React, { Fragment, useContext, useState } from "react";
 import image from "../../images/suitcase.png";
+import { Menu, Transition } from "@headlessui/react";
+import { Link, useLocation } from "react-router-dom";
+import { getAuth } from "firebase/auth";
+import { UserContext } from "../../context/user-context";
+import Modal from "../alert/dialog-modal";
 
 function Navbar() {
+  const { currentUser } = useContext(UserContext);
+
   const [profileView, setProfileView] = useState(false);
   const [menuBar, setMenuBar] = useState(false);
   const location = useLocation();
+  const [open, setOpen] = useState(false);
+
+  const handleSignOut = () => {
+    setOpen(true);
+  };
 
   const data = [
     {
@@ -18,8 +28,8 @@ function Navbar() {
       link: "/jobs",
     },
     {
-      title: "Contact",
-      link: "/contact",
+      title: "Companies",
+      link: "/companies",
     },
     {
       title: "Post Job",
@@ -29,8 +39,17 @@ function Navbar() {
 
   return (
     <Fragment>
-      <nav class="bg-white border-gray-200 dark:bg-gray-900">
-        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+      <Modal
+        message={"Do you want to sign out"}
+        open={open}
+        setOpen={setOpen}
+        error={"error"}
+        buttonMessage={"Sign Out"}
+        confirm={"signout"}
+      />
+
+      <nav class=" bg-white border-gray-200 dark:bg-gray-900 py-3">
+        <div class="backdrop-blur-sm max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
           <Link to={"/"} class="flex items-center">
             <img src={image} class="h-8 mr-3" alt="Job Nest Logo" />
 
@@ -40,7 +59,75 @@ function Navbar() {
           </Link>
 
           <div class="flex items-center justify-center md:order-2">
-            {true ? (
+            {currentUser ? (
+              <div class="flex items-center md:order-2">
+                <Menu as="div" className="relative inline-block text-left">
+                  <Menu.Button
+                    type="button"
+                    class="w-8 h-8 flex mr-3 text-sm bg-gray-800 rounded-full md:mr-0 ring-2 ring-gray-300 focus:ring-4 hover:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+                    onClick={() => {
+                      setProfileView(!profileView);
+                    }}
+                  >
+                    <span class="sr-only">Open user menu</span>
+                    <img
+                      class="w-8 h-8 rounded-full"
+                      src="https://imgv3.fotor.com/images/gallery/Realistic-Male-Profile-Picture.jpg"
+                      alt="Phot"
+                    />
+                  </Menu.Button>
+
+                  <Transition
+                    as={Fragment}
+                    enter="transition ease-out duration-100"
+                    enterFrom="transform opacity-0 scale-95"
+                    enterTo="transform opacity-100 scale-100"
+                    leave="transition ease-in duration-75"
+                    leaveFrom="transform opacity-100 scale-100"
+                    leaveTo="transform opacity-0 scale-95"
+                  >
+                    <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                      <div className="p-2">
+                        <div class="px-4 py-3">
+                          <span class="block text-sm text-gray-900 dark:text-white">
+                            Bonnie Green
+                          </span>
+                          <span class="block text-sm  text-gray-500 truncate dark:text-gray-400">
+                            name@gmail.com
+                          </span>
+                        </div>
+
+                        <Menu.Item>
+                          <Link
+                            to={"/"}
+                            class="hover:rounded-md block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                          >
+                            My Profile
+                          </Link>
+                        </Menu.Item>
+                        <Menu.Item>
+                          <Link
+                            to={"/"}
+                            class="hover:rounded-md block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                          >
+                            Settings
+                          </Link>
+                        </Menu.Item>
+
+                        <Menu.Item>
+                          <div
+                            class="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-[#e61923] hover:rounded-md hover:text-[#f7f7f7] dark:hover:bg-[#e61923] dark:text-[#f7f7f7] dark:hover:text-white"
+                            onClick={handleSignOut}
+                          >
+                            Sign out
+                          </div>
+                        </Menu.Item>
+                      </div>
+                    </Menu.Items>
+                  </Transition>
+                </Menu>
+              </div>
+            ) : (
               <div className="flex items-center justify-center md:order-2">
                 <div className=" w-fit rounded-xl m-1 mr-3 ">
                   <Link
@@ -50,7 +137,7 @@ function Navbar() {
                     }  ${
                       location.pathname === "/login" &&
                       "bg-blue-700 text-white dark:bg-blue-700 dark:text-white hover:bg-blue-600"
-                    } dark:bg-gray-700 dark:hover:bg-blue-500 dark:text-white px-5 py-3 rounded-l-xl transition  font-semibold shadow-md`}
+                    } dark:bg-gray-700 dark:hover:bg-blue-500 dark:text-white px-5 py-3 max-sm:px-3 max-sm:py-3 rounded-l-xl transition  font-semibold shadow-md`}
                   >
                     Log In
                   </Link>
@@ -62,73 +149,10 @@ function Navbar() {
                   ${
                     location.pathname !== "/login" &&
                     "bg-blue-700 text-white dark:bg-blue-700 dark:text-white hover:bg-blue-600"
-                  } dark:bg-gray-700 dark:hover:bg-blue-500 dark:text-white px-5 py-3 rounded-r-xl   transition  font-semibold shadow-md`}
+                  } dark:bg-gray-700 dark:hover:bg-blue-500 dark:text-white px-5 py-3 rounded-r-xl max-sm:px-3 max-sm:py-3  transition  font-semibold shadow-md`}
                   >
                     Sign Up
                   </Link>
-                </div>
-              </div>
-            ) : (
-              <div class="flex items-center md:order-2">
-                <button
-                  type="button"
-                  class="flex mr-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-                  aria-expanded={profileView ? "true" : "false"}
-                  data-dropdown-toggle={"user-dropdown"}
-                  data-dropdown-placement="bottom"
-                  onClick={() => {
-                    setProfileView(!profileView);
-                  }}
-                >
-                  <span class="sr-only">Open user menu</span>
-                  <img
-                    class="w-8 h-8 rounded-full"
-                    src="https://img.freepik.com/free-icon/user-image-with-black-background_318-34564.jpg"
-                    alt="Phot"
-                  />
-                </button>
-
-                <div
-                  class={` ${
-                    profileView ? "block  " : "hidden"
-                  } z-50  my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600`}
-                  id="user-dropdown"
-                >
-                  <div class="px-4 py-3">
-                    <span class="block text-sm text-gray-900 dark:text-white">
-                      Bonnie Green
-                    </span>
-                    <span class="block text-sm  text-gray-500 truncate dark:text-gray-400">
-                      name@gmail.com
-                    </span>
-                  </div>
-                  <ul class="py-2" aria-labelledby="user-menu-button">
-                    <li>
-                      <Link
-                        to={"/"}
-                        class="hover:rounded-md block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                      >
-                        My Profile
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        to={"/"}
-                        class="hover:rounded-md block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                      >
-                        Settings
-                      </Link>
-                    </li>
-
-                    <li>
-                      <Link
-                        to={"/"}
-                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-[#e61923] hover:rounded-md hover:text-[#f7f7f7] dark:hover:bg-[#e61923] dark:text-[#f7f7f7] dark:hover:text-white"
-                      >
-                        Sign out
-                      </Link>
-                    </li>
-                  </ul>
                 </div>
               </div>
             )}

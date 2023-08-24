@@ -1,67 +1,121 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import image from "../../images/suitcase.png";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import { signInAuthUserWithEmailAndPassword } from "../../firebase/firebase";
+import Modal from "../../components/alert/dialog-modal";
+import Loading from "../../components/alert/loading";
+
+const formFeild = {
+  email: "",
+  password: "",
+};
+const check = {
+  email: true,
+  validPassword: true,
+  empty: true,
+};
 
 function Login() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  const [error, setError] = useState(false);
+  const [message, setMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [buttonMesage, setButtonMesage] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [data, setData] = useState(formFeild);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [errorCheck, setErrorCheck] = useState(check);
+
+  const isEmailValid = (email) => {
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    return emailPattern.test(email);
+  };
+  const isPasswordValid = (password) => {
+    return password.length >= 6;
+  };
+
+  const handleChange = (event) => {
+    setData({ ...data, [event.target.name]: event.target.value });
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const { email, password } = data;
+
+    if (data.email === "") {
+      setErrorCheck({ ...errorCheck, empty: false });
+      return;
+    }
+
+    if (!isEmailValid(data.email)) {
+      setErrorCheck({ ...errorCheck, email: false });
+      return;
+    }
+    if (!isPasswordValid(data.password)) {
+      setErrorCheck({ ...errorCheck, validPassword: false });
+      return;
+    }
+    setIsLoading(true);
+    try {
+      await signInAuthUserWithEmailAndPassword(email, password);
+      setData(formFeild);
+      //const loggedInUser = userCredential.user;
+      setErrorCheck(check);
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      setOpen(true);
+      setMessage(error);
+      setButtonMesage("Retry");
+      setErrorMessage("error");
+      setData(formFeild);
+      setErrorCheck(check);
+    }
+  };
+
   return (
-    <section class="bg-white">
-      <div class="lg:grid lg:min-h-screen lg:grid-cols-12">
-        <aside class="relative block h-16 lg:order-last lg:col-span-5 lg:h-full xl:col-span-6">
+    <section className="bg-white relative">
+      {}
+      <Loading loading={isLoading} />
+      <Modal
+        message={message}
+        open={open}
+        setOpen={setOpen}
+        error={errorMessage}
+        buttonMessage={buttonMesage}
+      />
+
+      <div className="lg:grid lg:min-h-screen lg:grid-cols-12 leading-4 tracking-normal">
+        <aside className="relative block h-16 lg:order-first lg:col-span-5 lg:h-full xl:col-span-6 lg:w-4/5 ">
           <img
             alt="Pattern"
             src="https://images.unsplash.com/photo-1605106702734-205df224ecce?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
-            class="absolute inset-0 h-full w-full object-cover"
+            className="absolute inset-0 h-full w-full object-cover"
           />
         </aside>
-
-        <main class="flex items-center justify-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6">
-          <div class="max-w-xl lg:max-w-3xl">
-            <h1 class="mt-6 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl">
+        <main className="flex items-center justify-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6">
+          <div className="max-w-xl lg:max-w-3xl">
+            <h1 className="mt-6 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl">
               Welcome to Job Nest 🎒
             </h1>
-
-            <p class="mt-4 leading-relaxed text-gray-500">
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eligendi
-              nam dolorum aliquam, quibusdam aperiam voluptatum.
+            <p className="mt-4 leading-relaxed text-gray-500">
+              Unlock Your Future with Job Nest: Embark on Your Dream Career
+              Journey 🚀
             </p>
 
-            <form action="#" class="mt-8 grid grid-cols-6 gap-6">
-              <div class="col-span-6 sm:col-span-3">
-                <label
-                  for="FirstName"
-                  class="block text-sm font-medium text-gray-700"
-                >
-                  First Name
-                </label>
-
-                <input
-                  type="text"
-                  id="FirstName"
-                  name="first_name"
-                  className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900  ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 shadow-md"
-                />
-              </div>
-
-              <div class="col-span-6 sm:col-span-3">
-                <label
-                  for="LastName"
-                  class="block text-sm font-medium text-gray-700"
-                >
-                  Last Name
-                </label>
-
-                <input
-                  type="text"
-                  id="LastName"
-                  name="last_name"
-                  className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900  ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 shadow-md"
-                />
-              </div>
-
-              <div class="col-span-6">
+            <form
+              action="#"
+              className="mt-8 grid grid-cols-6 gap-6"
+              onSubmit={handleSubmit}
+            >
+              <div className="col-span-6 lg:col-span-5 ">
                 <label
                   for="Email"
-                  class="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-medium text-gray-700"
                 >
                   Email
                 </label>
@@ -69,71 +123,140 @@ function Login() {
                 <input
                   type="email"
                   id="Email"
+                  onChange={handleChange}
+                  value={data.email}
+                  placeholder="name@example.com"
                   name="email"
-                  className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900  ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 shadow-md"
+                  className={`${
+                    errorCheck.email ? "ring-gray-300" : "ring-red-500"
+                  } tracking-wide block w-full rounded-md border-0 py-1.5 px-2 text-gray-900  ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-7 shadow-md`}
                 />
+                {!errorCheck.email ? (
+                  <p class="text-red-500 text-xs italic">
+                    Incorrect e-mail format.
+                  </p>
+                ) : (
+                  !errorCheck.empty && (
+                    <p class="text-red-500 text-xs italic">Enter Email.</p>
+                  )
+                )}
               </div>
 
-              <div class="col-span-6 sm:col-span-3">
+              <div className="col-span-6 lg:col-span-5 ">
                 <label
                   for="Password"
-                  class="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-medium text-gray-700"
                 >
                   Password
                 </label>
 
-                <input
-                  type="password"
-                  id="Password"
-                  name="password"
-                  className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900  ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 shadow-md"
-                />
+                <div className="relative flex items-center">
+                  <input
+                    type={`${showPassword ? "text" : "password"}`}
+                    onChange={handleChange}
+                    value={data.password}
+                    placeholder="*********"
+                    id="Password"
+                    name="password"
+                    className={`${
+                      errorCheck.validPassword
+                        ? "ring-gray-300"
+                        : "ring-red-500"
+                    } tracking-wide block w-full rounded-md border-0 py-1.5 px-2 text-gray-900  ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-7 shadow-md`}
+                  />
+
+                  <span
+                    className="absolute inset-y-0 right-0 flex items-center pr-2"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <EyeIcon
+                        className="h-4 w-4 cursor-pointer"
+                        aria-hidden="true"
+                      />
+                    ) : (
+                      <EyeSlashIcon
+                        className="h-4 w-4 cursor-pointer"
+                        aria-hidden="true"
+                      />
+                    )}
+                  </span>
+                </div>
+                {!errorCheck.validPassword && (
+                  <p class="text-red-500 text-xs italic">
+                    Password need to contain atleat 6 characters.
+                  </p>
+                )}
               </div>
 
-              <div class="col-span-6 sm:col-span-3">
-                <label
-                  for="PasswordConfirmation"
-                  class="block text-sm font-medium text-gray-700"
+              <div className="col-span-5">
+                <div className="mb-6">
+                  <div className="flex items-center justify-between">
+                    <div className="relative">
+                      <label
+                        className="block text-gray-500 font-bold"
+                        for="remember"
+                      >
+                        <input
+                          className="ml-2 leading-tight"
+                          type="checkbox"
+                          id="remember"
+                          name="remember"
+                        />
+                        <span className="text-sm"> Remember me</span>
+                      </label>
+                    </div>
+                    <div>
+                      <a
+                        className="font-bold text-gray-700 text-sm underline"
+                        href="#password-request"
+                      >
+                        Forgot password
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
+                <button
+                  className="max-sm:w-full px-8 py-3 rounded-xl transition  font-semibold shadow-md bg-blue-700 text-white hover:bg-blue-600"
+                  type="submit"
                 >
-                  Password Confirmation
-                </label>
-
-                <input
-                  type="password"
-                  id="PasswordConfirmation"
-                  name="password_confirmation"
-                  className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900  ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 shadow-md"
-                />
-              </div>
-
-              <div class="col-span-6">
-                <p class="text-sm text-gray-500">
-                  By creating an account, you agree to our{" "}
-                  <a href="#" class="text-gray-700 underline">
-                    terms and conditions
-                  </a>{" "}
-                  and{" "}
-                  <a href="#" class="text-gray-700 underline">
-                    privacy policy
-                  </a>
-                  .
-                </p>
-              </div>
-
-              <div class="col-span-6 sm:flex sm:items-center sm:gap-4">
-                <button class="   px-5 py-3 rounded-xl transition  font-semibold shadow-md bg-blue-700 text-white hover:bg-blue-600">
-                  Create an account
+                  Log In
                 </button>
 
-                <p class="mt-4 text-sm text-gray-500 sm:mt-0">
-                  Already have an account?{" "}
-                  <Link to={"/login"} class="text-gray-700 underline">
-                    Log in
+                <p className="mt-4 text-sm text-gray-500 sm:mt-0">
+                  Don't have an account?{" "}
+                  <Link to={"/signup"} className="text-gray-700 underline">
+                    Sign up
                   </Link>
-                  .
                 </p>
               </div>
             </form>
+            <div className="w-full flex items-center justify-between my-10 sm:my-8">
+              <hr className="w-full bg-gray-400" />
+              <p className="text-base font-medium leading-4 px-2.5 text-gray-400">
+                OR
+              </p>
+              <hr className="w-full bg-gray-400  " />
+            </div>
+
+            <button
+              aria-label="Continue with google"
+              role="button"
+              className="max-sm:w-full focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-700 py-3.5 px-4 border rounded-lg border-gray-700 flex items-center "
+            >
+              <img
+                class="w-6 h-6"
+                src="https://www.svgrepo.com/show/475656/google-color.svg"
+                loading="lazy"
+                alt="google logo"
+              />
+              <p className="text-base font-medium ml-4 text-gray-700">
+                Continue with Google
+              </p>
+            </button>
           </div>
         </main>
       </div>
