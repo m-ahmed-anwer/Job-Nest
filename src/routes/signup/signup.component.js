@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import Modal from "../../components/alert/dialog-modal";
-import { createAuthUserWithEmailAndPassword } from "../../firebase/firebase";
+import {
+  createAuthUserWithEmailAndPassword,
+  createUserDocumentFromAuth,
+} from "../../firebase/firebase";
+import Loading from "../../components/alert/loading";
 
 const formFeild = {
   first_name: "",
@@ -11,6 +15,7 @@ const formFeild = {
   phone: "",
   password: "",
   password_confirmation: "",
+  category: "",
 };
 const check = {
   first_name: true,
@@ -19,6 +24,7 @@ const check = {
   phone: true,
   validPassword: true,
   confirmPassword: true,
+  category: true,
 };
 
 function Sign() {
@@ -33,11 +39,17 @@ function Sign() {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState(check);
   const [buttonMesage, setButtonMesage] = useState(null);
+
+  const imageURL =
+    "https://static.vecteezy.com/system/resources/thumbnails/020/765/399/small/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg";
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setData({ ...data, [name]: value });
   };
+  const [isLoading, setIsLoading] = useState(false);
 
+  const navigate = useNavigate();
   const isEmailValid = (email) => {
     const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     return emailPattern.test(email);
@@ -53,62 +65,81 @@ function Sign() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!data.first_name) {
+    const {
+      first_name,
+      last_name,
+      email,
+      phone,
+      password,
+      password_confirmation,
+      category,
+    } = data;
+
+    if (!first_name) {
       setError({ ...error, first_name: false });
       return;
     }
-    if (!data.last_name) {
+    if (!last_name) {
       setError({ ...error, last_name: false });
       return;
     }
-    if (!isEmailValid(data.email)) {
+    if (!isEmailValid(email)) {
       setError({ ...error, email: false });
       return;
     }
-    if (!isValidPhoneNumber(data.phone)) {
+    if (category === "") {
+      setError({ ...error, category: false });
+      return;
+    }
+    if (!isValidPhoneNumber(phone)) {
       setError({ ...error, phone: false });
       return;
     }
-    if (data.password !== data.password_confirmation) {
+    if (password !== password_confirmation) {
       setError({ ...error, confirmPassword: false });
       return;
     }
-    if (!isPasswordValid(data.password)) {
+    if (!isPasswordValid(password)) {
       setError({ ...error, validPassword: false });
       return;
     }
+    setIsLoading(true);
 
     try {
-      // const user = await createAuthUserWithEmailAndPassword(
-      //   data.email,
-      //   data.password
-      // );
-      // const displayName = data.first_name.trim() + " " + data.last_name.trim();
-
-      setErrorMessage("success");
-      setButtonMesage("Continue");
-      setMessage(
-        "Congratulations! 🎉 Your account has been successfully created. "
+      const displayName = first_name.trim() + " " + last_name.trim();
+      const { user } = await createAuthUserWithEmailAndPassword(
+        email,
+        password,
+        displayName,
+        imageURL
       );
-      setOpen(true);
+
+      await createUserDocumentFromAuth(user, {
+        firstName: first_name,
+        lastName: last_name,
+        userPhone: phone,
+        photoURL: imageURL,
+        category: category,
+      });
+
       setData(formFeild);
       setError(check);
-
-      // useEffect(async () => {
-      //   await createUserDocumentFromAuth(user, { displayName });
-      // }, []);
+      setIsLoading(false);
+      navigate("/login", { state: { signupSuccess: true } });
     } catch (error) {
-      setMessage(error);
+      setIsLoading(false);
+      setMessage(error.message);
       setOpen(true);
-      setButtonMesage("Error");
+      setButtonMesage("Retry");
       setErrorMessage("error");
-      setData(formFeild);
+      setData({ ...data, password: "", password_confirmation: "" });
       setError(check);
     }
   };
 
   return (
-    <section className="bg-white leading-4 tracking-normal">
+    <section className="bg-white leading-4 tracking-normal relative">
+      <Loading loading={isLoading} />
       <Modal
         message={message}
         open={open}
@@ -239,6 +270,34 @@ function Sign() {
                   <p class="text-red-500 text-xs italic">
                     Incorrect Phone Number Format.
                   </p>
+                )}
+              </div>
+              <div className="col-span-6">
+                <label
+                  for="Phone"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Category
+                </label>
+
+                <select
+                  id="category"
+                  name="category"
+                  onChange={handleChange}
+                  className={`${
+                    error.category ? "ring-gray-300" : "ring-red-500"
+                  } tracking-wide block w-full rounded-md border-0 py-1.5 px-2 text-gray-900  ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-7 shadow-md`}
+                >
+                  <option value={""} selected>
+                    Choose your category
+                  </option>
+                  <option value="undergraduate">Undergraduate</option>
+                  <option value="jobseeker">Job Seeker</option>
+                  <option value="company">Company</option>
+                  <option value="other">Other</option>
+                </select>
+                {!error.category && (
+                  <p class="text-red-500 text-xs italic">Select a category.</p>
                 )}
               </div>
 

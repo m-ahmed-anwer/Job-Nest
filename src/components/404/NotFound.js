@@ -59,7 +59,7 @@ function NotFound() {
             <img
               class="w-full max-w-lg lg:mx-auto"
               src="https://cdn.svgator.com/images/2022/01/cat.png"
-              alt=""
+              alt="404"
             />
           </div>
         </div>

@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useState } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import image from "../../images/suitcase.png";
 import { Menu, Transition } from "@headlessui/react";
 import { Link, useLocation } from "react-router-dom";
@@ -6,8 +6,22 @@ import { getAuth } from "firebase/auth";
 import { UserContext } from "../../context/user-context";
 import Modal from "../alert/dialog-modal";
 
+import { auth } from "../../firebase/firebase";
+
 function Navbar() {
   const { currentUser } = useContext(UserContext);
+  const [displayName, setDisplayName] = useState("");
+  const [email, setEmail] = useState("");
+  const [imageURL, setImageURL] = useState("");
+
+  useEffect(() => {
+    const user = auth.currentUser;
+    if (user) {
+      setDisplayName(user.displayName);
+      setEmail(user.email);
+      setImageURL(user.photoURL);
+    }
+  }, [currentUser]);
 
   const [profileView, setProfileView] = useState(false);
   const [menuBar, setMenuBar] = useState(false);
@@ -60,7 +74,7 @@ function Navbar() {
 
           <div class="flex items-center justify-center md:order-2">
             {currentUser ? (
-              <div class="flex items-center md:order-2">
+              <div class="flex items-center md:order-2 z-50">
                 <Menu as="div" className="relative inline-block text-left">
                   <Menu.Button
                     type="button"
@@ -72,7 +86,7 @@ function Navbar() {
                     <span class="sr-only">Open user menu</span>
                     <img
                       class="w-8 h-8 rounded-full"
-                      src="https://imgv3.fotor.com/images/gallery/Realistic-Male-Profile-Picture.jpg"
+                      src={imageURL}
                       alt="Phot"
                     />
                   </Menu.Button>
@@ -86,14 +100,14 @@ function Navbar() {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                   >
-                    <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <Menu.Items className="absolute right-0 z-50 mt-2 w-[240px] origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                       <div className="p-2">
                         <div class="px-4 py-3">
-                          <span class="block text-sm text-gray-900 dark:text-white">
-                            Bonnie Green
+                          <span class="block text-md my-1 text-black dark:text-white">
+                            {displayName}
                           </span>
                           <span class="block text-sm  text-gray-500 truncate dark:text-gray-400">
-                            name@gmail.com
+                            {email}
                           </span>
                         </div>
 
@@ -107,7 +121,7 @@ function Navbar() {
                         </Menu.Item>
                         <Menu.Item>
                           <Link
-                            to={"/"}
+                            to={"/settings"}
                             class="hover:rounded-md block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                           >
                             Settings

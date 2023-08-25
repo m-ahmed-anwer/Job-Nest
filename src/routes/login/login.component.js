@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { signInAuthUserWithEmailAndPassword } from "../../firebase/firebase";
 import Modal from "../../components/alert/dialog-modal";
 import Loading from "../../components/alert/loading";
+import { UserContext } from "../../context/user-context";
 
 const formFeild = {
   email: "",
@@ -27,8 +28,10 @@ function Login() {
   const [open, setOpen] = useState(false);
   const [data, setData] = useState(formFeild);
   const [isLoading, setIsLoading] = useState(false);
-
   const [errorCheck, setErrorCheck] = useState(check);
+  const location = useLocation();
+  const signupSuccess = location.state?.signupSuccess;
+  const { setCurrentUser } = useContext(UserContext);
 
   const isEmailValid = (email) => {
     const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -61,25 +64,55 @@ function Login() {
     }
     setIsLoading(true);
     try {
-      await signInAuthUserWithEmailAndPassword(email, password);
+      const userCredential = await signInAuthUserWithEmailAndPassword(
+        email,
+        password
+      );
+
+      if (!userCredential.user.emailVerified) {
+        setIsLoading(false);
+        setOpen(true);
+        setMessage("Please verify your email before logging in.");
+        setButtonMesage("OK");
+        setErrorMessage("error");
+        setData({ ...data, password: "" });
+        return;
+      }
+
+      setCurrentUser(userCredential);
       setData(formFeild);
-      //const loggedInUser = userCredential.user;
       setErrorCheck(check);
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
       setOpen(true);
-      setMessage(error);
+      setMessage(error.message); // Set the error message from the error object
       setButtonMesage("Retry");
-      setErrorMessage("error");
-      setData(formFeild);
+      setErrorMessage("error"); // Set the error message for UI display
+      setData({ ...data, password: "" });
       setErrorCheck(check);
     }
   };
 
+  const [loginOpen, setLoginOpen] = useState(false);
+  useEffect(() => {
+    setLoginOpen(signupSuccess);
+  }, [signupSuccess]);
+
   return (
     <section className="bg-white relative">
-      {}
+      {signupSuccess && (
+        <Modal
+          message={
+            "Congratulations! 🎉 Your account has been successfully created. Please verify your email."
+          }
+          open={loginOpen}
+          setOpen={setLoginOpen}
+          error={"success"}
+          buttonMessage={"Continue"}
+        />
+      )}
+
       <Loading loading={isLoading} />
       <Modal
         message={message}

@@ -11,6 +11,7 @@ import JobPost from "./routes/job-post/job-post";
 import Companies from "./routes/companies/companies";
 import { useContext } from "react";
 import { UserContext } from "./context/user-context";
+import Settings from "./components/settings/settings";
 
 function App() {
   const { currentUser } = useContext(UserContext);
@@ -22,6 +23,7 @@ function App() {
         <Route path="/companies" element={<Companies />} />
         <Route path="/about" element={<Jobs />} />
         <Route path="/service" element={<Jobs />} />
+        <Route path="/settings" element={<Settings />} />
         <Route
           path="/login"
           element={currentUser ? <Navigate to="/" /> : <Login />}

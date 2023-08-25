@@ -4,6 +4,8 @@ import {
   getAuth,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  sendEmailVerification,
+  updateProfile,
 } from "firebase/auth";
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 
@@ -25,14 +27,40 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth();
 export const db = getFirestore();
 
-export const createAuthUserWithEmailAndPassword = async (email, password) => {
+export const createAuthUserWithEmailAndPassword = async (
+  email,
+  password,
+  displayName,
+  photoURL
+) => {
   if (!email || !password) return;
-  return await createUserWithEmailAndPassword(auth, email, password);
+
+  const userCredential = await createUserWithEmailAndPassword(
+    auth,
+    email,
+    password
+  );
+
+  await updateProfile(userCredential.user, {
+    displayName: displayName,
+    photoURL: photoURL,
+  });
+
+  await sendEmailVerification(userCredential.user);
+
+  return userCredential;
 };
 
 export const signInAuthUserWithEmailAndPassword = async (email, password) => {
   if (!email || !password) return;
-  return await signInWithEmailAndPassword(auth, email, password);
+
+  const userCredential = await signInWithEmailAndPassword(
+    auth,
+    email,
+    password
+  );
+
+  return userCredential;
 };
 
 export const createUserDocumentFromAuth = async (userAuth, addtional) => {

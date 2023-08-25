@@ -6,15 +6,9 @@ import {
 } from "@heroicons/react/24/outline";
 import { getAuth } from "firebase/auth";
 import { UserContext } from "../../context/user-context";
+import { useNavigate } from "react-router";
 
-export default function Modal({
-  message,
-  open,
-  setOpen,
-  error,
-  buttonMessage,
-  confirm,
-}) {
+function Modal({ message, open, setOpen, error, buttonMessage, confirm }) {
   const cancelButtonRef = useRef(null);
 
   const actionClick = () => {
@@ -22,11 +16,13 @@ export default function Modal({
   };
 
   const { setCurrentUser } = useContext(UserContext);
+  const navigate = useNavigate();
 
   const signOutHandler = async () => {
     await getAuth().signOut();
     setOpen(false);
     setCurrentUser(null);
+    navigate("/login");
   };
 
   const createUser = async () => {};
@@ -126,3 +122,4 @@ export default function Modal({
     </Transition.Root>
   );
 }
+export default Modal;

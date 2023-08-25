@@ -12,15 +12,19 @@ export const UserProvider = ({ children }) => {
   const value = { currentUser, setCurrentUser };
 
   useEffect(() => {
-    const unsubscribe = getAuth().onAuthStateChanged((user) => {
+    const unsubscribe = getAuth().onAuthStateChanged(async (user) => {
       if (user) {
-        createUserDocumentFromAuth(user);
+        await createUserDocumentFromAuth(user);
+        // Check if user's email is verified before setting the currentUser state
+        if (user.emailVerified) {
+          setCurrentUser(user);
+        }
+      } else {
+        setCurrentUser(null);
       }
-      setCurrentUser(user);
     });
 
     return unsubscribe;
   }, []);
-
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
