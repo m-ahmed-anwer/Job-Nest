@@ -7,6 +7,7 @@ import { UserContext } from "../../context/user-context";
 import Modal from "../alert/dialog-modal";
 
 import { auth } from "../../firebase/firebase";
+import { Bars3Icon } from "@heroicons/react/24/outline";
 
 function Navbar() {
   const { currentUser } = useContext(UserContext);
@@ -77,8 +78,11 @@ function Navbar() {
 
           <div className="flex items-center justify-center md:order-2">
             {currentUser ? (
-              <div className="flex items-center md:order-2 z-50">
-                <Menu as="div" className="relative inline-block text-left">
+              <div className=" relative flex items-center md:order-2 z-50">
+                <Menu
+                  as="div"
+                  className="relative inline-block text-left z-50 "
+                >
                   <Menu.Button
                     type="button"
                     className="w-8 h-8 flex mr-3 text-sm bg-gray-800 rounded-full md:mr-0 ring-2 ring-gray-300 focus:ring-4 hover:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
@@ -90,7 +94,7 @@ function Navbar() {
                     <img
                       className="w-8 h-8 rounded-full"
                       src={imageURL}
-                      alt="Phot"
+                      alt="ProfilePic"
                     />
                   </Menu.Button>
 
@@ -107,7 +111,7 @@ function Navbar() {
                       className="absolute right-0 z-50 mt-2 w-[240px] origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                       onClick={close}
                     >
-                      <div className="p-2">
+                      <div className="p-2 z-50">
                         <div className="px-4 py-3">
                           <span className="block text-md my-1 text-black dark:text-white">
                             {displayName}
@@ -120,6 +124,7 @@ function Navbar() {
                         <Menu.Item>
                           <Link
                             to={"/profile"}
+                            onClick={close}
                             className="hover:rounded-md block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                           >
                             My Profile
@@ -128,6 +133,7 @@ function Navbar() {
                         <Menu.Item>
                           <Link
                             to={"/settings"}
+                            onClick={close}
                             className="hover:rounded-md block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                           >
                             Settings
@@ -189,21 +195,7 @@ function Navbar() {
               }}
             >
               <span className="sr-only">Open main menu</span>
-              <svg
-                className="w-5 h-5"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 17 14"
-              >
-                <path
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M1 1h15M1 7h15M1 13h15"
-                />
-              </svg>
+              <Bars3Icon className="w-11 h-11 text-black " />
             </button>
           </div>
           <div

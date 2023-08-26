@@ -6,6 +6,9 @@ import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
   updateProfile,
+  GoogleAuthProvider,
+  signInWithRedirect,
+  signInWithPopup,
 } from "firebase/auth";
 import {
   getFirestore,
@@ -36,6 +39,26 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth();
 export const db = getFirestore();
+const provider = new GoogleAuthProvider();
+
+provider.setCustomParameters({
+  prompt: "select_account",
+});
+
+export const signInWithGooglePopup = async () => {
+  try {
+    await signInWithPopup(auth, provider);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+export const signInWithGoogleRedirect = async () => {
+  try {
+    await signInWithRedirect(auth, provider);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 
 export const createAuthUserWithEmailAndPassword = async (
   email,

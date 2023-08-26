@@ -1,7 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
-import { signInAuthUserWithEmailAndPassword } from "../../firebase/firebase";
+import {
+  signInAuthUserWithEmailAndPassword,
+  signInWithGooglePopup,
+} from "../../firebase/firebase";
 import Modal from "../../components/alert/dialog-modal";
 import Loading from "../../components/alert/loading";
 import { UserContext } from "../../context/user-context";
@@ -20,7 +23,7 @@ function Login() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  const [error, setError] = useState(false);
+
   const [message, setMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [buttonMesage, setButtonMesage] = useState(null);
@@ -94,6 +97,19 @@ function Login() {
     }
   };
 
+  const googleLogin = async () => {
+    setIsLoading(true);
+    try {
+      await signInWithGooglePopup();
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error.message);
+      setIsLoading(false);
+    }
+
+    setIsLoading(false);
+  };
+
   const [loginOpen, setLoginOpen] = useState(false);
   useEffect(() => {
     setLoginOpen(signupSuccess);
@@ -162,7 +178,7 @@ function Login() {
                   name="email"
                   className={`${
                     errorCheck.email ? "ring-gray-300" : "ring-red-500"
-                  } tracking-wide block w-full rounded-md border-0 py-1.5 px-2 text-gray-900  ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-7 shadow-md`}
+                  } tracking-wide block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 max-sm:h-11  ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-7 shadow-md`}
                 />
                 {!errorCheck.email ? (
                   <p class="text-red-500 text-xs italic">
@@ -195,7 +211,7 @@ function Login() {
                       errorCheck.validPassword
                         ? "ring-gray-300"
                         : "ring-red-500"
-                    } tracking-wide block w-full rounded-md border-0 py-1.5 px-2 text-gray-900  ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-7 shadow-md`}
+                    } tracking-wide block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 max-sm:h-11  ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-7 shadow-md`}
                   />
 
                   <span
@@ -279,6 +295,7 @@ function Login() {
               aria-label="Continue with google"
               role="button"
               className="max-sm:w-full focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-700 py-3.5 px-4 border rounded-lg border-gray-700 flex items-center "
+              onClick={googleLogin}
             >
               <img
                 class="w-6 h-6"

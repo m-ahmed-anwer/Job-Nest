@@ -1,5 +1,5 @@
 import React from "react";
-import image from "../../images/suitcase.png";
+
 import { Link } from "react-router-dom";
 
 function Footer() {

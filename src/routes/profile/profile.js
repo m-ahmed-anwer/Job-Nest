@@ -73,7 +73,7 @@ function Profile() {
   const [selectedItem, setSelectedItem] = useState(0);
 
   return (
-    <div className="relative">
+    <div className="">
       <div className="px-4 md:px-8">
         <ul
           role="tablist"

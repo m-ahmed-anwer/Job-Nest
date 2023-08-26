@@ -140,7 +140,7 @@ function JobPost() {
   };
 
   return (
-    <div className="mx-auto max-w-screen-2xl px-1 py-5 sm:px-10 lg:px-6 relative">
+    <div className="mx-auto max-w-screen-2xl px-1 py-5 sm:px-10 lg:px-6 ">
       <Loading loading={isLoading} />
       <Modal
         message={message}

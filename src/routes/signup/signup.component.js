@@ -5,6 +5,7 @@ import Modal from "../../components/alert/dialog-modal";
 import {
   createAuthUserWithEmailAndPassword,
   createUserDocumentFromAuth,
+  signInWithGoogleRedirect,
 } from "../../firebase/firebase";
 import Loading from "../../components/alert/loading";
 
@@ -138,6 +139,18 @@ function Sign() {
     }
   };
 
+  const googleSignUp = async () => {
+    setIsLoading(true);
+    try {
+      await signInWithGoogleRedirect();
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error.message);
+      setIsLoading(false);
+    }
+    setIsLoading(false);
+  };
+
   return (
     <section className="bg-white leading-4 tracking-normal relative">
       <Loading loading={isLoading} />
@@ -189,7 +202,7 @@ function Sign() {
                   name="first_name"
                   className={`${
                     error.first_name ? "ring-gray-300" : "ring-red-500"
-                  } tracking-wide block w-full rounded-md border-0 py-1.5 px-2 text-gray-900  ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-7 shadow-md`}
+                  } tracking-wide block w-full rounded-md max-sm:h-10 border-0 py-1.5 px-2 text-gray-900  ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-7 shadow-md`}
                 />
                 {!error.first_name && (
                   <p class="text-red-500 text-xs italic">
@@ -215,7 +228,7 @@ function Sign() {
                   name="last_name"
                   className={`${
                     error.last_name ? "ring-gray-300" : "ring-red-500"
-                  } tracking-wide block w-full rounded-md border-0 py-1.5 px-2 text-gray-900  ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-7 shadow-md`}
+                  } tracking-wide block w-full rounded-md border-0 max-sm:h-10 py-1.5 px-2 text-gray-900  ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-7 shadow-md`}
                 />
                 {!error.last_name && (
                   <p class="text-red-500 text-xs italic">
@@ -241,7 +254,7 @@ function Sign() {
                   placeholder="name@example.com"
                   className={`${
                     error.email ? "ring-gray-300" : "ring-red-500"
-                  } tracking-wide block w-full rounded-md border-0 py-1.5 px-2 text-gray-900  ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-7 shadow-md`}
+                  } tracking-wide block w-full rounded-md border-0 max-sm:h-10 py-1.5 px-2 text-gray-900  ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-7 shadow-md`}
                 />
                 {!error.email && (
                   <p class="text-red-500 text-xs italic">Invalid E-mail.</p>
@@ -264,7 +277,7 @@ function Sign() {
                   name="phone"
                   className={`${
                     error.phone ? "ring-gray-300" : "ring-red-500"
-                  } tracking-wide block w-full rounded-md border-0 py-1.5 px-2 text-gray-900  ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-7 shadow-md`}
+                  } tracking-wide block w-full rounded-md border-0 py-1.5 px-2 max-sm:h-10 text-gray-900  ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-7 shadow-md`}
                 />
                 {!error.phone && (
                   <p class="text-red-500 text-xs italic">
@@ -286,7 +299,7 @@ function Sign() {
                   onChange={handleChange}
                   className={`${
                     error.category ? "ring-gray-300" : "ring-red-500"
-                  } tracking-wide block w-full rounded-md border-0 py-1.5 px-2 text-gray-900  ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-7 shadow-md`}
+                  } tracking-wide block w-full rounded-md border-0 py-1.5 px-2 max-sm:h-10 text-gray-900  ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-7 shadow-md`}
                 >
                   <option value={""} selected>
                     Choose your category
@@ -318,7 +331,7 @@ function Sign() {
                     placeholder="*********"
                     className={`${
                       error.validPassword ? "ring-gray-300" : "ring-red-500"
-                    } tracking-wide block w-full rounded-md border-0 py-1.5 px-2 text-gray-900  ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-7 shadow-md`}
+                    } tracking-wide block w-full rounded-md border-0 py-1.5 px-2 max-sm:h-10 text-gray-900  ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-7 shadow-md`}
                   />
                   <span
                     className="absolute inset-y-0 right-0 flex items-center pr-2"
@@ -362,7 +375,7 @@ function Sign() {
                     value={data.password_confirmation}
                     className={`${
                       error.confirmPassword ? "ring-gray-300" : "ring-red-500"
-                    } tracking-wide block w-full rounded-md border-0 py-1.5 px-2 text-gray-900  ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-7 shadow-md`}
+                    } tracking-wide block w-full rounded-md border-0 py-1.5 px-2 text-gray-900  max-sm:h-10 ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-7 shadow-md`}
                   />
                   <span
                     className="absolute inset-y-0 right-0 flex items-center pr-2"
@@ -404,7 +417,7 @@ function Sign() {
 
               <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
                 <button
-                  className="max-sm:w-full px-8 py-3 rounded-xl transition  font-semibold shadow-md bg-blue-700 text-white hover:bg-blue-600"
+                  className="max-sm:w-full px-8 py-3 rounded-xl transition  max-sm:h-11 font-semibold shadow-md bg-blue-700 text-white hover:bg-blue-600"
                   type="submit"
                 >
                   Create an account
@@ -430,6 +443,7 @@ function Sign() {
               aria-label="Continue with google"
               role="button"
               className="max-sm:w-full focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-700 py-3.5 px-4 border rounded-lg border-gray-700 flex items-center "
+              onClick={googleSignUp}
             >
               <img
                 class="w-6 h-6"
