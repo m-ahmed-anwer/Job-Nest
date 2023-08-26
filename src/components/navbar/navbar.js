@@ -2,7 +2,7 @@ import React, { Fragment, useContext, useEffect, useState } from "react";
 import image from "../../images/suitcase.png";
 import { Menu, Transition } from "@headlessui/react";
 import { Link, useLocation } from "react-router-dom";
-import { getAuth } from "firebase/auth";
+
 import { UserContext } from "../../context/user-context";
 import Modal from "../alert/dialog-modal";
 
@@ -51,6 +51,9 @@ function Navbar() {
     },
   ];
 
+  const close = () => {
+    setMenuBar(false);
+  };
   return (
     <Fragment>
       <Modal
@@ -62,30 +65,30 @@ function Navbar() {
         confirm={"signout"}
       />
 
-      <nav class=" bg-white border-gray-200 dark:bg-gray-900 py-3">
-        <div class="backdrop-blur-sm max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-          <Link to={"/"} class="flex items-center">
-            <img src={image} class="h-8 mr-3" alt="Job Nest Logo" />
+      <nav className=" bg-gray-50 border-gray-200 dark:bg-gray-900 py-3">
+        <div className="backdrop-blur-sm max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+          <Link to={"/"} className="flex items-center" onClick={close}>
+            <img src={image} className="h-8 mr-3" alt="Job Nest Logo" />
 
-            <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+            <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
               Job Nest
             </span>
           </Link>
 
-          <div class="flex items-center justify-center md:order-2">
+          <div className="flex items-center justify-center md:order-2">
             {currentUser ? (
-              <div class="flex items-center md:order-2 z-50">
+              <div className="flex items-center md:order-2 z-50">
                 <Menu as="div" className="relative inline-block text-left">
                   <Menu.Button
                     type="button"
-                    class="w-8 h-8 flex mr-3 text-sm bg-gray-800 rounded-full md:mr-0 ring-2 ring-gray-300 focus:ring-4 hover:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+                    className="w-8 h-8 flex mr-3 text-sm bg-gray-800 rounded-full md:mr-0 ring-2 ring-gray-300 focus:ring-4 hover:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
                     onClick={() => {
                       setProfileView(!profileView);
                     }}
                   >
-                    <span class="sr-only">Open user menu</span>
+                    <span className="sr-only">Open user menu</span>
                     <img
-                      class="w-8 h-8 rounded-full"
+                      className="w-8 h-8 rounded-full"
                       src={imageURL}
                       alt="Phot"
                     />
@@ -100,13 +103,16 @@ function Navbar() {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                   >
-                    <Menu.Items className="absolute right-0 z-50 mt-2 w-[240px] origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <Menu.Items
+                      className="absolute right-0 z-50 mt-2 w-[240px] origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                      onClick={close}
+                    >
                       <div className="p-2">
-                        <div class="px-4 py-3">
-                          <span class="block text-md my-1 text-black dark:text-white">
+                        <div className="px-4 py-3">
+                          <span className="block text-md my-1 text-black dark:text-white">
                             {displayName}
                           </span>
-                          <span class="block text-sm  text-gray-500 truncate dark:text-gray-400">
+                          <span className="block text-sm  text-gray-500 truncate dark:text-gray-400">
                             {email}
                           </span>
                         </div>
@@ -114,7 +120,7 @@ function Navbar() {
                         <Menu.Item>
                           <Link
                             to={"/profile"}
-                            class="hover:rounded-md block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                            className="hover:rounded-md block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                           >
                             My Profile
                           </Link>
@@ -122,7 +128,7 @@ function Navbar() {
                         <Menu.Item>
                           <Link
                             to={"/settings"}
-                            class="hover:rounded-md block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                            className="hover:rounded-md block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                           >
                             Settings
                           </Link>
@@ -130,7 +136,7 @@ function Navbar() {
 
                         <Menu.Item>
                           <div
-                            class="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-[#e61923] hover:rounded-md hover:text-[#f7f7f7] dark:hover:bg-[#e61923] dark:text-[#f7f7f7] dark:hover:text-white"
+                            className="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-[#e61923] hover:rounded-md hover:text-[#f7f7f7] dark:hover:bg-[#e61923] dark:text-[#f7f7f7] dark:hover:text-white"
                             onClick={handleSignOut}
                           >
                             Sign out
@@ -145,6 +151,7 @@ function Navbar() {
               <div className="flex items-center justify-center md:order-2">
                 <div className=" w-fit rounded-xl m-1 mr-3 ">
                   <Link
+                    onClick={close}
                     to={"/login"}
                     className={`${
                       location.pathname !== "/login" && "hover:bg-gray-100"
@@ -156,6 +163,7 @@ function Navbar() {
                     Log In
                   </Link>
                   <Link
+                    onClick={close}
                     to={"/signup"}
                     className={`${
                       location.pathname === "/login" && "hover:bg-gray-100"
@@ -173,16 +181,16 @@ function Navbar() {
             <button
               data-collapse-toggle="navbar-user"
               type="button"
-              class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+              className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
               aria-controls="navbar-user"
               aria-expanded="false"
               onClick={() => {
                 setMenuBar(!menuBar);
               }}
             >
-              <span class="sr-only">Open main menu</span>
+              <span className="sr-only">Open main menu</span>
               <svg
-                class="w-5 h-5"
+                className="w-5 h-5"
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -199,17 +207,18 @@ function Navbar() {
             </button>
           </div>
           <div
-            class={` ${
+            className={` ${
               menuBar ? "block" : "hidden"
             } justify-between  w-full md:flex md:w-auto md:order-1`}
             id="navbar-user"
           >
-            <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+            <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 max-md:bg-white  dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
               {data.map(({ link, title }) => {
                 return (
                   <li>
                     <Link
                       to={link}
+                      onClick={close}
                       className={`${
                         location.pathname === link
                           ? "block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500"

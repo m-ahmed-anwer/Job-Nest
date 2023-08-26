@@ -4,15 +4,15 @@ import React, { useEffect, useState } from "react";
 const FloatMessage = ({ message, hide }) => {
   return (
     <div
-      class={`${
+      className={`${
         hide ? "hidden opacity-0" : "opacity-100 "
       } flex  fixed bottom-10 right-10 backdrop-blur-sm text-gray-700 text-base shadow-md rounded-lg transition-opacity duration-500`}
     >
-      <div class="bg-red-600 py-4 px-6 rounded-l-lg flex items-center">
+      <div className="bg-red-600 py-4 px-6 rounded-l-lg flex items-center">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 16 16"
-          class="fill-current text-white"
+          className="fill-current text-white"
           width="20"
           height="20"
         >
@@ -22,7 +22,7 @@ const FloatMessage = ({ message, hide }) => {
           ></path>
         </svg>
       </div>
-      <div class="px-4 py-6 bg-white rounded-r-lg backdrop-blur-sm flex justify-between items-center w-full border border-l-transparent border-gray-200">
+      <div className="px-4 py-6 bg-white rounded-r-lg backdrop-blur-sm flex justify-between items-center w-full border border-l-transparent border-gray-200">
         <div>
           <p>{message}</p>
         </div>

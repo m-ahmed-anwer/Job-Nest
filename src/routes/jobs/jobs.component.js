@@ -19,13 +19,6 @@ const sortOptions = [
   { name: "Price: Low to High", href: "#", current: false },
   { name: "Price: High to Low", href: "#", current: false },
 ];
-const subCategories = [
-  { name: "Totes", href: "#" },
-  { name: "Backpacks", href: "#" },
-  { name: "Travel Bags", href: "#" },
-  { name: "Hip Bags", href: "#" },
-  { name: "Laptop Sleeves", href: "#" },
-];
 const filters = [
   {
     id: "color",
@@ -76,9 +69,14 @@ function Jobs() {
     window.scrollTo(0, 0);
     const fetchJobs = async () => {
       setIsLoading(true);
-      const jobsData = await getJob();
-      setJobs(jobsData);
-      setIsLoading(false);
+      try {
+        const jobsData = await getJob();
+        setJobs(jobsData);
+        setIsLoading(false);
+      } catch (error) {
+        setIsLoading(false);
+        console.log(error.message);
+      }
     };
 
     fetchJobs();
@@ -128,26 +126,13 @@ function Jobs() {
                       className="-mr-2 flex h-10 w-10 items-center justify-center rounded-md bg-white p-2 text-gray-400"
                       onClick={() => setMobileFiltersOpen(false)}
                     >
-                      <span className="sr-only">Close menu</span>
                       <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                     </button>
                   </div>
 
                   {/* Filters */}
-                  <form className="mt-4 border-t border-gray-200">
+                  <form className="mt-4">
                     <h3 className="sr-only">Categories</h3>
-                    <ul
-                      role="list"
-                      className="px-2 py-3 font-medium text-gray-900"
-                    >
-                      {subCategories.map((category) => (
-                        <li key={category.name}>
-                          <a href={category.href} className="block px-2 py-3">
-                            {category.name}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
 
                     {filters.map((section) => (
                       <Disclosure
@@ -240,7 +225,7 @@ function Jobs() {
                   leaveFrom="transform opacity-100 scale-100"
                   leaveTo="transform opacity-0 scale-95"
                 >
-                  <Menu.Items className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  <Menu.Items className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-md ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <div className="py-1">
                       {sortOptions.map((option) => (
                         <Menu.Item key={option.name}>
@@ -285,16 +270,6 @@ function Jobs() {
               {/* Filters */}
               <form className="hidden lg:block">
                 <h3 className="sr-only">Categories</h3>
-                <ul
-                  role="list"
-                  className="space-y-4 border-b border-gray-200 pb-6 text-sm font-medium text-gray-900"
-                >
-                  {subCategories.map((category) => (
-                    <li key={category.name}>
-                      <a href={category.href}>{category.name}</a>
-                    </li>
-                  ))}
-                </ul>
 
                 {filters.map((section) => (
                   <Disclosure

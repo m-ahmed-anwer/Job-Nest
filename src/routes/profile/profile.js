@@ -1,118 +1,110 @@
-import {
-  ArrowRightOnRectangleIcon,
-  Bars3BottomRightIcon,
-  Squares2X2Icon,
-  UserIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
-import React, { useContext, useEffect, useState } from "react";
-import { UserDetailsContext } from "../../context/user-details";
+import { useState } from "react";
+import MyProfile from "./myProfile";
+import { Cog8ToothIcon, UserPlusIcon } from "@heroicons/react/24/outline";
 
-export default function Profile() {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-  let menuArray = [true, false, false];
-  const [menu, setMenu] = useState(menuArray);
-  const [show, setShow] = useState(false);
-
-  const setMenuValue = (props) => {
-    let newArr = [...menu];
-    newArr[props] = !newArr[props];
-    setMenu(newArr);
-  };
-
-  const { details } = useContext(UserDetailsContext);
-
-  const {
-    category,
-    displayName,
-    email,
-    firstName,
-    lastName,
-    photoURL,
-    userPhone,
-  } = details;
+function Profile() {
+  const tabItems = [
+    {
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="w-6 h-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M6 6.878V6a2.25 2.25 0 012.25-2.25h7.5A2.25 2.25 0 0118 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 004.5 9v.878m13.5-3A2.25 2.25 0 0119.5 9v.878m0 0a2.246 2.246 0 00-.75-.128H5.25c-.263 0-.515.045-.75.128m15 0A2.25 2.25 0 0121 12v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6c0-.98.626-1.813 1.5-2.122"
+          />
+        </svg>
+      ),
+      name: "Overview",
+    },
+    {
+      icon: <UserPlusIcon className="w-6 h-6" />,
+      name: "Edit Profile",
+    },
+    {
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="w-6 h-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z"
+          />
+        </svg>
+      ),
+      name: "Billing",
+    },
+    {
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="w-6 h-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M6.429 9.75L2.25 12l4.179 2.25m0-4.5l5.571 3 5.571-3m-11.142 0L2.25 7.5 12 2.25l9.75 5.25-4.179 2.25m0 0L21.75 12l-4.179 2.25m0 0l4.179 2.25L12 21.75 2.25 16.5l4.179-2.25m11.142 0l-5.571 3-5.571-3"
+          />
+        </svg>
+      ),
+      name: "Transactions",
+    },
+    {
+      icon: <Cog8ToothIcon className="w-6 h-6" />,
+      name: "Settings",
+    },
+  ];
+  const [selectedItem, setSelectedItem] = useState(0);
 
   return (
-    <div>
-      <div className="rounded-r bg-gray-800 xl:hidden flex justify-between w-full p-6 items-center ">
-        <div className="flex justify-between  items-center space-x-3">
-          <p className="text-2xl leading-6 text-white">{displayName}</p>
-        </div>
-        <div aria-label="toggler" className="flex justify-center items-center">
-          <button
-            aria-label="open"
-            id="open"
-            onClick={() => setShow(true)}
-            className={`${
-              show ? "hidden" : ""
-            } focus:outline-none focus:ring-2`}
-          >
-            <Bars3BottomRightIcon className="h-7 text-white" />
-          </button>
-          <button
-            aria-label="close"
-            id="close"
-            onClick={() => setShow(false)}
-            className={`${
-              show ? "" : "hidden"
-            } focus:outline-none focus:ring-2`}
-          >
-            <XMarkIcon className="h-7 text-white" />
-          </button>
-        </div>
+    <div className="relative">
+      <div className="px-4 md:px-8">
+        <ul
+          role="tablist"
+          className="max-w-screen-xl mx-auto border-b flex items-center gap-x-6 overflow-x-auto text-sm"
+        >
+          {tabItems.map((item, idx) => (
+            <li
+              key={idx}
+              className={`py-2 border-b-2 ${
+                selectedItem === idx
+                  ? "border-indigo-600 text-indigo-600"
+                  : "border-white text-gray-500"
+              }`}
+            >
+              <button
+                role="tab"
+                aria-selected={selectedItem === idx ? true : false}
+                aria-controls={`tabpanel-${idx + 1}`}
+                className="flex items-center gap-x-2 py-2 px-2 rounded-lg duration-150 hover:text-indigo-600 hover:bg-gray-50 active:bg-gray-100 font-medium"
+                onClick={() => setSelectedItem(idx)}
+              >
+                {item.icon}
+                {item.name}
+              </button>
+            </li>
+          ))}
+        </ul>
       </div>
-      <div
-        id="Main"
-        className={`${
-          show ? "translate-x-0" : "-translate-x-full"
-        } xl:rounded-r transform  xl:translate-x-0  ease-in-out transition duration-500 flex justify-start items-start h-full  w-full sm:w-64 bg-gray-900 flex-col`}
-      >
-        <div className="hidden xl:flex justify-start p-6 items-center space-x-3">
-          <p className="text-2xl my-5 leading-6 text-white">{displayName}</p>
-        </div>
-        <div className="mt-5 flex flex-col justify-start items-center  pl-4 w-full border-gray-600 border-b  space-y-3 pb-11 ">
-          <button className="my-3 flex jusitfy-start items-center w-full  space-x-6 focus:outline-none text-white focus:text-indigo-400 hover:bg-  rounded ">
-            <Squares2X2Icon className="h-6" />
-            <p className="text-base leading-4 ">Dashboard</p>
-          </button>
-          <button className="my-3 flex jusitfy-start items-center w-full  space-x-6 focus:outline-none text-white focus:text-indigo-400   rounded ">
-            <UserIcon className="h-6" />
-            <p className="text-base leading-4 ">My Profile</p>
-          </button>
-          <button className="my-3 flex jusitfy-start items-center w-full  space-x-6 focus:outline-none text-white focus:text-indigo-400   rounded ">
-            <UserIcon className="h-6" />
-            <p className="text-base leading-4 ">Manage Posts</p>
-          </button>
-          <button className="my-3 flex jusitfy-start items-center w-full  space-x-6 focus:outline-none text-white focus:text-indigo-400   rounded ">
-            <ArrowRightOnRectangleIcon className="h-6" />
-            <p className="text-base leading-4 ">Sign Out</p>
-          </button>
-        </div>
-
-        <div className="flex flex-col justify-between items-center h-full pb-6   px-6 mt-60  w-full  space-y-32 ">
-          <div className=" flex justify-between items-center w-full">
-            <div className="justify-center items-center ">
-              <div>
-                <img
-                  className="rounded-full h-11"
-                  src={photoURL}
-                  alt="avatar"
-                />
-              </div>
-              <div className="flex justify-start flex-col items-start mt-4">
-                <p className="cursor-pointer text-sm leading-5 text-white">
-                  {displayName}
-                </p>
-                <p className="cursor-pointer text-xs leading-3 text-gray-300">
-                  {email}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <MyProfile />
     </div>
   );
 }
+
+export default Profile;

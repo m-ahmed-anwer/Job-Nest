@@ -3,14 +3,14 @@ import React from "react";
 function Steps() {
   return (
     <div>
-      <h2 class="sr-only">Steps</h2>
+      <h2 className="sr-only">Steps</h2>
 
-      <div class="after:mt-4 after:block after:h-1 after:w-full after:rounded-lg after:bg-gray-200">
-        <ol class="grid grid-cols-3 text-sm font-medium text-gray-500">
-          <li class="relative flex justify-start text-blue-600">
-            <span class="absolute -bottom-[1.75rem] start-0 rounded-full bg-blue-600 text-white">
+      <div className="after:mt-4 after:block after:h-1 after:w-full after:rounded-lg after:bg-gray-200">
+        <ol className="grid grid-cols-3 text-sm font-medium text-gray-500">
+          <li className="relative flex justify-start text-blue-600">
+            <span className="absolute -bottom-[1.75rem] start-0 rounded-full bg-blue-600 text-white">
               <svg
-                class="h-5 w-5"
+                className="h-5 w-5"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
                 fill="currentColor"
@@ -23,10 +23,10 @@ function Steps() {
               </svg>
             </span>
 
-            <span class="hidden sm:block"> Details </span>
+            <span className="hidden sm:block"> Details </span>
 
             <svg
-              class="h-6 w-6 sm:hidden"
+              className="h-6 w-6 sm:hidden"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -41,10 +41,10 @@ function Steps() {
             </svg>
           </li>
 
-          <li class="relative flex justify-center text-blue-600">
-            <span class="absolute -bottom-[1.75rem] left-1/2 -translate-x-1/2 rounded-full bg-blue-600 text-white">
+          <li className="relative flex justify-center text-blue-600">
+            <span className="absolute -bottom-[1.75rem] left-1/2 -translate-x-1/2 rounded-full bg-blue-600 text-white">
               <svg
-                class="h-5 w-5"
+                className="h-5 w-5"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
                 fill="currentColor"
@@ -57,10 +57,10 @@ function Steps() {
               </svg>
             </span>
 
-            <span class="hidden sm:block"> Address </span>
+            <span className="hidden sm:block"> Address </span>
 
             <svg
-              class="mx-auto h-6 w-6 sm:hidden"
+              className="mx-auto h-6 w-6 sm:hidden"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -80,10 +80,10 @@ function Steps() {
             </svg>
           </li>
 
-          <li class="relative flex justify-end">
-            <span class="absolute -bottom-[1.75rem] end-0 rounded-full bg-gray-600 text-white">
+          <li className="relative flex justify-end">
+            <span className="absolute -bottom-[1.75rem] end-0 rounded-full bg-gray-600 text-white">
               <svg
-                class="h-5 w-5"
+                className="h-5 w-5"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
                 fill="currentColor"
@@ -96,10 +96,10 @@ function Steps() {
               </svg>
             </span>
 
-            <span class="hidden sm:block"> Payment </span>
+            <span className="hidden sm:block"> Payment </span>
 
             <svg
-              class="h-6 w-6 sm:hidden"
+              className="h-6 w-6 sm:hidden"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"

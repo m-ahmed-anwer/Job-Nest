@@ -103,6 +103,7 @@ function Sign() {
       setError({ ...error, validPassword: false });
       return;
     }
+
     setIsLoading(true);
 
     try {

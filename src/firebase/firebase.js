@@ -15,6 +15,8 @@ import {
   collection,
   addDoc,
   getDocs,
+  query,
+  where,
 } from "firebase/firestore";
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -94,6 +96,24 @@ export const createUserDocumentFromAuth = async (userAuth, addtional) => {
   }
 
   return userDocRef;
+};
+export const getCompanyUsers = async () => {
+  try {
+    const usersCollectionRef = collection(db, "users");
+    const querySnapshot = await getDocs(
+      query(usersCollectionRef, where("category", "==", "company"))
+    );
+
+    const companyUsers = [];
+    querySnapshot.forEach((doc) => {
+      companyUsers.push({ id: doc.id, ...doc.data() });
+    });
+
+    return companyUsers;
+  } catch (error) {
+    console.error("Error fetching company users:", error);
+    return [];
+  }
 };
 
 export const getUserDocument = async (userAuth) => {

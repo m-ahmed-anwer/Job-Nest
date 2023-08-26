@@ -5,6 +5,7 @@ import { UserDetailsContext } from "../../context/user-details";
 import { postJob } from "../../firebase/firebase";
 import Loading from "../../components/alert/loading";
 import Modal from "../../components/alert/dialog-modal";
+import { UserContext } from "../../context/user-context";
 
 const formFeild = {
   title: "",
@@ -45,6 +46,7 @@ function JobPost() {
   const [error, setError] = useState(check);
   const [buttonMesage, setButtonMesage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const { currentUser } = useContext(UserContext);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -107,6 +109,15 @@ function JobPost() {
       upward();
       return;
     }
+    if (!currentUser) {
+      setOpen(true);
+      setMessage("Please Login to Post a Job");
+      setButtonMesage("OK");
+      setErrorMessage("error");
+      setData(formFeild);
+      return;
+    }
+
     setIsLoading(true);
     setError(check);
 
