@@ -1,14 +1,8 @@
 import { Fragment, useEffect, useState } from "react";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import SingleJob, { Job } from "../../components/jobs/single-job";
-import {
-  ChevronDownIcon,
-  FunnelIcon,
-  MinusIcon,
-  PlusIcon,
-  Squares2X2Icon,
-} from "@heroicons/react/20/solid";
+
+import { FunnelIcon, MinusIcon, PlusIcon } from "@heroicons/react/20/solid";
 
 const subCategories = [
   { name: "Totes", href: "#" },
@@ -287,10 +281,7 @@ function Companies() {
               </form>
 
               {/* Product grid */}
-              <div className="lg:col-span-3">
-                <SingleJob id={1} />
-                <SingleJob />
-              </div>
+              <div className="lg:col-span-3"></div>
             </div>
           </section>
         </main>

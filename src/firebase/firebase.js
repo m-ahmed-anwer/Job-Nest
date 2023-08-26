@@ -7,7 +7,15 @@ import {
   sendEmailVerification,
   updateProfile,
 } from "firebase/auth";
-import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  collection,
+  addDoc,
+  getDocs,
+} from "firebase/firestore";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -86,4 +94,55 @@ export const createUserDocumentFromAuth = async (userAuth, addtional) => {
   }
 
   return userDocRef;
+};
+
+export const getUserDocument = async (userAuth) => {
+  if (!userAuth) return null;
+
+  const userDocRef = doc(db, "users", userAuth.uid);
+  const userSnapshot = await getDoc(userDocRef);
+
+  if (userSnapshot.exists()) {
+    const userData = userSnapshot.data();
+    return userData;
+  }
+
+  return null;
+};
+
+export const postJob = async (userAuth, jobData) => {
+  if (!userAuth) return;
+  try {
+    const jobsCollectionRef = collection(db, "jobs");
+
+    // Add the job data to the "jobs" collection
+    const newJobDocRef = await addDoc(jobsCollectionRef, {
+      job: jobData,
+      company: userAuth,
+    });
+
+    return newJobDocRef;
+  } catch (error) {
+    console.log("Error creating the job", error.message);
+    return null;
+  }
+};
+
+export const getJob = async () => {
+  const jobsCollectionRef = collection(db, "jobs");
+
+  try {
+    const querySnapshot = await getDocs(jobsCollectionRef);
+
+    const jobs = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      job: doc.data().job,
+      company: doc.data().company,
+    }));
+
+    return jobs;
+  } catch (error) {
+    console.log("Error fetching jobs", error.message);
+    return null;
+  }
 };

@@ -184,7 +184,6 @@ function Sign() {
                   id="FirstName"
                   onChange={handleChange}
                   value={data.first_name}
-                  onKey
                   placeholder="Byron"
                   name="first_name"
                   className={`${
@@ -193,7 +192,7 @@ function Sign() {
                 />
                 {!error.first_name && (
                   <p class="text-red-500 text-xs italic">
-                    Please fill out this field.
+                    Please fill this field.
                   </p>
                 )}
               </div>

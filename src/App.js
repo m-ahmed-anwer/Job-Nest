@@ -12,6 +12,7 @@ import Companies from "./routes/companies/companies";
 import { useContext } from "react";
 import { UserContext } from "./context/user-context";
 import Settings from "./components/settings/settings";
+import Profile from "./routes/profile/profile";
 
 function App() {
   const { currentUser } = useContext(UserContext);
@@ -22,6 +23,7 @@ function App() {
         <Route path="/jobs" element={<Jobs />} />
         <Route path="/companies" element={<Companies />} />
         <Route path="/about" element={<Jobs />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/service" element={<Jobs />} />
         <Route path="/settings" element={<Settings />} />
         <Route

@@ -1,14 +1,16 @@
 import { Fragment, useEffect, useState } from "react";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import SingleJob, { Job } from "../../components/jobs/single-job";
+
 import {
   ChevronDownIcon,
   FunnelIcon,
   MinusIcon,
   PlusIcon,
-  Squares2X2Icon,
 } from "@heroicons/react/20/solid";
+import { getJob } from "../../firebase/firebase";
+import SingleJob from "../../components/jobs/single-job";
+import LoadingJob from "../../components/loading-job/Loading-job";
 
 const sortOptions = [
   { name: "Most Popular", href: "#", current: true },
@@ -67,8 +69,19 @@ function classNames(...classes) {
 }
 
 function Jobs() {
+  const [jobs, setJobs] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     window.scrollTo(0, 0);
+    const fetchJobs = async () => {
+      setIsLoading(true);
+      const jobsData = await getJob();
+      setJobs(jobsData);
+      setIsLoading(false);
+    };
+
+    fetchJobs();
   }, []);
 
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
@@ -203,7 +216,7 @@ function Jobs() {
         <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-10">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900">
-              New Arrivals
+              Recent Jobs
             </h1>
 
             <div className="flex items-center">
@@ -344,8 +357,23 @@ function Jobs() {
 
               {/* Product grid */}
               <div className="lg:col-span-3">
-                <SingleJob id={1} />
-                <SingleJob />
+                {isLoading ? (
+                  <>
+                    <LoadingJob />
+                    <LoadingJob />
+                    <LoadingJob />
+                  </>
+                ) : (
+                  jobs.map((doc) => {
+                    return (
+                      <SingleJob
+                        job={doc.job}
+                        company={doc.company}
+                        key={doc.id}
+                      />
+                    );
+                  })
+                )}
               </div>
             </div>
           </section>
