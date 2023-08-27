@@ -204,10 +204,11 @@ function Jobs() {
               Recent Jobs
             </h1>
 
+            {/** this is the part where sort comes front on profile dropdown */}
             <div className="flex items-center">
-              <Menu as="div" className="inline-block text-left">
+              <Menu as="div" className="inline-block text-left relative">
                 <div>
-                  <Menu.Button className="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
+                  <Menu.Button className="group inline-flex justify-center  text-sm font-medium text-gray-700 hover:text-gray-900">
                     Sort
                     <ChevronDownIcon
                       className="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
