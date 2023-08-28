@@ -66,7 +66,13 @@ function Navbar() {
         confirm={"signout"}
       />
 
-      <nav className=" bg-gray-50 border-gray-200 dark:bg-gray-900 py-3">
+      <nav
+        className="  border-gray-200 dark:bg-gray-900 py-3 px-2 rounded-b-3xl"
+        style={{
+          background:
+            "linear-gradient(0deg, rgba(246,251,255,1) 0%, rgba(230,230,230,1) 100%)",
+        }}
+      >
         <div className="backdrop-blur-sm max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
           <Link to={"/"} className="flex items-center" onClick={close}>
             <img src={image} className="h-8 mr-3" alt="Job Nest Logo" />
@@ -160,7 +166,7 @@ function Navbar() {
                     onClick={close}
                     to={"/login"}
                     className={`${
-                      location.pathname !== "/login" && "hover:bg-gray-100"
+                      location.pathname !== "/login" && "hover:bg-gray-50"
                     }  ${
                       location.pathname === "/login" &&
                       "bg-blue-700 text-white dark:bg-blue-700 dark:text-white hover:bg-blue-600"
@@ -172,7 +178,7 @@ function Navbar() {
                     onClick={close}
                     to={"/signup"}
                     className={`${
-                      location.pathname === "/login" && "hover:bg-gray-100"
+                      location.pathname === "/login" && "hover:bg-gray-50"
                     } 
                   ${
                     location.pathname !== "/login" &&
@@ -204,7 +210,7 @@ function Navbar() {
             } justify-between  w-full md:flex md:w-auto md:order-1`}
             id="navbar-user"
           >
-            <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 max-md:bg-white  dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+            <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg  md:flex-row md:space-x-8 md:mt-0 md:border-0 max-md:bg-white ">
               {data.map(({ link, title }) => {
                 return (
                   <li>

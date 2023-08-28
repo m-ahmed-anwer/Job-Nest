@@ -7,7 +7,7 @@ function Outlayer() {
   return (
     <Fragment>
       <Navbar />
-      <div className="flex flex-col mt-5 mb-5" style={{ minHeight: "500px" }}>
+      <div className="flex flex-col " style={{ minHeight: "500px" }}>
         <Outlet />
       </div>
       <Footer />
