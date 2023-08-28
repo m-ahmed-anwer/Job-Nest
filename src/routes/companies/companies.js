@@ -3,7 +3,7 @@ import { Dialog, Disclosure, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
 import { FunnelIcon, MinusIcon, PlusIcon } from "@heroicons/react/20/solid";
-import Company from "./company";
+import Company from "../../components/company/company";
 import { getCompanyUsers } from "../../firebase/firebase";
 
 const filters = [
@@ -46,6 +46,7 @@ const filters = [
 
 function Companies() {
   const [companies, setCompanies] = useState([]);
+
   useEffect(() => {
     window.scrollTo(0, 0);
     const fetchCompanies = async () => {
@@ -59,7 +60,7 @@ function Companies() {
     };
 
     fetchCompanies();
-  }, []);
+  });
 
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 

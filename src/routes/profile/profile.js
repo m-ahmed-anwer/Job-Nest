@@ -1,5 +1,5 @@
 import { useState } from "react";
-import MyProfile from "./myProfile";
+import MyProfile from "../../components/profile/myProfile";
 import { Cog8ToothIcon, UserPlusIcon } from "@heroicons/react/24/outline";
 
 function Profile() {

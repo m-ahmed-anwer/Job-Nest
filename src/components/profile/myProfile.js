@@ -5,7 +5,7 @@ function MyProfile() {
     <>
       <section class=" py-1 bg-blueGray-50">
         <div class="w-full lg:w-8/12 px-4 mx-auto mt-6">
-          <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-0">
+          <div class=" flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-0">
             <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
               <form>
                 <h6 class="text-blueGray-400 text-md mt-3 mb-6  uppercase">

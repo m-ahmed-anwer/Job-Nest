@@ -1,12 +1,12 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import "./App.css";
-import Home from "./routes/home/home.component";
+import Home from "./components/home/home.component";
 import Jobs from "./routes/jobs/jobs.component";
 import Login from "./routes/login/login.component";
 import Signup from "./routes/signup/signup.component";
 import ContactUs from "./components/contact-us/contact-us";
 import NotFound from "./components/404/NotFound";
-import Outlayer from "./components/home/home.page";
+import Outlayer from "./routes/home/home.page";
 import JobPost from "./routes/job-post/job-post";
 import Companies from "./routes/companies/companies";
 import { useContext, useEffect } from "react";

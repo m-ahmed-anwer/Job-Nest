@@ -1,7 +1,8 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Company({ item }) {
-  const {  displayName, email } = item;
+  const { displayName, email } = item;
   return (
     <div>
       {" "}
@@ -17,12 +18,9 @@ export default function Company({ item }) {
           </button>
         </div>
         <div className="py-5 px-4 border-t text-right">
-          <a
-            href="javascript:void(0)"
-            className="text-indigo-600 hover:text-indigo-500 text-sm font-medium"
-          >
+          <Link className="text-indigo-600 hover:text-indigo-500 text-sm font-medium">
             View company
-          </a>
+          </Link>
         </div>
       </li>
     </div>
