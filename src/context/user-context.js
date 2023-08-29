@@ -1,6 +1,5 @@
 import { createContext, useEffect, useState } from "react";
 import { getAuth } from "firebase/auth";
-import { createUserDocumentFromAuth } from "../firebase/firebase";
 
 export const UserContext = createContext({
   currentUser: null,
@@ -14,8 +13,6 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = getAuth().onAuthStateChanged(async (user) => {
       if (user) {
-        await createUserDocumentFromAuth(user);
-        // Check if user's email is verified before setting the currentUser state
         if (user.emailVerified) {
           setCurrentUser(user);
         }
@@ -26,5 +23,6 @@ export const UserProvider = ({ children }) => {
 
     return unsubscribe;
   }, []);
+
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };

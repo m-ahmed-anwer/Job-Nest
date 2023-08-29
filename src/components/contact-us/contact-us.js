@@ -4,7 +4,14 @@ import {
   MapPinIcon,
   PhoneIcon,
 } from "@heroicons/react/24/outline";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import Modal from "../alert/dialog-modal";
+
+const formFeild = {
+  name: "",
+  email: "",
+  message: "",
+};
 
 function ContactUs() {
   useEffect(() => {
@@ -14,20 +21,43 @@ function ContactUs() {
   const contactMethods = [
     {
       icon: <EnvelopeIcon className="w-6 h-6" />,
-      contact: "Support@example.com",
+      contact: "ahmedanwer0094@gmail.com",
     },
     {
       icon: <PhoneIcon className="w-6 h-6" />,
-      contact: "+1 (555) 000-000",
+      contact: "+94 76 824 2884",
     },
     {
       icon: <MapPinIcon className="w-6 h-6" />,
-      contact: "Mountain View, California, United State.",
+      contact: "Kurunegala, North Western, Sri Lanka.",
     },
   ];
 
+  const [data, setData] = useState(formFeild);
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setData({ [name]: value });
+  };
+
+  const submitHandler = (event) => {
+    event.preventDefault();
+    setData(formFeild);
+    setOpen(true);
+  };
+
+  const [open, setOpen] = useState(false);
+
   return (
     <main className="py-14">
+      <Modal
+        message={"Thanks for contacting us! We'll reach out soon  😊"}
+        open={open}
+        setOpen={setOpen}
+        error={"success"}
+        buttonMessage={"Continue"}
+      />
+
       <div className="max-w-screen-xl mx-auto px-4 text-gray-600 md:px-8">
         <div className="max-w-lg mx-auto gap-12 justify-between lg:flex lg:max-w-none">
           <div className="max-w-lg space-y-3">
@@ -52,12 +82,14 @@ function ContactUs() {
             </div>
           </div>
           <div className="flex-1 mt-12 sm:max-w-lg lg:max-w-md">
-            <form onSubmit={(e) => e.preventDefault()} className="space-y-5">
+            <form onSubmit={submitHandler} className="space-y-5">
               <div>
                 <label className="font-medium">Full name</label>
                 <input
                   type="text"
                   required
+                  onChange={handleChange}
+                  value={data.name}
                   className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-blue-600 shadow-sm rounded-lg"
                 />
               </div>
@@ -65,14 +97,8 @@ function ContactUs() {
                 <label className="font-medium">Email</label>
                 <input
                   type="email"
-                  required
-                  className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-blue-600 shadow-sm rounded-lg"
-                />
-              </div>
-              <div>
-                <label className="font-medium">Company</label>
-                <input
-                  type="text"
+                  onChange={handleChange}
+                  value={data.email}
                   required
                   className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-blue-600 shadow-sm rounded-lg"
                 />
@@ -81,6 +107,8 @@ function ContactUs() {
                 <label className="font-medium">Message</label>
                 <textarea
                   required
+                  onChange={handleChange}
+                  value={data.message}
                   className="w-full mt-2 h-36 px-3 py-2 resize-none appearance-none bg-transparent outline-none border focus:border-blue-600 shadow-sm rounded-lg"
                 ></textarea>
               </div>

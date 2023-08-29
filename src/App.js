@@ -13,6 +13,7 @@ import { useContext, useEffect } from "react";
 import { UserContext } from "./context/user-context";
 import Settings from "./components/settings/settings";
 import Profile from "./routes/profile/profile";
+import ForgetPassword from "./routes/reset-password/forget.password";
 
 function App() {
   const { currentUser } = useContext(UserContext);
@@ -35,6 +36,10 @@ function App() {
         <Route
           path="/login"
           element={currentUser ? <Navigate to="/" /> : <Login />}
+        />
+        <Route
+          path="/forget-password"
+          element={currentUser ? <Navigate to="/" /> : <ForgetPassword />}
         />
         <Route
           path="/signup"

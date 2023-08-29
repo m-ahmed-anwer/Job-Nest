@@ -7,8 +7,8 @@ import {
   sendEmailVerification,
   updateProfile,
   GoogleAuthProvider,
-  signInWithRedirect,
   signInWithPopup,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import {
   getFirestore,
@@ -45,26 +45,27 @@ provider.setCustomParameters({
   prompt: "select_account",
 });
 
-export const signInWithGooglePopup = async () => {
+export const signInWithGooglePopup = async (additional) => {
   try {
-    await signInWithPopup(auth, provider);
+    const userCredential = await signInWithPopup(auth, provider);
+    await createUserDocumentFromAuth(userCredential.user, additional);
+
+    return userCredential;
   } catch (error) {
     console.log(error.message);
   }
 };
-export const signInWithGoogleRedirect = async () => {
-  try {
-    await signInWithRedirect(auth, provider);
-  } catch (error) {
-    console.log(error.message);
-  }
+
+export const forgetPassword = async (email) => {
+  await sendPasswordResetEmail(auth, email);
 };
 
 export const createAuthUserWithEmailAndPassword = async (
   email,
   password,
   displayName,
-  photoURL
+  photoURL,
+  additional
 ) => {
   if (!email || !password) return;
 
@@ -78,6 +79,8 @@ export const createAuthUserWithEmailAndPassword = async (
     displayName: displayName,
     photoURL: photoURL,
   });
+
+  await createUserDocumentFromAuth(userCredential.user, additional);
 
   await sendEmailVerification(userCredential.user);
 
@@ -104,11 +107,13 @@ export const createUserDocumentFromAuth = async (userAuth, addtional) => {
   const userSnapshot = await getDoc(userDocRef);
 
   if (!userSnapshot.exists()) {
-    const { displayName, email } = userAuth;
+    const { displayName, email, photoURL } = userAuth;
     const createdAt = new Date();
+
     try {
       await setDoc(userDocRef, {
         displayName,
+        photoURL,
         email,
         createdAt,
         ...addtional,
@@ -120,6 +125,7 @@ export const createUserDocumentFromAuth = async (userAuth, addtional) => {
 
   return userDocRef;
 };
+
 export const getCompanyUsers = async () => {
   try {
     const usersCollectionRef = collection(db, "users");

@@ -2,23 +2,22 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import Modal from "../../components/alert/dialog-modal";
-import {
-  createAuthUserWithEmailAndPassword,
-  createUserDocumentFromAuth,
-  signInWithGoogleRedirect,
-} from "../../firebase/firebase";
+import { createAuthUserWithEmailAndPassword } from "../../firebase/firebase";
 import Loading from "../../components/alert/loading";
 
 const formFeild = {
+  company: "",
   first_name: "",
   last_name: "",
   email: "",
   phone: "",
   password: "",
+
   password_confirmation: "",
   category: "",
 };
 const check = {
+  company: true,
   first_name: true,
   last_name: true,
   email: true,
@@ -74,14 +73,22 @@ function Sign() {
       password,
       password_confirmation,
       category,
+      company,
     } = data;
 
-    if (!first_name) {
-      setError({ ...error, first_name: false });
-      return;
+    if (category !== "company") {
+      if (!first_name) {
+        setError({ ...error, first_name: false });
+        return;
+      }
+      if (!last_name) {
+        setError({ ...error, last_name: false });
+        return;
+      }
     }
-    if (!last_name) {
-      setError({ ...error, last_name: false });
+
+    if (category === "company" && !company) {
+      setError({ ...error, company: false });
       return;
     }
     if (!isEmailValid(email)) {
@@ -107,27 +114,30 @@ function Sign() {
 
     setIsLoading(true);
 
+    const displayName = () => {
+      if (category === "company") {
+        return company;
+      } else {
+        return first_name.trim() + " " + last_name.trim();
+      }
+    };
+
+    const additional = { userPhone: phone, category: category };
     try {
-      const displayName = first_name.trim() + " " + last_name.trim();
-      const { user } = await createAuthUserWithEmailAndPassword(
+      await createAuthUserWithEmailAndPassword(
         email,
         password,
-        displayName,
-        imageURL
+        displayName(),
+        imageURL,
+        additional
       );
-
-      await createUserDocumentFromAuth(user, {
-        firstName: first_name,
-        lastName: last_name,
-        userPhone: phone,
-        photoURL: imageURL,
-        category: category,
-      });
 
       setData(formFeild);
       setError(check);
       setIsLoading(false);
-      navigate("/login", { state: { signupSuccess: true } });
+      navigate("/login", {
+        state: { signupSuccess: true, forgetPassword: false },
+      });
     } catch (error) {
       setIsLoading(false);
       setMessage(error.message);
@@ -137,18 +147,6 @@ function Sign() {
       setData({ ...data, password: "", password_confirmation: "" });
       setError(check);
     }
-  };
-
-  const googleSignUp = async () => {
-    setIsLoading(true);
-    try {
-      await signInWithGoogleRedirect();
-      setIsLoading(false);
-    } catch (error) {
-      console.log(error.message);
-      setIsLoading(false);
-    }
-    setIsLoading(false);
   };
 
   return (
@@ -182,10 +180,46 @@ function Sign() {
 
             <form
               action="#"
-              className="mt-8 grid grid-cols-6 gap-6"
+              className="mt-8 my-10 grid grid-cols-6 gap-6"
               onSubmit={handleSubmit}
             >
-              <div className="col-span-6 sm:col-span-3">
+              <div
+                className={`${
+                  data.category === "company" ? "col-span-6" : "hidden"
+                }`}
+              >
+                <label
+                  for="company"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Company Name
+                </label>
+
+                <input
+                  type="text"
+                  id="company"
+                  onChange={handleChange}
+                  value={data.company}
+                  placeholder="Byron"
+                  name="company"
+                  className={`${
+                    error.company ? "ring-gray-300" : "ring-red-500"
+                  } tracking-wide block w-full rounded-md max-sm:h-10 border-0 py-1.5 px-2 text-gray-900  ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-7 shadow-md`}
+                />
+                {!error.company && (
+                  <p class="text-red-500 text-xs italic">
+                    Please fill this field.
+                  </p>
+                )}
+              </div>
+
+              <div
+                className={`${
+                  data.category === "company"
+                    ? "hidden"
+                    : "col-span-6 sm:col-span-3"
+                }`}
+              >
                 <label
                   for="FirstName"
                   className="block text-sm font-medium text-gray-700"
@@ -211,7 +245,13 @@ function Sign() {
                 )}
               </div>
 
-              <div className="col-span-6 sm:col-span-3">
+              <div
+                className={`${
+                  data.category === "company"
+                    ? "hidden"
+                    : "col-span-6 sm:col-span-3"
+                }`}
+              >
                 <label
                   for="LastName"
                   className="block text-sm font-medium text-gray-700"
@@ -404,13 +444,13 @@ function Sign() {
               <div className="col-span-6">
                 <p className="text-sm text-gray-500">
                   By creating an account, you agree to our{" "}
-                  <a href="#" className="text-gray-700 underline">
+                  <Link className="text-gray-700 underline">
                     Terms and Conditions
-                  </a>{" "}
+                  </Link>{" "}
                   and{" "}
-                  <a href="#" className="text-gray-700 underline">
+                  <Link className="text-gray-700 underline">
                     Privacy Policy
-                  </a>
+                  </Link>
                   .
                 </p>
               </div>
@@ -431,30 +471,6 @@ function Sign() {
                 </p>
               </div>
             </form>
-            <div className="w-full flex items-center justify-between my-10 sm:my-8">
-              <hr className="w-full bg-gray-400" />
-              <p className="text-base font-medium leading-4 px-2.5 text-gray-400">
-                OR
-              </p>
-              <hr className="w-full bg-gray-400  " />
-            </div>
-
-            <button
-              aria-label="Continue with google"
-              role="button"
-              className="max-sm:w-full focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-700 py-3.5 px-4 border rounded-lg border-gray-700 flex items-center "
-              onClick={googleSignUp}
-            >
-              <img
-                class="w-6 h-6"
-                src="https://www.svgrepo.com/show/475656/google-color.svg"
-                loading="lazy"
-                alt="google logo"
-              />
-              <p className="text-base font-medium ml-4 text-gray-700">
-                Sign up with Google
-              </p>
-            </button>
           </div>
         </main>
       </div>

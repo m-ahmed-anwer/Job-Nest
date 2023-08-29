@@ -339,16 +339,18 @@ function Jobs() {
                     <LoadingJob />
                     <LoadingJob />
                   </>
+                ) : jobs.length === 0 ? (
+                  <p className="my-10 mx-11">
+                    No jobs available at the moment.
+                  </p>
                 ) : (
-                  jobs.map((doc) => {
-                    return (
-                      <SingleJob
-                        job={doc.job}
-                        company={doc.company}
-                        key={doc.id}
-                      />
-                    );
-                  })
+                  jobs.map((doc) => (
+                    <SingleJob
+                      job={doc.job}
+                      company={doc.company}
+                      key={doc.id}
+                    />
+                  ))
                 )}
               </div>
             </div>

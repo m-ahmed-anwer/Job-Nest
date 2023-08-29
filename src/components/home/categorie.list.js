@@ -75,7 +75,7 @@ function CatergoriesList() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+        <div className="grid grid-cols-2 gap-4 mx-2 sm:grid-cols-3">
           {categories.map((item) => {
             return (
               <div

@@ -56,11 +56,10 @@ function Companies() {
       } catch (error) {
         console.log(error.message);
       }
-      console.log(companies);
     };
 
     fetchCompanies();
-  });
+  }, []);
 
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
@@ -276,9 +275,15 @@ function Companies() {
                       </p>
                     </div>
                     <ul className="mt-16 grid gap-8 sm:grid-cols-1 lg:grid-cols-2">
-                      {companies.map((item) => {
-                        return <Company item={item} />;
-                      })}
+                      {companies.length === 0 ? (
+                        <p className="my-5 mx-11">
+                          No companies registered yet.
+                        </p>
+                      ) : (
+                        companies.map((item) => {
+                          return <Company item={item} />;
+                        })
+                      )}
                     </ul>
                   </div>
                 </section>

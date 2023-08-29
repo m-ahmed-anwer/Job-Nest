@@ -33,7 +33,9 @@ function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [errorCheck, setErrorCheck] = useState(check);
   const location = useLocation();
-  const signupSuccess = location.state?.signupSuccess;
+
+  const { signupSuccess, forgetPassword } = location.state;
+
   const { setCurrentUser } = useContext(UserContext);
 
   const isEmailValid = (email) => {
@@ -100,7 +102,13 @@ function Login() {
   const googleLogin = async () => {
     setIsLoading(true);
     try {
-      await signInWithGooglePopup();
+      const { user } = await signInWithGooglePopup({
+        userPhone: "",
+        category: "",
+      });
+
+      setCurrentUser(user);
+
       setIsLoading(false);
     } catch (error) {
       console.log(error.message);
@@ -111,8 +119,11 @@ function Login() {
   };
 
   const [loginOpen, setLoginOpen] = useState(false);
+  const [resetOpen, setResetOpen] = useState(false);
+
   useEffect(() => {
     setLoginOpen(signupSuccess);
+    setResetOpen(forgetPassword);
   }, [signupSuccess]);
 
   return (
@@ -124,6 +135,17 @@ function Login() {
           }
           open={loginOpen}
           setOpen={setLoginOpen}
+          error={"success"}
+          buttonMessage={"Continue"}
+        />
+      )}
+      {forgetPassword && (
+        <Modal
+          message={
+            "Please check your email for instructions and kindly follow them to reset your password."
+          }
+          open={resetOpen}
+          setOpen={setResetOpen}
           error={"success"}
           buttonMessage={"Continue"}
         />
@@ -181,12 +203,12 @@ function Login() {
                   } tracking-wide block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 max-sm:h-11  ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-7 shadow-md`}
                 />
                 {!errorCheck.email ? (
-                  <p class="text-red-500 text-xs italic">
+                  <p className="text-red-500 text-xs italic">
                     Incorrect e-mail format.
                   </p>
                 ) : (
                   !errorCheck.empty && (
-                    <p class="text-red-500 text-xs italic">Enter Email.</p>
+                    <p className="text-red-500 text-xs italic">Enter Email.</p>
                   )
                 )}
               </div>
@@ -232,7 +254,7 @@ function Login() {
                   </span>
                 </div>
                 {!errorCheck.validPassword && (
-                  <p class="text-red-500 text-xs italic">
+                  <p className="text-red-500 text-xs italic">
                     Password need to contain atleat 6 characters.
                   </p>
                 )}
@@ -256,12 +278,12 @@ function Login() {
                       </label>
                     </div>
                     <div>
-                      <a
+                      <Link
                         className="font-bold text-gray-700 text-sm underline"
-                        href="#password-request"
+                        to={"/forget-password"}
                       >
                         Forgot password
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -292,8 +314,6 @@ function Login() {
             </div>
 
             <button
-              aria-label="Continue with google"
-              role="button"
               className="max-sm:w-full focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-700 py-3.5 px-4 border rounded-lg border-gray-700 flex items-center "
               onClick={googleLogin}
             >
