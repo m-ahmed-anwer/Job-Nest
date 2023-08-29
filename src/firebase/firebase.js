@@ -130,7 +130,11 @@ export const getCompanyUsers = async () => {
   try {
     const usersCollectionRef = collection(db, "users");
     const querySnapshot = await getDocs(
-      query(usersCollectionRef, where("category", "==", "company"))
+      query(
+        usersCollectionRef,
+        where("category", "==", "company"),
+        where("emailVerified", "==", true)
+      )
     );
 
     const companyUsers = [];
@@ -140,7 +144,7 @@ export const getCompanyUsers = async () => {
 
     return companyUsers;
   } catch (error) {
-    console.error("Error fetching company users:", error);
+    console.error("Error fetching verified company users:", error);
     return [];
   }
 };
@@ -164,7 +168,6 @@ export const postJob = async (userAuth, jobData) => {
   try {
     const jobsCollectionRef = collection(db, "jobs");
 
-    // Add the job data to the "jobs" collection
     const newJobDocRef = await addDoc(jobsCollectionRef, {
       job: jobData,
       company: userAuth,

@@ -16,13 +16,14 @@ import Profile from "./routes/profile/profile";
 import ForgetPassword from "./routes/reset-password/forget.password";
 
 function App() {
-  const { currentUser } = useContext(UserContext);
+  const { currentUser, databaseUser } = useContext(UserContext);
   useEffect(() => {
     document.title = "Job Nest";
     return () => {
       document.title = "Job Nest";
     };
   }, []);
+
   return (
     <Routes>
       <Route path="/" element={<Outlayer />}>
@@ -30,9 +31,9 @@ function App() {
         <Route path="/jobs" element={<Jobs />} />
         <Route path="/companies" element={<Companies />} />
         <Route path="/about" element={<Jobs />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile" element={currentUser && <Profile />} />
         <Route path="/service" element={<Jobs />} />
-        <Route path="/settings" element={<Settings />} />
+        <Route path="/settings" element={currentUser && <Settings />} />
         <Route
           path="/login"
           element={currentUser ? <Navigate to="/" /> : <Login />}
@@ -47,7 +48,8 @@ function App() {
         />
 
         <Route path="/contact" element={<ContactUs />} />
-        <Route path="/post" element={<JobPost />} />
+        <Route path="/post" element={currentUser && <JobPost />} />
+
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

@@ -5,6 +5,7 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { FunnelIcon, MinusIcon, PlusIcon } from "@heroicons/react/20/solid";
 import Company from "../../components/company/company";
 import { getCompanyUsers } from "../../firebase/firebase";
+import LoadingCompany from "../../components/loading-company/loading.comapny";
 
 const filters = [
   {
@@ -46,16 +47,20 @@ const filters = [
 
 function Companies() {
   const [companies, setCompanies] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
+
     const fetchCompanies = async () => {
+      setIsLoading(true);
       try {
         const list = await getCompanyUsers();
         setCompanies(list);
       } catch (error) {
         console.log(error.message);
       }
+      setIsLoading(false);
     };
 
     fetchCompanies();
@@ -275,7 +280,14 @@ function Companies() {
                       </p>
                     </div>
                     <ul className="mt-16 grid gap-8 sm:grid-cols-1 lg:grid-cols-2">
-                      {companies.length === 0 ? (
+                      {isLoading ? (
+                        <>
+                          <LoadingCompany />
+                          <LoadingCompany />
+                          <LoadingCompany />
+                          <LoadingCompany />
+                        </>
+                      ) : companies.length === 0 ? (
                         <p className="my-5 mx-11">
                           No companies registered yet.
                         </p>

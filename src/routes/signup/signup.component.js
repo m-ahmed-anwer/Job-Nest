@@ -122,7 +122,11 @@ function Sign() {
       }
     };
 
-    const additional = { userPhone: phone, category: category };
+    const additional = {
+      userPhone: phone,
+      category: category,
+      emailVerified: false,
+    };
     try {
       await createAuthUserWithEmailAndPassword(
         email,
@@ -200,7 +204,7 @@ function Sign() {
                   id="company"
                   onChange={handleChange}
                   value={data.company}
-                  placeholder="Byron"
+                  placeholder="Google"
                   name="company"
                   className={`${
                     error.company ? "ring-gray-300" : "ring-red-500"

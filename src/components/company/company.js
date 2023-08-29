@@ -2,14 +2,19 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 export default function Company({ item }) {
-  const { displayName, email } = item;
+  const { displayName, email, photoURL } = item;
   return (
     <div>
       {" "}
       <li className="border rounded-lg w-full">
         <div className="flex items-start justify-between p-4">
           <div className="space-y-2">
-            {item.icon}
+            <img
+              alt="company"
+              className="w-14 h-14 rounded-full border-gray-200 border-2 my-2"
+              src={photoURL}
+            />
+
             <h4 className="text-gray-800 font-semibold">{displayName}</h4>
             <p className="text-gray-600 text-sm">{email}</p>
           </div>

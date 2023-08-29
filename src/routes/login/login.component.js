@@ -2,12 +2,14 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import {
+  db,
   signInAuthUserWithEmailAndPassword,
   signInWithGooglePopup,
 } from "../../firebase/firebase";
 import Modal from "../../components/alert/dialog-modal";
 import Loading from "../../components/alert/loading";
 import { UserContext } from "../../context/user-context";
+import { doc, updateDoc } from "firebase/firestore";
 
 const formFeild = {
   email: "",
@@ -33,8 +35,6 @@ function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [errorCheck, setErrorCheck] = useState(check);
   const location = useLocation();
-
-  const { signupSuccess, forgetPassword } = location.state;
 
   const { setCurrentUser } = useContext(UserContext);
 
@@ -83,6 +83,15 @@ function Login() {
         setData({ ...data, password: "" });
         return;
       }
+      const userDocRef = doc(db, "users", userCredential.user.uid);
+
+      try {
+        await updateDoc(userDocRef, {
+          emailVerified: true,
+        });
+      } catch (error) {
+        console.error("Error updating email verification status:", error);
+      }
 
       setCurrentUser(userCredential);
       setData(formFeild);
@@ -105,6 +114,7 @@ function Login() {
       const { user } = await signInWithGooglePopup({
         userPhone: "",
         category: "",
+        emailVerified: true,
       });
 
       setCurrentUser(user);
@@ -122,13 +132,16 @@ function Login() {
   const [resetOpen, setResetOpen] = useState(false);
 
   useEffect(() => {
-    setLoginOpen(signupSuccess);
-    setResetOpen(forgetPassword);
-  }, [signupSuccess]);
+    if (location.state) {
+      const { signupSuccess: ss, forgetPassword: fp } = location.state;
+      setLoginOpen(ss);
+      setResetOpen(fp);
+    }
+  }, [location.state]);
 
   return (
     <section className="bg-white relative">
-      {signupSuccess && (
+      {loginOpen && (
         <Modal
           message={
             "Congratulations! 🎉 Your account has been successfully created. Please verify your email."
@@ -139,7 +152,7 @@ function Login() {
           buttonMessage={"Continue"}
         />
       )}
-      {forgetPassword && (
+      {resetOpen && (
         <Modal
           message={
             "Please check your email for instructions and kindly follow them to reset your password."

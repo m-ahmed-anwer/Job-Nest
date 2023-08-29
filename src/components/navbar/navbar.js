@@ -10,7 +10,7 @@ import { auth } from "../../firebase/firebase";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 
 function Navbar() {
-  const { currentUser } = useContext(UserContext);
+  const { currentUser, databaseUser } = useContext(UserContext);
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [imageURL, setImageURL] = useState("");
@@ -46,10 +46,14 @@ function Navbar() {
       title: "Companies",
       link: "/companies",
     },
-    {
-      title: "Post Job",
-      link: "/post",
-    },
+    ...(databaseUser && databaseUser.category === "company"
+      ? [
+          {
+            title: "Post Job",
+            link: "/post",
+          },
+        ]
+      : []),
   ];
 
   const close = () => {
