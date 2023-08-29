@@ -14,6 +14,7 @@ import { UserContext } from "./context/user-context";
 import Settings from "./components/settings/settings";
 import Profile from "./routes/profile/profile";
 import ForgetPassword from "./routes/reset-password/forget.password";
+import PrivacyPolicy from "./routes/privacy/privacy.policy";
 
 function App() {
   const { currentUser, databaseUser } = useContext(UserContext);
@@ -33,6 +34,7 @@ function App() {
         <Route path="/about" element={<Jobs />} />
         <Route path="/profile" element={currentUser && <Profile />} />
         <Route path="/service" element={<Jobs />} />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/settings" element={currentUser && <Settings />} />
         <Route
           path="/login"
