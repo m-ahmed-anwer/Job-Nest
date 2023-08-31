@@ -12,9 +12,12 @@ import Companies from "./routes/companies/companies";
 import { useContext, useEffect } from "react";
 import { UserContext } from "./context/user-context";
 import Settings from "./components/settings/settings";
-import Profile from "./routes/profile/profile";
+
 import ForgetPassword from "./routes/reset-password/forget.password";
 import PrivacyPolicy from "./routes/privacy/privacy.policy";
+import ProfileRoute from "./routes/profile/profile-route";
+import SingleJob from "./components/jobs/single-job";
+import JobDescribe from "./routes/jobs/single-job/single.job.describe";
 
 function App() {
   const { currentUser, databaseUser } = useContext(UserContext);
@@ -30,9 +33,10 @@ function App() {
       <Route path="/" element={<Outlayer />}>
         <Route index element={<Home />} />
         <Route path="/jobs" element={<Jobs />} />
+        <Route path="/jobs/:jobId" element={<JobDescribe />} />
         <Route path="/companies" element={<Companies />} />
         <Route path="/about" element={<Jobs />} />
-        <Route path="/profile" element={currentUser && <Profile />} />
+        <Route path="profile/*" element={currentUser && <ProfileRoute />} />
         <Route path="/service" element={<Jobs />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/settings" element={currentUser && <Settings />} />

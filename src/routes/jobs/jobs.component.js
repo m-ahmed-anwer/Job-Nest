@@ -11,6 +11,8 @@ import {
 import { getJob } from "../../firebase/firebase";
 import SingleJob from "../../components/jobs/single-job";
 import LoadingJob from "../../components/loading-job/Loading-job";
+import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 
 const sortOptions = [
   { name: "Most Popular", href: "#", current: true },
@@ -81,7 +83,7 @@ function Jobs() {
 
     fetchJobs();
   }, []);
-
+  const navigate = useNavigate();
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   return (
@@ -345,11 +347,9 @@ function Jobs() {
                   </p>
                 ) : (
                   jobs.map((doc) => (
-                    <SingleJob
-                      job={doc.job}
-                      company={doc.company}
-                      key={doc.id}
-                    />
+                    <Link to={`/jobs/${doc.id}`} key={doc.id}>
+                      <SingleJob job={doc.job} company={doc.company} />
+                    </Link>
                   ))
                 )}
               </div>

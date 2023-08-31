@@ -198,3 +198,20 @@ export const getJob = async () => {
     return null;
   }
 };
+
+export const getJobById = async (jobId) => {
+  try {
+    const jobDocRef = doc(db, "jobs", jobId);
+    const jobDocSnapshot = await getDoc(jobDocRef);
+
+    if (jobDocSnapshot.exists()) {
+      return jobDocSnapshot.data();
+    } else {
+      console.log("Job not found");
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching job details:", error);
+    return null;
+  }
+};

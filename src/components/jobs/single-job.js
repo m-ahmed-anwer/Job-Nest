@@ -1,6 +1,6 @@
 import React from "react";
 
-function SingleJob({ job, company, isLoading }) {
+function SingleJob({ job, company }) {
   const { title, description, applicationDeadline } = job;
   const { displayName, photoURL } = company;
   return (
@@ -22,7 +22,7 @@ function SingleJob({ job, company, isLoading }) {
 
         <div>
           <img
-            alt="Paul Clapton"
+            alt="Job"
             src={photoURL}
             className="h-16 w-16 rounded-lg object-cover shadow-sm"
           />
