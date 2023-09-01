@@ -16,6 +16,7 @@ const formFeild = {
   salary: "",
   applicationDeadline: "",
   createdAt: "",
+  searchKeywords: [],
 };
 const check = {
   title: true,
@@ -127,6 +128,12 @@ function JobPost() {
       .split("\n")
       .filter((item) => item.trim() !== "");
     data.responsibilities = responsibilityArray;
+    const words = data.title.split(" ");
+    const keywords = words.map((word) => {
+      return word.toLowerCase().replace(/[^a-z0-9]/g, "");
+    });
+
+    data.searchKeywords = keywords;
 
     setIsLoading(true);
     setError(check);

@@ -8,7 +8,7 @@ import {
   MinusIcon,
   PlusIcon,
 } from "@heroicons/react/20/solid";
-import { getJob } from "../../firebase/firebase";
+import { getJob, getJobByTitle } from "../../firebase/firebase";
 import SingleJob from "../../components/jobs/single-job";
 import LoadingJob from "../../components/loading-job/Loading-job";
 import { Link } from "react-router-dom";
@@ -62,7 +62,10 @@ function classNames(...classes) {
 
 function Jobs() {
   const [jobs, setJobs] = useState([]);
+  const [initialJobs, setInitialJobs] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const { search, setSearch } = useContext(SearchContext);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -71,28 +74,36 @@ function Jobs() {
       try {
         const jobsData = await getJob();
         setJobs(jobsData);
+        setInitialJobs(jobsData);
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
         console.log(error.message);
       }
     };
-
     fetchJobs();
+    loadDetail();
   }, []);
 
-  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
-  const { search, setSearch } = useContext(SearchContext);
+  const loadDetail = async () => {
+    if (!search) {
+      setJobs(initialJobs);
+      return;
+    }
+    setIsLoading(true);
+    const jobss = await getJobByTitle(search);
+    setJobs(jobss);
+    setIsLoading(false);
+  };
 
-  const submitHandler = (event) => {
+  const filterHandler = (event) => {
     event.preventDefault();
     alert("submit");
   };
 
-  const SearchSubmitHandler = (event) => {
+  const SearchSubmitHandler = async (event) => {
     event.preventDefault();
-    alert(search);
-    setSearch("");
+    loadDetail();
   };
 
   const handleChange = (event) => {
@@ -163,9 +174,7 @@ function Jobs() {
                   </div>
 
                   {/* Filters */}
-                  <form className="mt-4" onSubmit={submitHandler}>
-                    <h3 className="sr-only">Categories</h3>
-
+                  <form className="mt-4" onSubmit={filterHandler}>
                     {filters.map((section) => (
                       <Disclosure
                         as="div"
@@ -309,7 +318,7 @@ function Jobs() {
 
             <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
               {/* Filters */}
-              <form className="hidden lg:block" onSubmit={submitHandler}>
+              <form className="hidden lg:block" onSubmit={filterHandler}>
                 <h3 className="sr-only">Categories</h3>
 
                 {filters.map((section) => (
@@ -388,9 +397,7 @@ function Jobs() {
                     <LoadingJob />
                   </>
                 ) : jobs.length === 0 ? (
-                  <p className="my-10 mx-11">
-                    No jobs available at the moment.
-                  </p>
+                  <p className="my-10 mx-11">No jobs available</p>
                 ) : (
                   jobs.map((doc) => (
                     <Link to={`/jobs/${doc.id}`} key={doc.id}>

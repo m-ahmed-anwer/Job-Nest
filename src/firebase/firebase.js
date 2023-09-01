@@ -215,3 +215,29 @@ export const getJobById = async (jobId) => {
     return null;
   }
 };
+
+export const getJobByTitle = async (jobTitle) => {
+  const jobsCollectionRef = collection(db, "jobs");
+
+  try {
+    const lowercaseJobTitle = jobTitle.toLowerCase();
+
+    const q = query(
+      jobsCollectionRef,
+      where("job.searchKeywords", "array-contains", lowercaseJobTitle)
+    );
+
+    const querySnapshot = await getDocs(q);
+
+    const jobs = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      job: doc.data().job,
+      company: doc.data().company,
+    }));
+
+    return jobs;
+  } catch (error) {
+    console.log("Error fetching jobs", error.message);
+    return null;
+  }
+};
