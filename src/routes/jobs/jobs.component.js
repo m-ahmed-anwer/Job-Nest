@@ -15,46 +15,43 @@ import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 
 const sortOptions = [
-  { name: "Most Popular", href: "#", current: true },
+  { name: "Default", href: "#", current: true },
   { name: "Best Rating", href: "#", current: false },
   { name: "Newest", href: "#", current: false },
-  { name: "Price: Low to High", href: "#", current: false },
-  { name: "Price: High to Low", href: "#", current: false },
+  { name: "Salary: Low to High", href: "#", current: false },
+  { name: "Salary: High to Low", href: "#", current: false },
 ];
 const filters = [
   {
-    id: "color",
-    name: "Color",
+    id: "type",
+    name: "Time",
     options: [
-      { value: "white", label: "White", checked: false },
-      { value: "beige", label: "Beige", checked: false },
-      { value: "blue", label: "Blue", checked: true },
-      { value: "brown", label: "Brown", checked: false },
-      { value: "green", label: "Green", checked: false },
-      { value: "purple", label: "Purple", checked: false },
+      { value: "full-time", label: "Full-Time", checked: false },
+      { value: "part-time", label: "Part-Time", checked: false },
+      { value: "contract", label: "Contract", checked: false },
     ],
   },
   {
-    id: "category",
-    name: "Category",
+    id: "experienceLevel",
+    name: "Level",
     options: [
-      { value: "new-arrivals", label: "New Arrivals", checked: false },
-      { value: "sale", label: "Sale", checked: false },
-      { value: "travel", label: "Travel", checked: true },
-      { value: "organization", label: "Organization", checked: false },
-      { value: "accessories", label: "Accessories", checked: false },
+      { value: "entry-level", label: "Entry-Level", checked: false },
+      { value: "mid-level", label: "Mid-Level", checked: false },
+      { value: "senior", label: "Senior", checked: false },
     ],
   },
   {
-    id: "size",
-    name: "Size",
+    id: "salary",
+    name: "Salary Range",
     options: [
-      { value: "2l", label: "2L", checked: false },
-      { value: "6l", label: "6L", checked: false },
-      { value: "12l", label: "12L", checked: false },
-      { value: "18l", label: "18L", checked: false },
-      { value: "20l", label: "20L", checked: false },
-      { value: "40l", label: "40L", checked: true },
+      { value: "<50k", label: "<50k", checked: false },
+      { value: "50-70k", label: "50-70k", checked: false },
+      { value: "70-100k", label: "70-100k", checked: false },
+      { value: "100-150k", label: "100-150k", checked: false },
+      { value: "150-200k", label: "150-200k", checked: false },
+      { value: "200-300k", label: "200-300k", checked: false },
+      { value: "300-500k", label: "300-500k", checked: false },
+      { value: "500k+", label: "500k+", checked: false },
     ],
   },
 ];
@@ -85,6 +82,10 @@ function Jobs() {
   }, []);
   const navigate = useNavigate();
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+
+  const submitHandler = () => {
+    alert("submit");
+  };
 
   return (
     <div className="bg-white">
@@ -133,7 +134,7 @@ function Jobs() {
                   </div>
 
                   {/* Filters */}
-                  <form className="mt-4">
+                  <form className="mt-4" onSubmit={submitHandler}>
                     <h3 className="sr-only">Categories</h3>
 
                     {filters.map((section) => (
@@ -193,6 +194,14 @@ function Jobs() {
                         )}
                       </Disclosure>
                     ))}
+                    <div className="flex flex-col items-center justify-center">
+                      <button
+                        type="submit"
+                        className="mt-8  w-1/2 items-center justify-center rounded-md border border-transparent bg-blue-600  py-1 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                      >
+                        Filter
+                      </button>
+                    </div>
                   </form>
                 </Dialog.Panel>
               </Transition.Child>
@@ -271,7 +280,7 @@ function Jobs() {
 
             <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
               {/* Filters */}
-              <form className="hidden lg:block">
+              <form className="hidden lg:block" onSubmit={submitHandler}>
                 <h3 className="sr-only">Categories</h3>
 
                 {filters.map((section) => (
@@ -331,6 +340,14 @@ function Jobs() {
                     )}
                   </Disclosure>
                 ))}
+                <div className="flex flex-col items-center justify-center">
+                  <button
+                    type="submit"
+                    className="mt-8  w-full items-center justify-center rounded-md border border-transparent bg-blue-600  py-1 text-base  text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                  >
+                    Filter Results
+                  </button>
+                </div>
               </form>
 
               {/* Product grid */}

@@ -11,8 +11,8 @@ const formFeild = {
   description: "",
   type: "",
   experienceLevel: "",
-  requirements: "",
-  responsibilities: "",
+  requirements: [],
+  responsibilities: [],
   salary: "",
   applicationDeadline: "",
 };
@@ -46,6 +46,7 @@ function JobPost() {
   const [buttonMesage, setButtonMesage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const { currentUser } = useContext(UserContext);
+  const [requirementsArray, setRequirementsArray] = useState([]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -117,6 +118,16 @@ function JobPost() {
       return;
     }
 
+    const requirementArray = data.requirements
+      .split("\n")
+      .filter((item) => item.trim() !== "");
+    data.requirements = requirementArray;
+
+    const responsibilityArray = data.responsibilities
+      .split("\n")
+      .filter((item) => item.trim() !== "");
+    data.responsibilities = responsibilityArray;
+
     setIsLoading(true);
     setError(check);
 
@@ -137,8 +148,6 @@ function JobPost() {
       setIsLoading(false);
     }
   };
-
-  
 
   return (
     <>
@@ -331,7 +340,7 @@ function JobPost() {
                         <option value={""} selected>
                           Select the range
                         </option>
-                        <option value="50k-">50k-</option>
+                        <option value="<50k">50k-</option>
                         <option value="50-70k">50-70k</option>
                         <option value="70-100k">70-100k</option>
                         <option value="100-150k">100-150k</option>

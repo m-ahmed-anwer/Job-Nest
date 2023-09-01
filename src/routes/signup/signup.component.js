@@ -452,7 +452,7 @@ function Sign() {
                     Terms and Conditions
                   </Link>{" "}
                   and{" "}
-                  <Link className="text-gray-700 underline">
+                  <Link to={"/privacy"} className="text-gray-700 underline">
                     Privacy Policy
                   </Link>
                   .

@@ -1,8 +1,18 @@
 import React from "react";
 
 function SingleJob({ job, company }) {
-  const { title, description, applicationDeadline } = job;
+  const { title, description, applicationDeadline, salary, type } = job;
   const { displayName, photoURL } = company;
+
+  const convertString = (camelCaseString) => {
+    const pattern = /(?<=[a-z])(?=[A-Z])/g;
+    const words = camelCaseString
+      .split(pattern)
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1));
+    const readableString = words.join(" ");
+    return readableString;
+  };
+
   return (
     <div
       className={` relative block overflow-hidden rounded-lg border border-gray-100 p-4 sm:p-6 lg:p-8 mx-5 mt-7  hover:bg-gray-50`}
@@ -16,7 +26,7 @@ function SingleJob({ job, company }) {
           </h3>
 
           <p className="mt-1 text-xs font-medium text-gray-600">
-            {displayName}
+            {convertString(displayName)}
           </p>
         </div>
 
@@ -42,22 +52,18 @@ function SingleJob({ job, company }) {
         </div>
 
         <div className="flex flex-col-reverse">
-          <dt className="text-sm font-medium mt-1 text-gray-600">
-            Reading time
-          </dt>
-          <dd className="text-xs text-gray-500 mt-5">{displayName}</dd>
+          <dt className="text-sm font-medium mt-1 text-gray-600">Company</dt>
+          <dd className="text-xs text-gray-500 mt-5">
+            {convertString(displayName)}
+          </dd>
         </div>
         <div className="flex flex-col-reverse">
-          <dt className="text-sm font-medium mt-1 text-gray-600">
-            Reading time
-          </dt>
-          <dd className="text-xs text-gray-500 mt-5">{displayName}</dd>
+          <dt className="text-sm font-medium mt-1 text-gray-600">Time</dt>
+          <dd className="text-xs text-gray-500 mt-5">{convertString(type)}</dd>
         </div>
         <div className="flex flex-col-reverse">
-          <dt className="text-sm font-medium mt-1 text-gray-600">
-            Reading time
-          </dt>
-          <dd className="text-xs text-gray-500 mt-5">{displayName}</dd>
+          <dt className="text-sm font-medium mt-1 text-gray-600">Salary</dt>
+          <dd className="text-xs text-gray-500 mt-5">{salary}</dd>
         </div>
       </div>
     </div>

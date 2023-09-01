@@ -36,10 +36,9 @@ function App() {
         <Route path="/jobs/:jobId" element={<JobDescribe />} />
         <Route path="/companies" element={<Companies />} />
         <Route path="/about" element={<Jobs />} />
-        <Route path="profile/*" element={currentUser && <ProfileRoute />} />
         <Route path="/service" element={<Jobs />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
-        <Route path="/settings" element={currentUser && <Settings />} />
+        <Route path="/contact" element={<ContactUs />} />
         <Route
           path="/login"
           element={currentUser ? <Navigate to="/" /> : <Login />}
@@ -52,9 +51,9 @@ function App() {
           path="/signup"
           element={currentUser ? <Navigate to="/" /> : <Signup />}
         />
-
-        <Route path="/contact" element={<ContactUs />} />
-        <Route path="/post" element={currentUser && <JobPost />} />
+        {currentUser && <Route path="/settings" element={<Settings />} />}
+        {currentUser && <Route path="profile/*" element={<ProfileRoute />} />}
+        {currentUser && <Route path="/post" element={<JobPost />} />}
 
         <Route path="*" element={<NotFound />} />
       </Route>
