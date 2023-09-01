@@ -67,6 +67,17 @@ function Jobs() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const { search, setSearch } = useContext(SearchContext);
 
+  const loadDetail = async () => {
+    if (!search) {
+      setJobs(initialJobs);
+      return;
+    }
+    setIsLoading(true);
+    const jobss = await getJobByTitle(search);
+    setJobs(jobss);
+    setIsLoading(false);
+  };
+
   useEffect(() => {
     window.scrollTo(0, 0);
     const fetchJobs = async () => {
@@ -84,17 +95,6 @@ function Jobs() {
     fetchJobs();
     loadDetail();
   }, []);
-
-  const loadDetail = async () => {
-    if (!search) {
-      setJobs(initialJobs);
-      return;
-    }
-    setIsLoading(true);
-    const jobss = await getJobByTitle(search);
-    setJobs(jobss);
-    setIsLoading(false);
-  };
 
   const filterHandler = (event) => {
     event.preventDefault();
