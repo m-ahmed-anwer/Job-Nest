@@ -8,7 +8,7 @@ function PrivacyPolicy() {
         <h1 className="text-3xl font-extrabold text-gray-900 mb-4">
           Privacy Policy
         </h1>
-        <p className="text-gray-600 mb-6">Last updated: [26 August 2023]</p>
+        <p className="text-gray-600 mb-6">Last updated: Fri 18 Aug 2023</p>
 
         {/* Privacy policy content sections */}
         <section className="mb-8">

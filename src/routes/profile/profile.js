@@ -7,6 +7,7 @@ import {
   UserPlusIcon,
 } from "@heroicons/react/24/outline";
 import { Outlet, useNavigate } from "react-router-dom";
+import Modal from "../../components/alert/dialog-modal";
 
 function Profile() {
   const tabItems = [
@@ -26,17 +27,24 @@ function Profile() {
       name: "Settings",
       link: "settings",
     },
-    {
-      icon: <ArrowRightOnRectangleIcon className="w-6 h-6" />,
-      name: "Log Out",
-      link: "/",
-    },
   ];
   const [selectedItem, setSelectedItem] = useState(0);
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const handleSignOut = () => {
+    setOpen(true);
+  };
 
   return (
     <Fragment>
+      <Modal
+        message={"Do you want to sign out"}
+        open={open}
+        setOpen={setOpen}
+        error={"error"}
+        buttonMessage={"Sign Out"}
+        confirm={"signout"}
+      />
       <div className="px-4 md:px-8 my-6">
         <ul
           role="tablist"
@@ -66,6 +74,15 @@ function Profile() {
               </button>
             </li>
           ))}
+          <li className={`py-2 border-b-2 border-white text-gray-500 `}>
+            <button
+              className="flex items-center gap-x-2 py-2 px-2 rounded-lg duration-150 hover:text-red-600 hover:bg-gray-50 active:bg-gray-100 font-medium"
+              onClick={handleSignOut}
+            >
+              <ArrowRightOnRectangleIcon className="w-6 h-6" />
+              Log Out
+            </button>
+          </li>
         </ul>
       </div>
       <Outlet />

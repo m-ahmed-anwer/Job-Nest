@@ -5,55 +5,6 @@ import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import { getJobById } from "../../../firebase/firebase";
 import Loading from "../../../components/alert/loading";
 
-const product = {
-  name: "Basic Tee 6-Pack",
-  price: "$192",
-  href: "#",
-  breadcrumbs: [{ id: 1, name: "Jobs", to: "/jobs" }],
-  images: [
-    {
-      src: "https://tailwindui.com/img/ecommerce-images/product-page-02-secondary-product-shot.jpg",
-      alt: "Two",
-    },
-    {
-      src: "https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-01.jpg",
-      alt: "Model",
-    },
-    {
-      src: "https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-02.jpg",
-      alt: "Model",
-    },
-    {
-      src: "https://tailwindui.com/img/ecommerce-images/product-page-02-featured-product-shot.jpg",
-      alt: "Model",
-    },
-  ],
-  colors: [
-    { name: "White", class: "bg-white", selectedClass: "ring-gray-400" },
-    { name: "Gray", class: "bg-gray-200", selectedClass: "ring-gray-400" },
-    { name: "Black", class: "bg-gray-900", selectedClass: "ring-gray-900" },
-  ],
-  sizes: [
-    { name: "XXS", inStock: false },
-    { name: "XS", inStock: true },
-    { name: "S", inStock: true },
-    { name: "M", inStock: true },
-    { name: "L", inStock: true },
-    { name: "XL", inStock: true },
-    { name: "2XL", inStock: true },
-    { name: "3XL", inStock: true },
-  ],
-  description:
-    'The Basic Tee 6-Pack allows you to fully express your vibrant personality with three grayscale options. Feeling adventurous? Put on a heather gray tee. Want to be a trendsetter? Try our exclusive colorway: "Black". Need to add an extra pop of color to your outfit? Our white tee has you covered.',
-  highlights: [
-    "Hand cut and sewn locally",
-    "Dyed with our proprietary colors",
-    "Pre-washed & pre-shrunk",
-    "Ultra-soft 100% cotton",
-  ],
-  details:
-    'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
-};
 const reviews = { href: "#", average: 4, totalCount: 117 };
 
 function classNames(...classes) {
@@ -78,7 +29,6 @@ function JobDescribe() {
   const getDate = (value) => {
     return new Date(value);
   };
-  const [deadline, setDeadline] = useState(false);
 
   useEffect(() => {
     const getJob = async () => {
@@ -95,9 +45,6 @@ function JobDescribe() {
     getJob();
   }, [jobId]);
 
-  const [selectedColor, setSelectedColor] = useState(product.colors[0]);
-  const [selectedSize, setSelectedSize] = useState(product.sizes[2]);
-
   return (
     <div className="bg-white">
       {isLoading ? (
@@ -105,23 +52,19 @@ function JobDescribe() {
       ) : jobDetail && jobDetail.job ? (
         <div className="pt-6">
           <nav aria-label="Breadcrumb">
-            <ol
-              role="list"
-              className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8"
-            >
-              {product.breadcrumbs.map((breadcrumb) => (
-                <li key={breadcrumb.id}>
-                  <div className="flex items-center">
-                    <Link
-                      to={breadcrumb.to}
-                      className="mr-2 text-sm font-medium text-gray-900"
-                    >
-                      {breadcrumb.name}
-                    </Link>
-                    <ChevronRightIcon className="h-5 w-4 text-gray-400" />
-                  </div>
-                </li>
-              ))}
+            <ul className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+              <li>
+                <div className="flex items-center">
+                  <Link
+                    to={"/jobs"}
+                    className="mr-2 text-sm font-medium text-gray-900"
+                  >
+                    Jobs
+                  </Link>
+                  <ChevronRightIcon className="h-5 w-4 text-gray-400" />
+                </div>
+              </li>
+
               <li className="text-sm">
                 <Link
                   to={"#"}
@@ -130,11 +73,11 @@ function JobDescribe() {
                   {jobDetail.job.title}
                 </Link>
               </li>
-            </ol>
+            </ul>
           </nav>
 
           {/* Job Title */}
-          <div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
+          <div className="mx-auto max-w-2xl px-4 pb-5 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-5 lg:pt-16">
             <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
               <h3 className="text-sm mb-6 font-medium text-gray-900">
                 Job Role
@@ -208,13 +151,15 @@ function JobDescribe() {
                   </h3>
 
                   <p className="text-md tracking-tight text-red-500">
-                    {deadline
-                      ? `Deadline has finished!`
-                      : convertString(jobDetail.job.applicationDeadline)}
+                    {getDate(currentDate) <
+                    getDate(jobDetail.job.applicationDeadline)
+                      ? jobDetail.job.applicationDeadline
+                      : "Deadline has finished !"}
                   </p>
                 </div>
 
-                {!deadline && (
+                {getDate(currentDate) <
+                  getDate(jobDetail.job.applicationDeadline) && (
                   <button
                     type="submit"
                     className="mt-16 flex w-full sm:w-3/4 items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
@@ -244,10 +189,10 @@ function JobDescribe() {
                 </h3>
 
                 <div className="mt-4">
-                  <ul role="list" className="list-disc space-y-2 pl-4 text-sm">
-                    {jobDetail.job.requirements.map((res) => (
-                      <li key={res} className="text-gray-400">
-                        <span className="text-gray-600">{res}</span>
+                  <ul className="list-disc space-y-2 pl-4 text-sm">
+                    {jobDetail.job.requirements.map((req) => (
+                      <li key={req} className="text-gray-400">
+                        <span className="text-gray-600">{req}</span>
                       </li>
                     ))}
                   </ul>
@@ -258,9 +203,8 @@ function JobDescribe() {
                 <h3 className="text-sm font-medium text-gray-900">
                   Responsibilities
                 </h3>
-
                 <div className="mt-4">
-                  <ul role="list" className="list-disc space-y-2 pl-4 text-sm">
+                  <ul className="list-disc space-y-2 pl-4 text-sm">
                     {jobDetail.job.responsibilities.map((res) => (
                       <li key={res} className="text-gray-400">
                         <span className="text-gray-600">{res}</span>
@@ -268,6 +212,44 @@ function JobDescribe() {
                     ))}
                   </ul>
                 </div>
+              </div>
+            </div>
+          </div>
+          <div className="mx-auto max-w-2xl px-4 pb-16  sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-5">
+            <div className="lg:col-span-2  lg:pr-8">
+              <h1 className="text-lg mb-6 font-medium text-gray-900">
+                Company Details
+              </h1>
+            </div>
+            <div className=" lg:col-span-2 lg:col-start-1  lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-1">
+              {/* Description and details */}
+              <div className="flex md:space-x-16 flex-col md:flex-row">
+                <div className="mt-6 ">
+                  <h3 className="text-sm font-medium text-gray-900">
+                    Company Name
+                  </h3>
+                  <p className="text-base mt-1 mb-5 md:mt-5 text-gray-600">
+                    {jobDetail.company.displayName}
+                  </p>
+                </div>
+                <div className=" mt-6 ">
+                  <h3 className="text-sm font-medium text-gray-900">Email</h3>
+                  <p className="text-base mt-1 mb-5 md:mt-5 text-blue-600 hover:text-blue-800">
+                    <a href={`mailto:${jobDetail.company.email}`}>
+                      {jobDetail.company.email}
+                    </a>
+                  </p>
+                </div>
+                {jobDetail.company.userPhone && (
+                  <div className=" mt-6 ">
+                    <h3 className="text-sm font-medium text-gray-900">Phone</h3>
+                    <p className="text-base mt-1 mb-5 md:mt-5 text-blue-600 hover:text-blue-800">
+                      <a href={`tel:${jobDetail.company.userPhone}`}>
+                        {jobDetail.company.userPhone}
+                      </a>
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           </div>

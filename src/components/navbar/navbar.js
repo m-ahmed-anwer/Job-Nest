@@ -71,7 +71,7 @@ function Navbar() {
       />
 
       <nav
-        className="  border-gray-200 dark:bg-gray-900 py-3 px-2 rounded-b-3xl"
+        className="  border-gray-200 dark:bg-gray-900 py-3 px-2 rounded-b-3xl "
         style={{
           background:
             "linear-gradient(0deg, rgba(246,251,255,1) 0%, rgba(230,230,230,1) 100%)",

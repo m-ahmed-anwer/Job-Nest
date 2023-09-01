@@ -11,7 +11,6 @@ import {
 import { getJob } from "../../firebase/firebase";
 import SingleJob from "../../components/jobs/single-job";
 import LoadingJob from "../../components/loading-job/Loading-job";
-import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 
 const sortOptions = [
@@ -80,7 +79,7 @@ function Jobs() {
 
     fetchJobs();
   }, []);
-  const navigate = useNavigate();
+
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   const submitHandler = () => {
@@ -212,7 +211,7 @@ function Jobs() {
         <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-10">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900">
-              Recent Jobs
+              Jobs
             </h1>
 
             {/** this is the part where sort comes front on profile dropdown */}

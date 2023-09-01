@@ -17,7 +17,7 @@ function LoadingJob() {
         <div className="w-20 h-20 mr-5 bg-gray-200 rounded-md mt-3  animate-pulse"></div>
       </div>
 
-      <div className="mt-4">
+      <div className="">
         <div className="w-3/4 h-3 bg-gray-200 rounded-full animate-pulse"></div>
         <div className="w-3/4 h-3 mt-1 bg-gray-200 rounded-full animate-pulse"></div>
         <div className="w-3/4 h-3 mt-1 bg-gray-200 rounded-full animate-pulse"></div>
@@ -25,13 +25,21 @@ function LoadingJob() {
 
       <dl className="mt-6 flex gap-4 sm:gap-6">
         <div className="flex flex-col-reverse">
-          <div className="w-20 h-4 mt-2 bg-gray-200 rounded-full animate-pulse"></div>
-          <dd className="w-20 h-6 bg-gray-200 rounded-full animate-pulse"></dd>
+          <div className="w-16 h-4 mt-2 bg-gray-200 rounded-full animate-pulse"></div>
+          <dd className="w-16 h-6 bg-gray-200 rounded-full animate-pulse"></dd>
         </div>
 
         <div className="flex flex-col-reverse">
-          <div className="w-20 h-4 mt-2 bg-gray-200 rounded-full animate-pulse"></div>
-          <dd className="w-20 h-6 bg-gray-200 rounded-full animate-pulse"></dd>
+          <div className="w-16 h-4 mt-2 bg-gray-200 rounded-full animate-pulse"></div>
+          <dd className="w-16 h-6 bg-gray-200 rounded-full animate-pulse"></dd>
+        </div>
+        <div className="flex flex-col-reverse">
+          <div className="w-16 h-4 mt-2 bg-gray-200 rounded-full animate-pulse"></div>
+          <dd className="w-16 h-6 bg-gray-200 rounded-full animate-pulse"></dd>
+        </div>
+        <div className="flex flex-col-reverse">
+          <div className="w-16 h-4 mt-2 bg-gray-200 rounded-full animate-pulse"></div>
+          <dd className="w-16 h-6 bg-gray-200 rounded-full animate-pulse"></dd>
         </div>
       </dl>
     </div>

@@ -25,7 +25,7 @@ function Footer() {
               </Link>
             </li>
             <li>
-              <Link to="/" className="mr-4 hover:underline md:mr-6 ">
+              <Link to={"/terms"} className="mr-4 hover:underline md:mr-6 ">
                 Terms and Conditions
               </Link>
             </li>

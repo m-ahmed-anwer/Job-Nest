@@ -448,7 +448,7 @@ function Sign() {
               <div className="col-span-6">
                 <p className="text-sm text-gray-500">
                   By creating an account, you agree to our{" "}
-                  <Link className="text-gray-700 underline">
+                  <Link to={"/terms"} className="text-gray-700 underline">
                     Terms and Conditions
                   </Link>{" "}
                   and{" "}

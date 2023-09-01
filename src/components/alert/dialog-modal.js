@@ -24,6 +24,9 @@ function Modal({ message, open, setOpen, error, buttonMessage, confirm }) {
     setCurrentUser(null);
     navigate("/login");
   };
+  const viewPost = () => {
+    navigate("/Jobs");
+  };
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -98,7 +101,11 @@ function Modal({ message, open, setOpen, error, buttonMessage, confirm }) {
                         : "bg-green-600 hover:bg-green-500"
                     }  inline-flex w-full justify-center rounded-md  px-3 py-2 text-sm font-semibold text-white shadow-sm  sm:ml-3 sm:w-auto`}
                     onClick={
-                      confirm === "signout" ? signOutHandler : actionClick
+                      confirm === "signout"
+                        ? signOutHandler
+                        : confirm === "post"
+                        ? viewPost
+                        : actionClick
                     }
                   >
                     {buttonMessage}
@@ -106,7 +113,10 @@ function Modal({ message, open, setOpen, error, buttonMessage, confirm }) {
                   <button
                     type="button"
                     className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                    onClick={() => setOpen(false)}
+                    onClick={() => {
+                      setOpen(false);
+                      confirm === "post" && navigate("/");
+                    }}
                     ref={cancelButtonRef}
                   >
                     Cancel
