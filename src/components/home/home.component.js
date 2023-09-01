@@ -47,7 +47,10 @@ function Home() {
               <div class="w-full max-w-xl">
                 <form className="max-w-md px-4" onSubmit={submitHandler}>
                   <div className="relative ">
-                    <MagnifyingGlassIcon className="absolute top-0 bottom-0 w-6 h-6 my-auto text-gray-900 left-3" />
+                    <MagnifyingGlassIcon
+                      className="absolute top-0 bottom-0 w-6 h-6 my-auto text-gray-900 left-3 hover:cursor-pointer"
+                      onClick={submitHandler}
+                    />
                     <input
                       type="text"
                       placeholder="Search for Jobs"

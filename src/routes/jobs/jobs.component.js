@@ -91,6 +91,7 @@ function Jobs() {
 
   const SearchSubmitHandler = (event) => {
     event.preventDefault();
+    alert(search);
     setSearch("");
   };
 
@@ -103,14 +104,17 @@ function Jobs() {
       <div>
         <div className="flex flex-col items-center w-full mt-10">
           <form className="w-full sm:w-1/2 px-2" onSubmit={SearchSubmitHandler}>
-            <div className="relative ">
-              <MagnifyingGlassIcon className="absolute top-0 bottom-0 w-6 h-6 my-auto text-gray-900 left-3 hover:cursor-pointer" />
+            <div className="flex flex-row">
+              <MagnifyingGlassIcon
+                className="w-6 h-6 my-auto mr-3 text-gray-900 left-3 hover:cursor-pointer"
+                onClick={SearchSubmitHandler}
+              />
               <input
                 type="text"
                 placeholder="Search for Jobs"
                 onChange={handleChange}
                 value={search}
-                className="w-full py-2 pl-12 pr-1 text-black border placeholder:text-gray-500 outline-none bg-gray-100 focus:bg-gray-50 focus:border-blue-600 rounded-full"
+                className="w-full py-2 px-4 text-gray-800 border placeholder:text-gray-500 outline-none bg-gray-100 focus:bg-gray-50 focus:border-blue-600 rounded-full"
               />
             </div>
           </form>
