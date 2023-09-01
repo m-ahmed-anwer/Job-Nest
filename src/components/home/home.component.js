@@ -1,18 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import Stats from "./stats";
 import CompaniesList from "./companies";
 import CTA from "./cta";
 import CatergoriesList from "./categorie.list";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { useNavigate } from "react-router";
+import { SearchContext } from "../../context/search.context";
 
 function Home() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+  const navigate = useNavigate();
+  const { search, setSearch } = useContext(SearchContext);
 
-  const [search, setSearch] = useState("");
   const handleChange = (event) => {
     setSearch(event.target.value);
+  };
+  const submitHandler = (event) => {
+    event.preventDefault();
+    navigate("/jobs");
   };
 
   return (
@@ -38,12 +45,14 @@ function Home() {
             </p>
             <div class="flex flex-1 items-center justify-center p-6">
               <div class="w-full max-w-xl">
-                <form className="max-w-md px-4">
+                <form className="max-w-md px-4" onSubmit={submitHandler}>
                   <div className="relative ">
                     <MagnifyingGlassIcon className="absolute top-0 bottom-0 w-6 h-6 my-auto text-gray-900 left-3" />
                     <input
                       type="text"
                       placeholder="Search for Jobs"
+                      onChange={handleChange}
+                      value={search}
                       className="w-full py-3 pl-12 pr-4 text-black border placeholder:text-gray-500 outline-none bg-gray-100 focus:bg-gray-50 focus:border-blue-600 rounded-full"
                     />
                   </div>

@@ -152,7 +152,7 @@ function JobPost() {
   const navigate = useNavigate();
   const location = useLocation();
   const state = location.state;
-  useEffect(() => {}, []);
+
   if (state && state.confirmDetails === true) {
     return (
       <div className="flex items-center flex-col">

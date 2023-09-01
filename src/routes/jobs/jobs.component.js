@@ -1,6 +1,6 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 import {
   ChevronDownIcon,
@@ -12,6 +12,7 @@ import { getJob } from "../../firebase/firebase";
 import SingleJob from "../../components/jobs/single-job";
 import LoadingJob from "../../components/loading-job/Loading-job";
 import { Link } from "react-router-dom";
+import { SearchContext } from "../../context/search.context";
 
 const sortOptions = [
   { name: "Default", href: "#", current: true },
@@ -81,14 +82,39 @@ function Jobs() {
   }, []);
 
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const { search, setSearch } = useContext(SearchContext);
 
-  const submitHandler = () => {
+  const submitHandler = (event) => {
+    event.preventDefault();
     alert("submit");
+  };
+
+  const SearchSubmitHandler = (event) => {
+    event.preventDefault();
+    setSearch("");
+  };
+
+  const handleChange = (event) => {
+    setSearch(event.target.value);
   };
 
   return (
     <div className="bg-white">
       <div>
+        <div className="flex flex-col items-center w-full mt-10">
+          <form className="w-full sm:w-1/2 px-2" onSubmit={SearchSubmitHandler}>
+            <div className="relative ">
+              <MagnifyingGlassIcon className="absolute top-0 bottom-0 w-6 h-6 my-auto text-gray-900 left-3 hover:cursor-pointer" />
+              <input
+                type="text"
+                placeholder="Search for Jobs"
+                onChange={handleChange}
+                value={search}
+                className="w-full py-2 pl-12 pr-1 text-black border placeholder:text-gray-500 outline-none bg-gray-100 focus:bg-gray-50 focus:border-blue-600 rounded-full"
+              />
+            </div>
+          </form>
+        </div>
         {/* Mobile filter dialog */}
         <Transition.Root show={mobileFiltersOpen} as={Fragment}>
           <Dialog
