@@ -1,5 +1,4 @@
 import { Fragment, useState } from "react";
-import MyProfile from "../../components/profile/myProfile";
 import {
   ArrowRightOnRectangleIcon,
   Cog8ToothIcon,
