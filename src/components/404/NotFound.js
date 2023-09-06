@@ -55,7 +55,7 @@ function NotFound() {
             </div>
           </div>
 
-          <div className="relative w-full mt-12 lg:w-1/2 lg:mt-0">
+          <div className=" w-full mt-12 lg:w-1/2 lg:mt-0">
             <img
               className="w-full max-w-lg lg:mx-auto"
               src="https://cdn.svgator.com/images/2022/01/cat.png"

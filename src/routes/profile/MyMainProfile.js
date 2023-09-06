@@ -5,30 +5,27 @@ import {
   DocumentTextIcon,
   UserPlusIcon,
 } from "@heroicons/react/24/outline";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import Modal from "../../components/alert/dialog-modal";
 import MyProfile from "../../components/profile/myProfile";
 
-function Profile() {
+function MainProfile() {
   const tabItems = [
     {
       icon: <UserPlusIcon className="w-6 h-6" />,
       name: "My Profile",
       link: "",
-      path: "/profile",
     },
     {
       icon: <DocumentTextIcon className="w-6 h-6" />,
       name: "Manage Posts",
       link: "posts",
-      path: "/profile/posts",
     },
 
     {
       icon: <Cog8ToothIcon className="w-6 h-6" />,
       name: "Settings",
       link: "settings",
-      path: "/profile/settings",
     },
   ];
   const [selectedItem, setSelectedItem] = useState(0);
@@ -37,8 +34,6 @@ function Profile() {
   const handleSignOut = () => {
     setOpen(true);
   };
-  const location = useLocation();
-  const currentPath = location.pathname;
 
   return (
     <Fragment>
@@ -59,7 +54,7 @@ function Profile() {
             <li
               key={idx}
               className={`py-2 border-b-2 ${
-                currentPath === item.path
+                selectedItem === idx
                   ? "border-indigo-600 text-indigo-600"
                   : "border-white text-gray-500"
               }`}
@@ -90,10 +85,10 @@ function Profile() {
           </li>
         </ul>
       </div>
-
+      
       <Outlet />
     </Fragment>
   );
 }
 
-export default Profile;
+export default MainProfile;
