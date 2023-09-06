@@ -12,7 +12,6 @@ const formFeild = {
   email: "",
   phone: "",
   password: "",
-
   password_confirmation: "",
   category: "",
 };
@@ -126,6 +125,15 @@ function Sign() {
       userPhone: phone,
       category: category,
       emailVerified: false,
+      first_name: first_name,
+      last_name: last_name,
+      address: {
+        country: "",
+        street: "",
+        city: "",
+        state: "",
+        zip: "",
+      },
     };
     try {
       await createAuthUserWithEmailAndPassword(

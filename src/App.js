@@ -1,17 +1,16 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import "./App.css";
+import { useContext, useEffect } from "react";
+import { UserContext } from "./context/user-context";
+import Outlayer from "./routes/home/home.page";
 import Home from "./components/home/home.component";
 import Jobs from "./routes/jobs/jobs.component";
 import Login from "./routes/login/login.component";
 import Signup from "./routes/signup/signup.component";
 import ContactUs from "./components/contact-us/contact-us";
 import NotFound from "./components/404/NotFound";
-import Outlayer from "./routes/home/home.page";
 import JobPost from "./routes/job-post/job-post";
 import Companies from "./routes/companies/companies";
-import { useContext, useEffect } from "react";
-import { UserContext } from "./context/user-context";
-import Settings from "./components/settings/settings";
 import ForgetPassword from "./routes/reset-password/forget.password";
 import PrivacyPolicy from "./routes/privacy/privacy.policy";
 import ProfileRoute from "./routes/profile/profile-route";
@@ -21,6 +20,7 @@ import JobPost1 from "./routes/job-post/job-post1";
 
 function App() {
   const { currentUser } = useContext(UserContext);
+
   useEffect(() => {
     document.title = "Job Nest";
     return () => {
@@ -52,8 +52,8 @@ function App() {
           path="/signup"
           element={currentUser ? <Navigate to="/" /> : <Signup />}
         />
-        {currentUser && <Route path="/settings" element={<Settings />} />}
-        {currentUser && <Route path="profile/*" element={<ProfileRoute />} />}
+
+        {currentUser && <Route path="/profile/*" element={<ProfileRoute />} />}
         {currentUser && <Route path="/post" element={<JobPost1 />} />}
         {currentUser && <Route path="/post/details" element={<JobPost />} />}
 

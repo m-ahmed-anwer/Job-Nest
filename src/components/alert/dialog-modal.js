@@ -8,8 +8,21 @@ import { getAuth } from "firebase/auth";
 import { UserContext } from "../../context/user-context";
 import { useNavigate } from "react-router";
 
-function Modal({ message, open, setOpen, error, buttonMessage, confirm }) {
+function Modal({
+  message,
+  open,
+  setOpen,
+  error,
+  buttonMessage,
+  confirm,
+  isEdit,
+  setIsEdit,
+}) {
   const cancelButtonRef = useRef(null);
+  const closeEdit = () => {
+    setIsEdit(false);
+    setOpen(false);
+  };
 
   const actionClick = () => {
     setOpen(false);
@@ -105,6 +118,8 @@ function Modal({ message, open, setOpen, error, buttonMessage, confirm }) {
                         ? signOutHandler
                         : confirm === "post"
                         ? viewPost
+                        : isEdit
+                        ? closeEdit
                         : actionClick
                     }
                   >

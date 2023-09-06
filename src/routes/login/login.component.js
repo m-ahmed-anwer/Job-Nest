@@ -115,6 +115,13 @@ function Login() {
         userPhone: "",
         category: "",
         emailVerified: true,
+        address: {
+          country: "",
+          street: "",
+          city: "",
+          state: "",
+          zip: "",
+        },
       });
 
       setCurrentUser(user);

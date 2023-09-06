@@ -7,15 +7,24 @@ export const UserContext = createContext({
   setCurrentUser: () => null,
   databaseUser: null,
   setDatabaseUser: () => null,
+  isLoading: null,
 });
 
 export const UserProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [databaseUser, setDatabaseUser] = useState(null);
-  const value = { currentUser, setCurrentUser, databaseUser, setDatabaseUser };
+  const [isLoading, setIsLoading] = useState(false);
+  const value = {
+    currentUser,
+    setCurrentUser,
+    databaseUser,
+    setDatabaseUser,
+    isLoading,
+  };
 
   useEffect(() => {
     const unsubscribe = getAuth().onAuthStateChanged(async (user) => {
+      setIsLoading(true);
       if (user) {
         if (user.emailVerified) {
           setCurrentUser(user);
@@ -26,6 +35,7 @@ export const UserProvider = ({ children }) => {
         setCurrentUser(null);
         setDatabaseUser(null);
       }
+      setIsLoading(false);
     });
 
     return unsubscribe;

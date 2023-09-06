@@ -3,7 +3,7 @@ import React from "react";
 function TermsAndConditions() {
   return (
     <div className="items-center flex flex-col">
-      <div className="terms-and-conditions p-8 w-3/4 flex flex-col justify-center ">
+      <div className="terms-and-conditions p-8 md:w-3/4  flex flex-col justify-center ">
         <h1 className="text-3xl font-semibold text-gray-800 mb-6">
           Terms and Conditions
         </h1>
