@@ -1,7 +1,7 @@
 import React from "react";
 
 function UploadPost() {
-  return <div>UploadPost</div>;
+  return <div>Post Upload</div>;
 }
 
 export default UploadPost;
