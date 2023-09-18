@@ -8,9 +8,9 @@ function SingleCompany() {
 
   return (
     <div>
-      <Profile />
-      assd
-      <Chat />
+      <Profile/>
+      
+      <Chat/>
     </div>
   );
 }
