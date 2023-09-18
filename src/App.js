@@ -17,6 +17,7 @@ import ProfileRoute from "./routes/profile/profile-route";
 import JobDescribe from "./routes/jobs/single-job/single.job.describe";
 import TermsAndConditions from "./routes/privacy/terms.conditions";
 import JobPost1 from "./routes/job-post/job-post1";
+import SingleCompany from "./routes/companies/Unique.company";
 
 function App() {
   const { currentUser } = useContext(UserContext);
@@ -35,6 +36,7 @@ function App() {
         <Route path="/jobs" element={<Jobs />} />
         <Route path="/jobs/:jobId" element={<JobDescribe />} />
         <Route path="/companies" element={<Companies />} />
+        <Route path="/companies/:companyId" element={<SingleCompany />} />
         <Route path="/about" element={<Jobs />} />
         <Route path="/service" element={<Jobs />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
