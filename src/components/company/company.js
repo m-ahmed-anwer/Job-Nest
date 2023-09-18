@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 export default function Company({ item }) {
-  const { displayName, email, photoURL } = item;
+  const { displayName, email, photoURL, id } = item;
   return (
     <div>
       {" "}
@@ -23,7 +23,10 @@ export default function Company({ item }) {
           </button>
         </div>
         <div className="py-5 px-4 border-t text-right">
-          <Link className="text-indigo-600 hover:text-indigo-500 text-sm font-medium">
+          <Link
+            to={`/companies/${id}`}
+            className="text-indigo-600 hover:text-indigo-500 text-sm font-medium"
+          >
             View company
           </Link>
         </div>
