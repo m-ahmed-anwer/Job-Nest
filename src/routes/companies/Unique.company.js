@@ -7,9 +7,9 @@ function SingleCompany() {
   const { companyId } = useParams();
 
   return (
-      <div>
-          
+    <div>
       <Profile />
+      asd
       <Chat />
     </div>
   );
