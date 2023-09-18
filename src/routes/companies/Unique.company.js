@@ -9,7 +9,7 @@ function SingleCompany() {
   return (
     <div>
       <Profile />
-      asd
+      assd
       <Chat />
     </div>
   );
