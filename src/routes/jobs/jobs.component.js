@@ -8,7 +8,7 @@ import {
   MinusIcon,
   PlusIcon,
 } from "@heroicons/react/20/solid";
-import { getJob, getJobByTitle } from "../../firebase/firebase";
+import { getJob, getJobByTitle, getJobFilter } from "../../firebase/firebase";
 import SingleJob from "../../components/jobs/single-job";
 import LoadingJob from "../../components/loading-job/Loading-job";
 import { Link } from "react-router-dom";
@@ -66,6 +66,7 @@ function Jobs() {
   const [isLoading, setIsLoading] = useState(false);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const { search, setSearch } = useContext(SearchContext);
+  const [selectedFilters, setSelectedFilters] = useState({});
 
   const loadDetail = async () => {
     if (!search) {
@@ -96,10 +97,41 @@ function Jobs() {
     loadDetail();
   }, []);
 
-  const filterHandler = (event) => {
-    event.preventDefault();
-    alert("submit");
+  const handleCheckboxChange = async (sectionId, optionValue) => {
+    setSelectedFilters((prevFilters) => ({
+      ...prevFilters,
+      [sectionId]: {
+        ...prevFilters[sectionId],
+        [optionValue]: !prevFilters[sectionId]?.[optionValue],
+      },
+    }));
   };
+
+  useEffect(() => {
+    const updateJobs = async (sectionId, optionValue) => {
+      const isChecked = selectedFilters[sectionId]?.[optionValue] === true;
+
+      if (isChecked) {
+        setIsLoading(true);
+
+        const filteredJobs = await getJobFilter(sectionId, optionValue);
+
+        if (filteredJobs != null) {
+          setJobs(filteredJobs);
+          setIsLoading(false);
+        } else {
+          // Handle the case when filteredJobs is null
+        }
+      }
+    };
+
+    // Iterate through selectedFilters and trigger updates when necessary
+    for (const sectionId in selectedFilters) {
+      for (const optionValue in selectedFilters[sectionId]) {
+        updateJobs(sectionId, optionValue);
+      }
+    }
+  }, [selectedFilters]);
 
   const SearchSubmitHandler = async (event) => {
     event.preventDefault();
@@ -174,7 +206,7 @@ function Jobs() {
                   </div>
 
                   {/* Filters */}
-                  <form className="mt-4" onSubmit={filterHandler}>
+                  <form className="mt-4">
                     {filters.map((section) => (
                       <Disclosure
                         as="div"
@@ -211,13 +243,24 @@ function Jobs() {
                                     className="flex items-center"
                                   >
                                     <input
-                                      id={`filter-mobile-${section.id}-${optionIdx}`}
-                                      name={`${section.id}[]`}
-                                      defaultValue={option.value}
+                                      id={`filter-mobile-${section.id}-${optionIdx}`} // Unique identifier for the checkbox
+                                      name={section.id} // Group related checkboxes by using the section ID as the name
+                                      value={option.value} // Value associated with the checkbox
                                       type="checkbox"
-                                      defaultChecked={option.checked}
+                                      checked={
+                                        selectedFilters[section.id]?.[
+                                          option.value
+                                        ] || false
+                                      }
+                                      onChange={() =>
+                                        handleCheckboxChange(
+                                          section.id,
+                                          option.value
+                                        )
+                                      }
                                       className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                     />
+
                                     <label
                                       htmlFor={`filter-mobile-${section.id}-${optionIdx}`}
                                       className="ml-3 min-w-0 flex-1 text-gray-500"
@@ -232,14 +275,6 @@ function Jobs() {
                         )}
                       </Disclosure>
                     ))}
-                    <div className="flex flex-col items-center justify-center">
-                      <button
-                        type="submit"
-                        className="mt-8  w-1/2 items-center justify-center rounded-md border border-transparent bg-blue-600  py-1 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                      >
-                        Filter
-                      </button>
-                    </div>
                   </form>
                 </Dialog.Panel>
               </Transition.Child>
@@ -318,7 +353,7 @@ function Jobs() {
 
             <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
               {/* Filters */}
-              <form className="hidden lg:block" onSubmit={filterHandler}>
+              <form className="hidden lg:block">
                 <h3 className="sr-only">Categories</h3>
 
                 {filters.map((section) => (
@@ -357,11 +392,21 @@ function Jobs() {
                                 className="flex items-center"
                               >
                                 <input
-                                  id={`filter-${section.id}-${optionIdx}`}
-                                  name={`${section.id}[]`}
-                                  defaultValue={option.value}
+                                  id={`filter-mobile-${section.id}-${optionIdx}`} // Unique identifier for the checkbox
+                                  name={section.id} // Group related checkboxes by using the section ID as the name
+                                  value={option.value} // Value associated with the checkbox
                                   type="checkbox"
-                                  defaultChecked={option.checked}
+                                  checked={
+                                    selectedFilters[section.id]?.[
+                                      option.value
+                                    ] || false
+                                  }
+                                  onChange={() =>
+                                    handleCheckboxChange(
+                                      section.id,
+                                      option.value
+                                    )
+                                  }
                                   className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                 />
                                 <label
@@ -378,14 +423,6 @@ function Jobs() {
                     )}
                   </Disclosure>
                 ))}
-                <div className="flex flex-col items-center justify-center">
-                  <button
-                    type="submit"
-                    className="mt-8  w-full items-center justify-center rounded-md border border-transparent bg-blue-600  py-1 text-base  text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                  >
-                    Filter Results
-                  </button>
-                </div>
               </form>
 
               {/* Product grid */}

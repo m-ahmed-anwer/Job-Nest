@@ -242,3 +242,25 @@ export const getJobByTitle = async (jobTitle) => {
     return null;
   }
 };
+
+export const getJobFilter = async (sectionId, optionValue) => {
+  try {
+    const jobsCollectionRef = collection(db, "jobs");
+    const q = query(
+      jobsCollectionRef,
+      where(`job.${sectionId}`, "==", optionValue)
+    );
+    const querySnapshot = await getDocs(q);
+
+    const jobs = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      job: doc.data().job,
+      company: doc.data().company,
+    }));
+
+    return jobs;
+  } catch (error) {
+    console.log("Error fetching jobs", error.message);
+    return null;
+  }
+};
