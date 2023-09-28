@@ -156,7 +156,7 @@ function Jobs() {
                 type="text"
                 placeholder="Search for Jobs"
                 onChange={handleChange}
-                value={search}
+                value={search || ""}
                 className="w-full py-2 px-4 text-gray-800 border placeholder:text-gray-500 outline-none bg-gray-100 focus:bg-gray-50 focus:border-blue-600 rounded-full"
               />
             </div>
@@ -429,6 +429,9 @@ function Jobs() {
               <div className="lg:col-span-3">
                 {isLoading ? (
                   <>
+                    <LoadingJob />
+                    <LoadingJob />
+                    <LoadingJob />
                     <LoadingJob />
                     <LoadingJob />
                     <LoadingJob />

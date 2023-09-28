@@ -43,8 +43,8 @@ function Home() {
               Whether you're starting anew or aiming higher, Job Nest equips you
               with the tools you need for your career journey.
             </p>
-            <div class="flex flex-1 items-center justify-center p-6">
-              <div class="w-full max-w-xl">
+            <div className="flex flex-1 items-center justify-center p-6">
+              <div className="w-full max-w-xl">
                 <form className="max-w-md px-4" onSubmit={submitHandler}>
                   <div className="relative ">
                     <MagnifyingGlassIcon
@@ -55,7 +55,7 @@ function Home() {
                       type="text"
                       placeholder="Search for Jobs"
                       onChange={handleChange}
-                      value={search}
+                      value={search || ""}
                       className="w-full py-3 pl-12 pr-4 text-black border placeholder:text-gray-500 outline-none bg-gray-100 focus:bg-gray-50 focus:border-blue-600 rounded-full"
                     />
                   </div>

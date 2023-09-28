@@ -177,7 +177,7 @@ function JobPost() {
             buttonMessage={buttonMesage}
             confirm={post}
           />
-          <div class="px-4 py-16 sm:px-6 lg:px-8">
+          <div className="px-4 py-16 sm:px-6 lg:px-8">
             <form className="" onSubmit={submitHandler} action="#">
               <div className="space-y-12">
                 <div className="border-b border-gray-900/10 pb-12">
@@ -233,7 +233,7 @@ function JobPost() {
                           className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         />
                         {!error.description && (
-                          <p class="text-red-500 text-xs italic">
+                          <p className="text-red-500 text-xs italic">
                             Please fill this field.
                           </p>
                         )}
@@ -292,7 +292,7 @@ function JobPost() {
                         <option value="senior">Senior</option>
                       </select>
                       {!error.experienceLevel && (
-                        <p class="text-red-500 text-xs italic">
+                        <p className="text-red-500 text-xs italic">
                           Select a level.
                         </p>
                       )}
@@ -314,7 +314,7 @@ function JobPost() {
                           className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         />
                         {!error.requirements && (
-                          <p class="text-red-500 text-xs italic">
+                          <p className="text-red-500 text-xs italic">
                             Please fill this field.
                           </p>
                         )}
@@ -337,7 +337,7 @@ function JobPost() {
                           className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         />
                         {!error.responsibilities && (
-                          <p class="text-red-500 text-xs italic">
+                          <p className="text-red-500 text-xs italic">
                             Please fill this field.
                           </p>
                         )}
@@ -371,7 +371,7 @@ function JobPost() {
                           <option value="500k+">500k+</option>
                         </select>
                         {!error.salary && (
-                          <p class="text-red-500 text-xs italic">
+                          <p className="text-red-500 text-xs italic">
                             Select the salary range.
                           </p>
                         )}
@@ -395,7 +395,7 @@ function JobPost() {
                           className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         />
                         {!error.applicationDeadline && (
-                          <p class="text-red-500 text-xs italic">
+                          <p className="text-red-500 text-xs italic">
                             Select a future deadline.
                           </p>
                         )}

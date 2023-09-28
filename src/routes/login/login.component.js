@@ -35,6 +35,7 @@ function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [errorCheck, setErrorCheck] = useState(check);
   const location = useLocation();
+  const [rememberMe, setRememberMe] = useState(false);
 
   const { setCurrentUser } = useContext(UserContext);
 
@@ -293,6 +294,8 @@ function Login() {
                           type="checkbox"
                           id="remember"
                           name="remember"
+                          onClick={() => setRememberMe(!rememberMe)}
+                          checked={rememberMe}
                         />
                         <span className="text-sm"> Remember me</span>
                       </label>

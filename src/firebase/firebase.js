@@ -199,6 +199,24 @@ export const getJob = async () => {
     return null;
   }
 };
+export const getJobByUserEmail = async (email) => {
+  try {
+    const jobsCollectionRef = collection(db, "jobs");
+    const q = query(jobsCollectionRef, where("company.email", "==", email));
+    const querySnapshot = await getDocs(q);
+
+    const jobs = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      job: doc.data().job,
+      company: doc.data().company,
+    }));
+
+    return jobs;
+  } catch (error) {
+    console.error("Error fetching jobs:", error.message);
+    return null;
+  }
+};
 
 export const getJobById = async (jobId) => {
   try {

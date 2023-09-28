@@ -18,6 +18,7 @@ import JobDescribe from "./routes/jobs/single-job/single.job.describe";
 import TermsAndConditions from "./routes/privacy/terms.conditions";
 import JobPost1 from "./routes/job-post/job-post1";
 import SingleCompany from "./routes/companies/Unique.company";
+import PostEdit from "./components/editPost/edit-post";
 
 function App() {
   const { currentUser } = useContext(UserContext);
@@ -37,8 +38,6 @@ function App() {
         <Route path="/jobs/:jobId" element={<JobDescribe />} />
         <Route path="/companies" element={<Companies />} />
         <Route path="/companies/:companyId" element={<SingleCompany />} />
-        <Route path="/about" element={<Jobs />} />
-        <Route path="/service" element={<Jobs />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/terms" element={<TermsAndConditions />} />
         <Route path="/contact" element={<ContactUs />} />
@@ -58,6 +57,7 @@ function App() {
         {currentUser && <Route path="/profile/*" element={<ProfileRoute />} />}
         {currentUser && <Route path="/post" element={<JobPost1 />} />}
         {currentUser && <Route path="/post/details" element={<JobPost />} />}
+        {currentUser && <Route path="/edit/:postId" element={<PostEdit />} />}
 
         <Route path="*" element={<NotFound />} />
       </Route>
