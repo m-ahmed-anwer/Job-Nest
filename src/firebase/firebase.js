@@ -164,6 +164,20 @@ export const getUserDocument = async (userAuth) => {
   return null;
 };
 
+export const updateUserDocument = async (userAuth, updatedData) => {
+  if (!userAuth) return null;
+
+  const userDocRef = doc(db, "users", userAuth.uid);
+
+  try {
+    await setDoc(userDocRef, updatedData, { merge: true });
+    return true;
+  } catch (error) {
+    console.error("Error updating user document:", error);
+    return false;
+  }
+};
+
 export const postJob = async (userAuth, jobData) => {
   if (!userAuth) return;
   try {
@@ -196,6 +210,24 @@ export const getJob = async () => {
     return jobs;
   } catch (error) {
     console.log("Error fetching jobs", error.message);
+    return null;
+  }
+};
+export const getJobByUserEmail = async (email) => {
+  try {
+    const jobsCollectionRef = collection(db, "jobs");
+    const q = query(jobsCollectionRef, where("company.email", "==", email));
+    const querySnapshot = await getDocs(q);
+
+    const jobs = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      job: doc.data().job,
+      company: doc.data().company,
+    }));
+
+    return jobs;
+  } catch (error) {
+    console.error("Error fetching jobs:", error.message);
     return null;
   }
 };
