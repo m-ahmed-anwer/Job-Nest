@@ -164,6 +164,20 @@ export const getUserDocument = async (userAuth) => {
   return null;
 };
 
+export const updateUserDocument = async (userAuth, updatedData) => {
+  if (!userAuth) return null;
+
+  const userDocRef = doc(db, "users", userAuth.uid);
+
+  try {
+    await setDoc(userDocRef, updatedData, { merge: true });
+    return true;
+  } catch (error) {
+    console.error("Error updating user document:", error);
+    return false;
+  }
+};
+
 export const postJob = async (userAuth, jobData) => {
   if (!userAuth) return;
   try {

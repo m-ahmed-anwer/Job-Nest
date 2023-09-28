@@ -201,7 +201,7 @@ function Sign() {
                 }`}
               >
                 <label
-                  for="company"
+                  htmlFor="company"
                   className="block text-sm font-medium text-gray-700"
                 >
                   Company Name
@@ -219,7 +219,7 @@ function Sign() {
                   } tracking-wide block w-full rounded-md max-sm:h-10 border-0 py-1.5 px-2 text-gray-900  ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-7 shadow-md`}
                 />
                 {!error.company && (
-                  <p class="text-red-500 text-xs italic">
+                  <p className="text-red-500 text-xs italic">
                     Please fill this field.
                   </p>
                 )}
@@ -233,7 +233,7 @@ function Sign() {
                 }`}
               >
                 <label
-                  for="FirstName"
+                  htmlFor="FirstName"
                   className="block text-sm font-medium text-gray-700"
                 >
                   First Name
@@ -251,7 +251,7 @@ function Sign() {
                   } tracking-wide block w-full rounded-md max-sm:h-10 border-0 py-1.5 px-2 text-gray-900  ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-7 shadow-md`}
                 />
                 {!error.first_name && (
-                  <p class="text-red-500 text-xs italic">
+                  <p className="text-red-500 text-xs italic">
                     Please fill this field.
                   </p>
                 )}
@@ -265,7 +265,7 @@ function Sign() {
                 }`}
               >
                 <label
-                  for="LastName"
+                  htmlFor="LastName"
                   className="block text-sm font-medium text-gray-700"
                 >
                   Last Name
@@ -283,7 +283,7 @@ function Sign() {
                   } tracking-wide block w-full rounded-md border-0 max-sm:h-10 py-1.5 px-2 text-gray-900  ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-7 shadow-md`}
                 />
                 {!error.last_name && (
-                  <p class="text-red-500 text-xs italic">
+                  <p className="text-red-500 text-xs italic">
                     Please fill out this field.
                   </p>
                 )}
@@ -291,7 +291,7 @@ function Sign() {
 
               <div className="col-span-6">
                 <label
-                  for="Email"
+                  htmlFor="Email"
                   className="block text-sm font-medium text-gray-700"
                 >
                   Email
@@ -309,12 +309,12 @@ function Sign() {
                   } tracking-wide block w-full rounded-md border-0 max-sm:h-10 py-1.5 px-2 text-gray-900  ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-7 shadow-md`}
                 />
                 {!error.email && (
-                  <p class="text-red-500 text-xs italic">Invalid E-mail.</p>
+                  <p className="text-red-500 text-xs italic">Invalid E-mail.</p>
                 )}
               </div>
               <div className="col-span-6">
                 <label
-                  for="Phone"
+                  htmlFor="Phone"
                   className="block text-sm font-medium text-gray-700"
                 >
                   Phone Number
@@ -332,14 +332,14 @@ function Sign() {
                   } tracking-wide block w-full rounded-md border-0 py-1.5 px-2 max-sm:h-10 text-gray-900  ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-7 shadow-md`}
                 />
                 {!error.phone && (
-                  <p class="text-red-500 text-xs italic">
+                  <p className="text-red-500 text-xs italic">
                     Incorrect Phone Number Format.
                   </p>
                 )}
               </div>
               <div className="col-span-6">
                 <label
-                  for="Phone"
+                  htmlFor="Phone"
                   className="block text-sm font-medium text-gray-700"
                 >
                   Category
@@ -349,26 +349,29 @@ function Sign() {
                   id="category"
                   name="category"
                   onChange={handleChange}
+                  defaultValue={""} // Set the default value here
                   className={`${
                     error.category ? "ring-gray-300" : "ring-red-500"
                   } tracking-wide block w-full rounded-md border-0 py-1.5 px-2 max-sm:h-10 text-gray-900  ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-7 shadow-md`}
                 >
-                  <option value={""} selected>
-                    Choose your category
-                  </option>
+                  <option value={""}>Choose your category</option>{" "}
+                  {/* Remove the 'selected' attribute */}
                   <option value="undergraduate">Undergraduate</option>
                   <option value="jobseeker">Job Seeker</option>
                   <option value="company">Company</option>
                   <option value="other">Other</option>
                 </select>
+
                 {!error.category && (
-                  <p class="text-red-500 text-xs italic">Select a category.</p>
+                  <p className="text-red-500 text-xs italic">
+                    Select a category.
+                  </p>
                 )}
               </div>
 
               <div className="col-span-6 sm:col-span-3 relative">
                 <label
-                  for="Password"
+                  htmlFor="Password"
                   className="block text-sm font-medium text-gray-700"
                 >
                   Password
@@ -404,7 +407,7 @@ function Sign() {
                 </div>
 
                 {!error.validPassword && (
-                  <p class="text-red-500 text-xs italic">
+                  <p className="text-red-500 text-xs italic">
                     Password need to contain atleat 6 characters.
                   </p>
                 )}
@@ -412,7 +415,7 @@ function Sign() {
 
               <div className="col-span-6 sm:col-span-3">
                 <label
-                  for="PasswordConfirmation"
+                  htmlFor="PasswordConfirmation"
                   className="block text-sm font-medium text-gray-700"
                 >
                   Confirm Password
@@ -447,7 +450,7 @@ function Sign() {
                   </span>
                 </div>
                 {!error.confirmPassword && (
-                  <p class="text-red-500 text-xs italic">
+                  <p className="text-red-500 text-xs italic">
                     Password Doesn't Match.
                   </p>
                 )}

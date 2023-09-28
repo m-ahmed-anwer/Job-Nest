@@ -22,7 +22,7 @@ function Navbar() {
       setEmail(user.email);
       setImageURL(user.photoURL);
     }
-  }, [currentUser]);
+  }, [databaseUser]);
 
   const [profileView, setProfileView] = useState(false);
   const [menuBar, setMenuBar] = useState(false);

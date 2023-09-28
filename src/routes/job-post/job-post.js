@@ -256,9 +256,7 @@ function JobPost() {
                         value={data.type}
                         className="px-2 block w-full rounded-md border-0 py-1.5 mt-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       >
-                        <option value={""} selected>
-                          Select the type
-                        </option>
+                        <option value={""}>Select the type</option>
                         <option value="full-time">Full-time</option>
                         <option value="part-time">Part-time</option>
                         <option value="contract">Contract</option>
@@ -284,9 +282,7 @@ function JobPost() {
                         value={data.experienceLevel}
                         className="px-2 block w-full rounded-md border-0 py-1.5 mt-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       >
-                        <option value={""} selected>
-                          Select the level
-                        </option>
+                        <option value={""}>Select the level</option>
                         <option value="entry-level">Entry-level</option>
                         <option value="mid-level">Mid-level</option>
                         <option value="senior">Senior</option>
@@ -358,9 +354,7 @@ function JobPost() {
                           value={data.salary}
                           className="px-2 block w-full rounded-md border-0 py-1.5 mt-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         >
-                          <option value={""} selected>
-                            Select the range
-                          </option>
+                          <option value={""}>Select the range</option>
                           <option value="<50k">50k-</option>
                           <option value="50-70k">50-70k</option>
                           <option value="70-100k">70-100k</option>

@@ -206,7 +206,7 @@ function Login() {
             >
               <div className="col-span-6 lg:col-span-5 ">
                 <label
-                  for="Email"
+                  htmlFor="Email"
                   className="block text-sm font-medium text-gray-700"
                 >
                   Email
@@ -236,7 +236,7 @@ function Login() {
 
               <div className="col-span-6 lg:col-span-5 ">
                 <label
-                  for="Password"
+                  htmlFor="Password"
                   className="block text-sm font-medium text-gray-700"
                 >
                   Password
@@ -287,15 +287,15 @@ function Login() {
                     <div className="relative">
                       <label
                         className="block text-gray-500 font-bold"
-                        for="remember"
+                        htmlFor="remember"
                       >
                         <input
                           className="ml-2 leading-tight"
                           type="checkbox"
                           id="remember"
                           name="remember"
-                          onClick={() => setRememberMe(!rememberMe)}
-                          checked={rememberMe}
+                          // onClick={() => setRememberMe(!rememberMe)}
+                          // checked={rememberMe}
                         />
                         <span className="text-sm"> Remember me</span>
                       </label>
@@ -341,7 +341,7 @@ function Login() {
               onClick={googleLogin}
             >
               <img
-                class="w-6 h-6"
+                className="w-6 h-6"
                 src="https://www.svgrepo.com/show/475656/google-color.svg"
                 loading="lazy"
                 alt="google logo"
