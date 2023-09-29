@@ -40,7 +40,7 @@ function UploadPost() {
                 <LoadingJob />
                 <LoadingJob />
               </>
-            ) : jobs === null ? (
+            ) : jobs.length === null ? (
               <p className="my-10 mx-11">No jobs available</p>
             ) : (
               jobs.map((doc) => (

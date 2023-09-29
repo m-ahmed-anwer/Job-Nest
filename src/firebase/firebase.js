@@ -20,6 +20,7 @@ import {
   getDocs,
   query,
   where,
+  updateDoc,
 } from "firebase/firestore";
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -174,6 +175,28 @@ export const updateUserDocument = async (userAuth, updatedData) => {
     return true;
   } catch (error) {
     console.error("Error updating user document:", error);
+    return false;
+  }
+};
+
+export const updateCompanyInJobs = async (email, updatedData) => {
+  try {
+    const jobsCollectionRef = collection(db, "jobs");
+    const q = query(jobsCollectionRef, where("company.email", "==", email));
+    const querySnapshot = await getDocs(q);
+
+    querySnapshot.forEach(async (doc) => {
+      const docRef = doc.ref;
+      const jobData = doc.data();
+
+      jobData.company = { ...jobData.company, ...updatedData };
+
+      await updateDoc(docRef, jobData);
+    });
+
+    return true;
+  } catch (error) {
+    console.error("Error updating company details in Jobs:", error);
     return false;
   }
 };

@@ -28,8 +28,7 @@ function Modal({
     setOpen(false);
   };
 
-  const { setCurrentUser
-  } = useContext(UserContext);
+  const { setCurrentUser } = useContext(UserContext);
   const navigate = useNavigate();
 
   const signOutHandler = async () => {
