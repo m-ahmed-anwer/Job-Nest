@@ -6,16 +6,17 @@ import Loading from "../alert/loading";
 import {
   auth,
   getUserDocument,
+  updateCompanyInJobs,
   updateUserDocument,
 } from "../../firebase/firebase";
 import { updateProfile } from "firebase/auth";
-import { useNavigate } from "react-router";
+import { UserDetailsContext } from "../../context/user-details";
 
 const check = {
   company: false,
   first_name: false,
   last_name: false,
-  phone: false,
+  userPhone: false,
   country: false,
   street: false,
   city: false,
@@ -24,7 +25,7 @@ const check = {
 };
 const form = {
   email: "",
-  phone: "",
+  userPhone: "",
   displayName: "",
   first_name: "",
   last_name: "",
@@ -54,7 +55,7 @@ function MyProfile() {
       const userData = await getUserDocument(user);
       setEditedUserData({
         email: userData.email,
-        phone: userData.userPhone,
+        userPhone: userData.userPhone,
         displayName: userData.displayName,
         first_name: userData.first_name,
         last_name: userData.last_name,
@@ -79,6 +80,7 @@ function MyProfile() {
   const [message, setMessage] = useState("");
   const [buttonMessage, setButtonMesage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const { setDetails } = useContext(UserDetailsContext);
 
   const handleImage = (event) => {
     const file = event.target.files[0];
@@ -123,7 +125,6 @@ function MyProfile() {
       }));
     }
   };
-  const navigate = useNavigate();
   const isValidPhoneNumber = (phone) => {
     return phone.length === 10 && phone.startsWith("07");
   };
@@ -131,69 +132,77 @@ function MyProfile() {
   const submitHandle = async (event) => {
     event.preventDefault();
 
-    // if (!isValidPhoneNumber(editedUserData.phone)) {
-    //   setError({ ...error, phone: true });
-    //   return;
-    // }
+    if (!isValidPhoneNumber(editedUserData.userPhone)) {
+      setError({ ...error, userPhone: true });
+      return;
+    }
 
-    // if (category !== "company") {
-    //   if (!editedUserData.first_name) {
-    //     setError({ ...error, first_name: true });
-    //     return;
-    //   }
-    //   if (!editedUserData.last_name) {
-    //     setError({ ...error, last_name: true });
-    //     return;
-    //   }
-    // }
-    // if (category === "company") {
-    //   if (!editedUserData.displayName) {
-    //     setError({ ...error, company: true });
-    //     return;
-    //   }
-    //   if (!editedUserData.address.country) {
-    //     setError({ ...error, country: true });
-    //     return;
-    //   }
-    //   if (!editedUserData.address.street) {
-    //     setError({ ...error, street: true });
-    //     return;
-    //   }
-    //   if (!editedUserData.address.city) {
-    //     setError({ ...error, city: true });
-    //     return;
-    //   }
-    //   if (!editedUserData.address.state) {
-    //     setError({ ...error, state: true });
-    //     return;
-    //   }
-    //   if (!editedUserData.address.zip) {
-    //     setError({ ...error, zip: true });
-    //     return;
-    //   }
-    // }
+    if (category !== "company") {
+      if (!editedUserData.first_name) {
+        setError({ ...error, first_name: true });
+        return;
+      }
+      if (!editedUserData.last_name) {
+        setError({ ...error, last_name: true });
+        return;
+      }
+    }
+    if (category === "company") {
+      if (!editedUserData.displayName) {
+        setError({ ...error, company: true });
+        return;
+      }
+      if (!editedUserData.address.country) {
+        setError({ ...error, country: true });
+        return;
+      }
+      if (!editedUserData.address.street) {
+        setError({ ...error, street: true });
+        return;
+      }
+      if (!editedUserData.address.city) {
+        setError({ ...error, city: true });
+        return;
+      }
+      if (!editedUserData.address.state) {
+        setError({ ...error, state: true });
+        return;
+      }
+      if (!editedUserData.address.zip) {
+        setError({ ...error, zip: true });
+        return;
+      }
+    }
 
     setIsLoading(true);
     try {
       if (category === "company") {
         await updateProfile(user, { displayName: editedUserData.displayName });
-      } else if (category != "company") {
+        await updateCompanyInJobs(currentUser.email, {
+          displayName: editedUserData.displayName,
+          address: editedUserData.address,
+          first_name: editedUserData.first_name,
+          last_name: editedUserData.last_name,
+          userPhone: editedUserData.userPhone,
+        });
+      } else if (category !== "company") {
         await updateProfile(user, {
           displayName:
             editedUserData.first_name + " " + editedUserData.last_name,
         });
       }
-
       await updateUserDocument(user, editedUserData);
       const userData = await getUserDocument(user);
-      setDatauser(userData);
-      editedUserData(form);
+      setDetails(userData);
+      setDatabaseUser(userData);
       setError(check);
       setIsLoading(false);
+      setOpen(true);
       setMessage("All the details edited.");
       setButtonMesage("OK");
       setErrorMessage("ok");
-      navigate("/profile");
+
+      setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
       setMessage(error.message);
@@ -279,7 +288,7 @@ function MyProfile() {
                     </div>
                     <div className="sm:col-span-3">
                       <label
-                        htmlFor="phone"
+                        htmlFor="userPhone"
                         className="block text-sm font-medium leading-6 text-gray-900"
                       >
                         Phone Number
@@ -287,10 +296,10 @@ function MyProfile() {
                       <div className="mt-2">
                         <input
                           onChange={handleInputChange}
-                          id="phone"
-                          name="phone"
+                          id="userPhone"
+                          name="userPhone"
                           type="number"
-                          value={editedUserData.phone}
+                          value={editedUserData.userPhone}
                           disabled={!isEdit}
                           className=" px-2 block w-full rounded-md border-0 py-1.5  text-gray-900  ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 shadow-md"
                         />

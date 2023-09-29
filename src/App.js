@@ -55,8 +55,10 @@ function App() {
         />
 
         {currentUser && <Route path="/profile/*" element={<ProfileRoute />} />}
+
         {currentUser && <Route path="/post" element={<JobPost1 />} />}
         {currentUser && <Route path="/post/details" element={<JobPost />} />}
+
         {currentUser && <Route path="/edit/:postId" element={<PostEdit />} />}
 
         <Route path="*" element={<NotFound />} />
