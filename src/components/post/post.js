@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import LoadingJob from "../loading-job/Loading-job";
-import SingleJob from "../jobs/single-job";
 import { Link } from "react-router-dom";
 import { getJobByUserEmail } from "../../firebase/firebase";
 import { UserContext } from "../../context/user-context";
+import EditJob from "../jobs/edit-job";
 
 function UploadPost() {
   const [jobs, setJobs] = useState([]);
@@ -40,13 +40,13 @@ function UploadPost() {
                 <LoadingJob />
                 <LoadingJob />
               </>
-            ) : jobs.length === null ? (
+            ) : jobs === null || jobs.length === 0 ? (
               <p className="my-10 mx-11">No jobs available</p>
             ) : (
               jobs.map((doc) => (
-                <Link to={`/edit/${doc.id}`} key={doc.id}>
-                  <SingleJob job={doc.job} company={doc.company} />
-                </Link>
+                <div key={doc.id}>
+                  <EditJob job={doc.job} company={doc.company} id={doc.id} />
+                </div>
               ))
             )}
           </div>

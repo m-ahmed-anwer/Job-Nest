@@ -7,6 +7,7 @@ import {
 import { getAuth } from "firebase/auth";
 import { UserContext } from "../../context/user-context";
 import { useNavigate } from "react-router";
+import { UserDetailsContext } from "../../context/user-details";
 
 function Modal({
   message,
@@ -28,13 +29,17 @@ function Modal({
     setOpen(false);
   };
 
-  const { setCurrentUser } = useContext(UserContext);
+  const { setCurrentUser, setDatabaseUser } = useContext(UserContext);
+  const { setDetails } = useContext(UserDetailsContext);
   const navigate = useNavigate();
 
   const signOutHandler = async () => {
     await getAuth().signOut();
     setOpen(false);
+    setDatabaseUser(null);
     setCurrentUser(null);
+    setDetails(null);
+
     navigate("/login");
   };
   const viewPost = () => {
