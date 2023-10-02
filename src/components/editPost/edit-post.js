@@ -229,7 +229,7 @@ function PostEdit() {
                           </div>
                         </div>
                         {!error.title && (
-                          <p class="text-red-500 text-xs italic">
+                          <p className="text-red-500 text-xs italic">
                             Please fill this field.
                           </p>
                         )}
@@ -281,7 +281,7 @@ function PostEdit() {
                           <option value="contract">Contract</option>
                         </select>
                         {!error.type && (
-                          <p class="text-red-500 text-xs italic">
+                          <p className="text-red-500 text-xs italic">
                             Select a type.
                           </p>
                         )}

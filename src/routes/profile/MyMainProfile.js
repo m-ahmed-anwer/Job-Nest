@@ -85,7 +85,7 @@ function MainProfile() {
           </li>
         </ul>
       </div>
-      
+
       <Outlet />
     </Fragment>
   );
