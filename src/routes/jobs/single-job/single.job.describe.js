@@ -7,8 +7,8 @@ import Loading from "../../../components/alert/loading";
 
 const reviews = { href: "#", average: 4, totalCount: 117 };
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
+function classNames(...classNamees) {
+  return classNamees.filter(Boolean).join(" ");
 }
 
 function JobDescribe() {
