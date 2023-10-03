@@ -7,7 +7,7 @@ import Message from "./Message";
 const Chat = () => {
   return (
     <div>
-      <SendMessage />
+      
 
       <ChatRoom />
     </div>

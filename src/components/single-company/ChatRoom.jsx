@@ -5,8 +5,8 @@ import ChatBox from "./ChatBox";
 const ChatRoom = () => {
   return (
     <div>
-      <ChatBox />
       <SendMessage />
+      <ChatBox />
     </div>
   );
 };

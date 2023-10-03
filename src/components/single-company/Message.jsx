@@ -3,7 +3,7 @@ import { getAuth } from "firebase/auth";
 import { UserContext } from "../../context/user-context";
 
 const Message = ({ message }) => {
-  const { currentUser } = useContext(UserContext)
+  const { currentUser } = useContext(UserContext);
 
   console.log(message);
   return (
@@ -11,7 +11,7 @@ const Message = ({ message }) => {
       <div className="chat chat-start">
         <div className="chat-image avatar">
           <div className="w-10 rounded-full">
-            <img src={""} />
+            <img src={message.avatar} />
           </div>
         </div>
         <div className="chat-header">{currentUser.displayName}</div>
