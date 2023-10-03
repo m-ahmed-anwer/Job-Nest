@@ -71,7 +71,6 @@ function Companies() {
   return (
     <div className="bg-white">
       <div>
-        
         <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-10">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900">
@@ -85,8 +84,6 @@ function Companies() {
             </h2>
 
             <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
-            
-
               {/* Product grid */}
               <div className="lg:col-span-3">
                 <section className="py-16">
@@ -113,8 +110,7 @@ function Companies() {
                           No companies registered yet.
                         </p>
                       ) : (
-                            companies.map((item) => {
-                              console.log(companies);
+                        companies.map((item) => {
                           return <Company item={item} />;
                         })
                       )}

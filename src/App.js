@@ -18,6 +18,7 @@ import JobDescribe from "./routes/jobs/single-job/single.job.describe";
 import TermsAndConditions from "./routes/privacy/terms.conditions";
 import JobPost1 from "./routes/job-post/job-post1";
 import SingleCompany from "./routes/companies/Unique.company";
+import Chat from "./components/single-company/Chat";
 
 function App() {
   const { currentUser } = useContext(UserContext);
@@ -42,6 +43,7 @@ function App() {
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/terms" element={<TermsAndConditions />} />
         <Route path="/contact" element={<ContactUs />} />
+        <Route path="/chat/:chatId" element={<Chat />} />
         <Route
           path="/login"
           element={currentUser ? <Navigate to="/" /> : <Login />}

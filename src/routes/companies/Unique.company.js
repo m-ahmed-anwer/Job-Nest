@@ -1,16 +1,13 @@
 import React from "react";
 import { useParams } from "react-router";
-import Profile from "../../components/single-company/Profile";
-import Chat from "../../components/single-company/Chat";
+import Profile from "../../asjedh/Profile";
 
 function SingleCompany() {
   const { companyId } = useParams();
 
   return (
     <div>
-      <Profile/>
-      
-      <Chat/>
+      <Profile companyId={companyId} />
     </div>
   );
 }
