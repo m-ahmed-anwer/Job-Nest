@@ -1,7 +1,8 @@
 import React from "react";
+import ChatRoom from "./ChatRoom";
 
-function Chat() {
-  return <div>helpo </div>;
-}
+const Chat = () => {
+  return <div>{/* <ChatRoom /> */}</div>;
+};
 
 export default Chat;
