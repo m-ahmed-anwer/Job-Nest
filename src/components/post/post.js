@@ -1,7 +1,59 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
+import LoadingJob from "../loading-job/Loading-job";
+import { Link } from "react-router-dom";
+import { getJobByUserEmail } from "../../firebase/firebase";
+import { UserContext } from "../../context/user-context";
+import EditJob from "../jobs/edit-job";
 
 function UploadPost() {
-  return <div>Post Upload</div>;
+  const [jobs, setJobs] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const { currentUser } = useContext(UserContext);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    const fetchJobs = async () => {
+      setIsLoading(true);
+      const jobsData = await getJobByUserEmail(currentUser.email);
+      setJobs(jobsData);
+      setIsLoading(false);
+    };
+    fetchJobs();
+  }, [currentUser]);
+
+  return (
+    <>
+      <div className=" w-full ">
+        <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-4">
+            <h1 className="text-2xl font-bold tracking-tight text-gray-900">
+              My Posts
+            </h1>
+          </div>
+          <div className="lg:col-span-3">
+            {isLoading ? (
+              <>
+                <LoadingJob />
+                <LoadingJob />
+                <LoadingJob />
+                <LoadingJob />
+                <LoadingJob />
+                <LoadingJob />
+              </>
+            ) : jobs === null || jobs.length === 0 ? (
+              <p className="my-10 mx-11">No jobs available</p>
+            ) : (
+              jobs.map((doc) => (
+                <div key={doc.id}>
+                  <EditJob job={doc.job} company={doc.company} id={doc.id} />
+                </div>
+              ))
+            )}
+          </div>
+        </main>
+      </div>
+    </>
+  );
 }
 
 export default UploadPost;

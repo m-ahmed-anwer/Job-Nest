@@ -99,7 +99,9 @@ function ForgetPassword() {
                 value={data.email}
               />
               {!error.email && (
-                <p class="text-red-500 text-xs italic">Invalid email format.</p>
+                <p className="text-red-500 text-xs italic">
+                  Invalid email format.
+                </p>
               )}
               <div>
                 <button

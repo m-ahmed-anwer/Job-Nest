@@ -20,6 +20,7 @@ import {
   getDocs,
   query,
   where,
+  updateDoc,
 } from "firebase/firestore";
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -164,6 +165,42 @@ export const getUserDocument = async (userAuth) => {
   return null;
 };
 
+export const updateUserDocument = async (userAuth, updatedData) => {
+  if (!userAuth) return null;
+
+  const userDocRef = doc(db, "users", userAuth.uid);
+
+  try {
+    await setDoc(userDocRef, updatedData, { merge: true });
+    return true;
+  } catch (error) {
+    console.error("Error updating user document:", error);
+    return false;
+  }
+};
+
+export const updateCompanyInJobs = async (email, updatedData) => {
+  try {
+    const jobsCollectionRef = collection(db, "jobs");
+    const q = query(jobsCollectionRef, where("company.email", "==", email));
+    const querySnapshot = await getDocs(q);
+
+    querySnapshot.forEach(async (doc) => {
+      const docRef = doc.ref;
+      const jobData = doc.data();
+
+      jobData.company = { ...jobData.company, ...updatedData };
+
+      await updateDoc(docRef, jobData);
+    });
+
+    return true;
+  } catch (error) {
+    console.error("Error updating company details in Jobs:", error);
+    return false;
+  }
+};
+
 export const postJob = async (userAuth, jobData) => {
   if (!userAuth) return;
   try {
@@ -199,6 +236,24 @@ export const getJob = async () => {
     return null;
   }
 };
+export const getJobByUserEmail = async (email) => {
+  try {
+    const jobsCollectionRef = collection(db, "jobs");
+    const q = query(jobsCollectionRef, where("company.email", "==", email));
+    const querySnapshot = await getDocs(q);
+
+    const jobs = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      job: doc.data().job,
+      company: doc.data().company,
+    }));
+
+    return jobs;
+  } catch (error) {
+    console.error("Error fetching jobs:", error.message);
+    return null;
+  }
+};
 
 export const getJobById = async (jobId) => {
   try {
@@ -228,6 +283,28 @@ export const getJobByTitle = async (jobTitle) => {
       where("job.searchKeywords", "array-contains", lowercaseJobTitle)
     );
 
+    const querySnapshot = await getDocs(q);
+
+    const jobs = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      job: doc.data().job,
+      company: doc.data().company,
+    }));
+
+    return jobs;
+  } catch (error) {
+    console.log("Error fetching jobs", error.message);
+    return null;
+  }
+};
+
+export const getJobFilter = async (sectionId, optionValue) => {
+  try {
+    const jobsCollectionRef = collection(db, "jobs");
+    const q = query(
+      jobsCollectionRef,
+      where(`job.${sectionId}`, "==", optionValue)
+    );
     const querySnapshot = await getDocs(q);
 
     const jobs = querySnapshot.docs.map((doc) => ({

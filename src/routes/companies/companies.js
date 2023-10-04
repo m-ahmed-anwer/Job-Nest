@@ -1,49 +1,8 @@
-import { Fragment, useEffect, useState } from "react";
-import { Dialog, Disclosure, Transition } from "@headlessui/react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import { useEffect, useState } from "react";
 
-import { FunnelIcon, MinusIcon, PlusIcon } from "@heroicons/react/20/solid";
 import Company from "../../components/company/company";
 import { getCompanyUsers } from "../../firebase/firebase";
 import LoadingCompany from "../../components/loading-company/loading.comapny";
-
-const filters = [
-  {
-    id: "color",
-    name: "Color",
-    options: [
-      { value: "white", label: "White", checked: false },
-      { value: "beige", label: "Beige", checked: false },
-      { value: "blue", label: "Blue", checked: true },
-      { value: "brown", label: "Brown", checked: false },
-      { value: "green", label: "Green", checked: false },
-      { value: "purple", label: "Purple", checked: false },
-    ],
-  },
-  {
-    id: "category",
-    name: "Category",
-    options: [
-      { value: "new-arrivals", label: "New Arrivals", checked: false },
-      { value: "sale", label: "Sale", checked: false },
-      { value: "travel", label: "Travel", checked: true },
-      { value: "organization", label: "Organization", checked: false },
-      { value: "accessories", label: "Accessories", checked: false },
-    ],
-  },
-  {
-    id: "size",
-    name: "Size",
-    options: [
-      { value: "2l", label: "2L", checked: false },
-      { value: "6l", label: "6L", checked: false },
-      { value: "12l", label: "12L", checked: false },
-      { value: "18l", label: "18L", checked: false },
-      { value: "20l", label: "20L", checked: false },
-      { value: "40l", label: "40L", checked: true },
-    ],
-  },
-];
 
 function Companies() {
   const [companies, setCompanies] = useState([]);
@@ -65,8 +24,6 @@ function Companies() {
 
     fetchCompanies();
   }, []);
-
-  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   return (
     <div className="bg-white">
@@ -111,7 +68,15 @@ function Companies() {
                         </p>
                       ) : (
                         companies.map((item) => {
+<<<<<<< HEAD
                           return <Company item={item} />;
+=======
+                          return (
+                            <div key={item.id}>
+                              <Company item={item} />
+                            </div>
+                          );
+>>>>>>> ahmed
                         })
                       )}
                     </ul>
