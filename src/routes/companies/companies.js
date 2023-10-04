@@ -68,11 +68,15 @@ function Companies() {
                         </p>
                       ) : (
                         companies.map((item) => {
+<<<<<<< HEAD
+                          return <Company item={item} />;
+=======
                           return (
                             <div key={item.id}>
                               <Company item={item} />
                             </div>
                           );
+>>>>>>> ahmed
                         })
                       )}
                     </ul>
