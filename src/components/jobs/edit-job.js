@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { TrashIcon, PencilIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
+import DeleteModal from "../alert/delete-post";
 
-function EditJob({ job, company, id }) {
+function EditJob({ job, company, id, setUpdate }) {
   const { title, description, applicationDeadline, salary, type } = job;
   const { displayName, photoURL } = company;
 
@@ -20,13 +21,25 @@ function EditJob({ job, company, id }) {
   const timeDifference = deadline - date;
   const daysRemaining = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
   const shouldShowJob = daysRemaining > 0;
+  const [open, setOpen] = useState(false);
+  const deleteJob = () => {
+    setOpen(true);
+  };
 
   return (
     <>
       {shouldShowJob && (
         <div
-          className={` relative block overflow-hidden rounded-lg border max-sm:w-full border-gray-100 p-4 sm:p-6 lg:p-8 sm:mx-5 mt-7  hover:bg-gray-50`}
-        >
+          className={` relative block overflow-hidden rounded-lg border max-sm:w-full border-gray-100 p-4 sm:p-6 lg:p-8 sm:mx-5 mt-7  hover:bg-gray-50${
+            daysRemaining < 0 && "bg-red-100  "
+          }`}>
+          <DeleteModal
+            id={id}
+            open={open}
+            setOpen={setOpen}
+            title={title}
+            setUpdate={setUpdate}
+          />
           <div className="sm:flex sm:justify-between sm:gap-4">
             <div>
               <h3 className="text-lg font-bold text-gray-900 sm:text-xl">
@@ -84,21 +97,20 @@ function EditJob({ job, company, id }) {
           </div>
           <div className="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r from-green-300 via-blue-500 to-purple-600"></div>
           <div className="mt-5">
-            <Link
-              to={`/delete/${id}`}
+            <button
               className="inline-flex items-center px-4 py-2 mr-10 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-md"
-            >
+              onClick={deleteJob}>
               <TrashIcon className="h-4 mr-2" />
               Delete
-            </Link>
-
-            <Link
-              to={`/edit/${id}`}
-              className="inline-flex items-center px-4 py-2  bg-indigo-500 hover:bg-indigo-600 text-white text-sm font-medium rounded-md"
-            >
-              <PencilIcon className="h-4 mr-2" />
-              Edit
-            </Link>
+            </button>
+            {daysRemaining > 0 && (
+              <Link
+                to={`/edit/${id}`}
+                className="inline-flex items-center px-4 py-2  bg-indigo-500 hover:bg-indigo-600 text-white text-sm font-medium rounded-md">
+                <PencilIcon className="h-4 mr-2" />
+                Edit
+              </Link>
+            )}
           </div>
         </div>
       )}

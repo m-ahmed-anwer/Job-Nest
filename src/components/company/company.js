@@ -18,15 +18,16 @@ export default function Company({ item }) {
             <h4 className="text-gray-800 font-semibold">{displayName}</h4>
             <p className="text-gray-600 text-sm">{email}</p>
           </div>
-          <button className="text-gray-700 text-sm border rounded-lg  px-3 py-2 duration-150 hover:bg-gray-100">
+          <Link
+            to={`/chat/${id}`}
+            className="text-gray-700 text-sm border rounded-lg  px-3 py-2 duration-150 hover:bg-gray-100">
             Connect
-          </button>
+          </Link>
         </div>
         <div className="py-5 px-4 border-t text-right">
           <Link
             to={`/companies/${id}`}
-            className="text-indigo-600 hover:text-indigo-500 text-sm font-medium"
-          >
+            className="text-indigo-600 hover:text-indigo-500 text-sm font-medium">
             View company
           </Link>
         </div>

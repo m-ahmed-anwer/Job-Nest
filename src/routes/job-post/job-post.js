@@ -164,12 +164,8 @@ function JobPost() {
   return (
     <>
       {state && state.confirmDetails === true && category === "company" ? (
-        <div className="flex items-center flex-col">
-          <div
-            className={`w-2/4   px-1 py-5 sm:px-10 lg:px-6 ${
-              isLoading && "relative"
-            } `}
-          >
+        <div className="flex items-center sm:flex-col sm:mx-4">
+          <div className={` ${isLoading && "relative"} `}>
             <Loading loading={isLoading} />
             <Modal
               message={message}
@@ -179,8 +175,8 @@ function JobPost() {
               buttonMessage={buttonMesage}
               confirm={post}
             />
-            <div className="px-4 py-16 sm:px-6 lg:px-8">
-              <form className="" onSubmit={submitHandler} action="#">
+            <div className="px-4 py-8 sm:px-6 lg:px-8 ">
+              <form onSubmit={submitHandler} action="#">
                 <div className="space-y-12">
                   <div className="border-b border-gray-900/10 pb-12">
                     <h2 className="text-base font-semibold leading-7 text-gray-900">
@@ -195,8 +191,7 @@ function JobPost() {
                       <div className="sm:col-span-4">
                         <label
                           htmlFor="title"
-                          className="block text-sm font-medium leading-6 text-gray-900"
-                        >
+                          className="block text-sm font-medium leading-6 text-gray-900">
                           Job Title
                         </label>
                         <div className="mt-2">
@@ -221,8 +216,7 @@ function JobPost() {
                       <div className="col-span-full">
                         <label
                           htmlFor="description"
-                          className="block text-sm font-medium leading-6 text-gray-900"
-                        >
+                          className="block text-sm font-medium leading-6 text-gray-900">
                           Description
                         </label>
                         <div className="mt-2">
@@ -247,8 +241,7 @@ function JobPost() {
                       <div className="sm:col-span-3">
                         <label
                           htmlFor="type"
-                          className="block text-sm font-medium leading-6 text-gray-900"
-                        >
+                          className="block text-sm font-medium leading-6 text-gray-900">
                           Type
                         </label>
                         <select
@@ -256,8 +249,7 @@ function JobPost() {
                           name="type"
                           onChange={handleChange}
                           value={data.type}
-                          className="px-2 block w-full rounded-md border-0 py-1.5 mt-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                        >
+                          className="px-2 block w-full rounded-md border-0 py-1.5 mt-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                           <option value={""}>Select the type</option>
                           <option value="full-time">Full-time</option>
                           <option value="part-time">Part-time</option>
@@ -273,8 +265,7 @@ function JobPost() {
                       <div className="sm:col-span-3">
                         <label
                           htmlFor="experienceLevel"
-                          className="block text-sm font-medium leading-6 text-gray-900"
-                        >
+                          className="block text-sm font-medium leading-6 text-gray-900">
                           Experience Level
                         </label>
                         <select
@@ -282,8 +273,7 @@ function JobPost() {
                           name="experienceLevel"
                           onChange={handleChange}
                           value={data.experienceLevel}
-                          className="px-2 block w-full rounded-md border-0 py-1.5 mt-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                        >
+                          className="px-2 block w-full rounded-md border-0 py-1.5 mt-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                           <option value={""}>Select the level</option>
                           <option value="entry-level">Entry-level</option>
                           <option value="mid-level">Mid-level</option>
@@ -298,8 +288,7 @@ function JobPost() {
                       <div className="sm:col-span-4">
                         <label
                           htmlFor="requirements"
-                          className="block text-sm font-medium leading-6 text-gray-900"
-                        >
+                          className="block text-sm font-medium leading-6 text-gray-900">
                           Requirements
                         </label>
                         <div className="mt-2">
@@ -321,8 +310,7 @@ function JobPost() {
                       <div className="sm:col-span-4">
                         <label
                           htmlFor="responsibilities"
-                          className="block text-sm font-medium leading-6 text-gray-900"
-                        >
+                          className="block text-sm font-medium leading-6 text-gray-900">
                           Responsibilities
                         </label>
                         <div className="mt-2">
@@ -344,8 +332,7 @@ function JobPost() {
                       <div className="sm:col-span-3">
                         <label
                           htmlFor="salary"
-                          className="block text-sm font-medium leading-6 text-gray-900"
-                        >
+                          className="block text-sm font-medium leading-6 text-gray-900">
                           Salary Range<small>{" (per month)"}</small>
                         </label>
                         <div className="mt-2">
@@ -354,8 +341,7 @@ function JobPost() {
                             name="salary"
                             onChange={handleChange}
                             value={data.salary}
-                            className="px-2 block w-full rounded-md border-0 py-1.5 mt-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                          >
+                            className="px-2 block w-full rounded-md border-0 py-1.5 mt-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                             <option value={""}>Select the range</option>
                             <option value="<50k">{"<50k"}</option>
                             <option value="50-70k">50-70k</option>
@@ -377,8 +363,7 @@ function JobPost() {
                       <div className="sm:col-span-3">
                         <label
                           htmlFor="applicationDeadline"
-                          className="block text-sm font-medium leading-6 text-gray-900"
-                        >
+                          className="block text-sm font-medium leading-6 text-gray-900">
                           Application Deadline
                         </label>
                         <div className="mt-2">
@@ -405,14 +390,12 @@ function JobPost() {
                   <button
                     type="button"
                     className="rounded-md bg-red-600 px-5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
-                    onClick={() => navigate(-1)}
-                  >
+                    onClick={() => navigate(-1)}>
                     Go Back
                   </button>
                   <button
                     type="submit"
-                    className="rounded-md bg-blue-700 px-8 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-                  >
+                    className="rounded-md bg-blue-700 px-8 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
                     Post
                   </button>
                 </div>
