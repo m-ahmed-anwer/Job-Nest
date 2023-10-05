@@ -22,6 +22,7 @@ import {
   where,
   updateDoc,
   deleteDoc,
+  orderBy,
 } from "firebase/firestore";
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -354,6 +355,33 @@ export const getJobFilter = async (sectionId, optionValue) => {
     return jobs;
   } catch (error) {
     console.log("Error fetching jobs", error.message);
+    return null;
+  }
+};
+
+export const sendMessage = async (data) => {
+  try {
+    await addDoc(collection(db, "messages"), data);
+  } catch (error) {
+    console.error("Error updating document: ", error);
+  }
+};
+
+export const getMessage = async (email) => {
+  try {
+    const messageCollectionRef = collection(db, "messages");
+    const q = query(messageCollectionRef, where("sender.email", "==", email));
+
+    const querySnapshot = await getDocs(q);
+
+    const messages = querySnapshot.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    }));
+
+    return messages;
+  } catch (error) {
+    console.error("Error fetching messages:", error.message);
     return null;
   }
 };
