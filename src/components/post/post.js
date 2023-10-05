@@ -9,6 +9,7 @@ function UploadPost() {
   const [jobs, setJobs] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const { currentUser } = useContext(UserContext);
+  const [update, setUpdate] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -19,7 +20,7 @@ function UploadPost() {
       setIsLoading(false);
     };
     fetchJobs();
-  }, [currentUser]);
+  }, [update]);
 
   return (
     <>
@@ -45,7 +46,12 @@ function UploadPost() {
             ) : (
               jobs.map((doc) => (
                 <div key={doc.id}>
-                  <EditJob job={doc.job} company={doc.company} id={doc.id} />
+                  <EditJob
+                    job={doc.job}
+                    company={doc.company}
+                    id={doc.id}
+                    setUpdate={setUpdate}
+                  />
                 </div>
               ))
             )}

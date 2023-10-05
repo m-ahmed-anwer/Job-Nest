@@ -21,6 +21,7 @@ import {
   query,
   where,
   updateDoc,
+  deleteDoc,
 } from "firebase/firestore";
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -150,6 +151,26 @@ export const getCompanyUsers = async () => {
     return [];
   }
 };
+export const getCompanyUserById = async (userId) => {
+  try {
+    const userDocRef = doc(db, "users", userId);
+    const userDocSnapshot = await getDoc(userDocRef);
+
+    if (
+      userDocSnapshot.exists() &&
+      userDocSnapshot.data().category === "company" &&
+      userDocSnapshot.data().emailVerified
+    ) {
+      return { id: userDocSnapshot.id, ...userDocSnapshot.data() };
+    } else {
+      console.log("Company user not found or not verified");
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching company user details:", error);
+    return null;
+  }
+};
 
 export const getUserDocument = async (userAuth) => {
   if (!userAuth) return null;
@@ -269,6 +290,23 @@ export const getJobById = async (jobId) => {
   } catch (error) {
     console.error("Error fetching job details:", error);
     return null;
+  }
+};
+export const deleteJobById = async (jobId) => {
+  try {
+    const jobDocRef = doc(db, "jobs", jobId);
+    const jobDocSnapshot = await getDoc(jobDocRef);
+
+    if (jobDocSnapshot.exists()) {
+      await deleteDoc(jobDocRef);
+      return true;
+    } else {
+      console.log("Job not found");
+      return false;
+    }
+  } catch (error) {
+    console.error("Error deleting job:", error);
+    return false;
   }
 };
 

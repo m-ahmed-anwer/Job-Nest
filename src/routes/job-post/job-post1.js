@@ -11,8 +11,8 @@ function JobPost1() {
   return (
     <>
       {category === "company" ? (
-        <div className="flex items-center flex-col">
-          <div className="w-2/4  px-4 py-16 sm:px-6 lg:px-8">
+        <div className="flex items-center sm:flex-col sm:mx-4">
+          <div className="px-4 py-8 sm:px-6 lg:px-8">
             <div className="border-b border-gray-900/10 pb-12">
               <h2 className="text-base font-semibold leading-7 text-gray-900">
                 Company Details
@@ -35,8 +35,7 @@ function JobPost1() {
                 <div className="col-span-full">
                   <label
                     htmlFor="name"
-                    className="block text-sm font-medium leading-6 text-gray-900"
-                  >
+                    className="block text-sm font-medium leading-6 text-gray-900">
                     Company Name
                   </label>
                   <div className="mt-2">
@@ -54,8 +53,7 @@ function JobPost1() {
                 <div className="sm:col-span-4">
                   <label
                     htmlFor="email"
-                    className="block text-sm font-medium leading-6 text-gray-900"
-                  >
+                    className="block text-sm font-medium leading-6 text-gray-900">
                     Email address
                   </label>
                   <div className="mt-2">
@@ -73,8 +71,7 @@ function JobPost1() {
                 <div className="sm:col-span-3">
                   <label
                     htmlFor="country"
-                    className="block text-sm font-medium leading-6 text-gray-900"
-                  >
+                    className="block text-sm font-medium leading-6 text-gray-900">
                     Country
                   </label>
                   <div className="mt-2">
@@ -92,8 +89,7 @@ function JobPost1() {
                 <div className="col-span-full">
                   <label
                     htmlFor="street-address"
-                    className="block text-sm font-medium leading-6 text-gray-900"
-                  >
+                    className="block text-sm font-medium leading-6 text-gray-900">
                     Street address
                   </label>
                   <div className="mt-2">
@@ -111,8 +107,7 @@ function JobPost1() {
                 <div className="sm:col-span-2 sm:col-start-1">
                   <label
                     htmlFor="city"
-                    className="block text-sm font-medium leading-6 text-gray-900"
-                  >
+                    className="block text-sm font-medium leading-6 text-gray-900">
                     City
                   </label>
                   <div className="mt-2">
@@ -130,8 +125,7 @@ function JobPost1() {
                 <div className="sm:col-span-2">
                   <label
                     htmlFor="region"
-                    className="block text-sm font-medium leading-6 text-gray-900"
-                  >
+                    className="block text-sm font-medium leading-6 text-gray-900">
                     State / Province
                   </label>
                   <div className="mt-2">
@@ -149,8 +143,7 @@ function JobPost1() {
                 <div className="sm:col-span-2">
                   <label
                     htmlFor="postal-code"
-                    className="block text-sm font-medium leading-6 text-gray-900"
-                  >
+                    className="block text-sm font-medium leading-6 text-gray-900">
                     ZIP / Postal code
                   </label>
                   <div className="mt-2">
@@ -170,8 +163,7 @@ function JobPost1() {
               <button
                 type="button"
                 className="rounded-md bg-red-600 px-5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
-                onClick={() => navigate(-1)}
-              >
+                onClick={() => navigate(-1)}>
                 Cancel
               </button>
               <button
@@ -181,8 +173,7 @@ function JobPost1() {
                   navigate("/post/details", {
                     state: { confirmDetails: true },
                   })
-                }
-              >
+                }>
                 Next
               </button>
             </div>
