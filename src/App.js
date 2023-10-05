@@ -52,6 +52,7 @@ function App() {
           path="/forget-password"
           element={currentUser ? <Navigate to="/" /> : <ForgetPassword />}
         />
+
         <Route
           path="/signup"
           element={currentUser ? <Navigate to="/" /> : <Signup />}
