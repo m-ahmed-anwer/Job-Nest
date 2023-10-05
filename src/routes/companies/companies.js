@@ -59,6 +59,7 @@ function Companies() {
                         <>
                           <LoadingCompany />
                           <LoadingCompany />
+
                           <LoadingCompany />
                           <LoadingCompany />
                         </>
