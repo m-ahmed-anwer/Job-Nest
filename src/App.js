@@ -43,7 +43,11 @@ function App() {
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/terms" element={<TermsAndConditions />} />
         <Route path="/contact" element={<ContactUs />} />
-        <Route path="/chat/:chatId" element={<Chat />} />
+
+        <Route
+          path="/chat/:chatId"
+          element={!currentUser ? <Navigate to="/login" /> : <Chat />}
+        />
         <Route
           path="/login"
           element={currentUser ? <Navigate to="/" /> : <Login />}

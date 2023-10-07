@@ -1,11 +1,27 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { UserContext } from "../../context/user-context";
+import { createReview, getReviewsByEmail } from "../../firebase/firebase";
 
-function Review() {
+function Review({ company }) {
+  const { currentUser } = useContext(UserContext);
   const [clicked, setClicked] = useState(false);
   const [stars, setStars] = useState(1);
   const [review, setReview] = useState("");
   const [reviews, setReviews] = useState([]);
   const [fail, setFail] = useState(false);
+  const [alertMSG, setAlertMSG] = useState("");
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      if (company.email) {
+        const fetchedReviews = await getReviewsByEmail(company.email);
+        setReviews(fetchedReviews);
+        //console.log(await getReviewsByEmail(company.email));
+      }
+    };
+
+    fetchReviews();
+  }, []);
 
   const onMouseOver = (rating) => {
     if (clicked) return;
@@ -26,12 +42,11 @@ function Review() {
   const onClick = (rating) => {
     setClicked(true);
     setStars(rating);
-    // Reset
+
     [...Array(5)].map((x, i) => {
       document.querySelector(`#star-${i + 1}`).classList.replace("fas", "far");
     });
 
-    // Highlight
     [...Array(rating)].map((x, i) => {
       document.querySelector(`#star-${i + 1}`).classList.replace("far", "fas");
     });
@@ -50,25 +65,34 @@ function Review() {
     setClicked(false);
   };
 
-  const submitReview = (e) => {
+  const submitReview = async (e) => {
     e.preventDefault();
-    setFail(false);
-    if (review) {
-      const newReview = {
-        rating: stars,
-        description: review,
-      };
+    if (currentUser) {
+      setFail(false);
+      if (review) {
+        const newReview = {
+          userEmail: currentUser.email,
+          recieverEmail: company.email,
+          rating: stars,
+          description: review,
+        };
 
-      setReviews([...reviews, newReview]);
-      resetForm(e);
+        await createReview(newReview);
+        setReviews([...reviews, newReview]);
+
+        resetForm(e);
+      } else {
+        setAlertMSG("Please fill out this field to review.");
+        setFail(true);
+      }
     } else {
+      setAlertMSG("Please login to review.");
       setFail(true);
     }
   };
 
   const deleteReview = (e, index) => {
     e.preventDefault();
-
     const clone = [...reviews];
     const newState = clone.filter((x, i) => i !== index);
     setReviews(newState);
@@ -109,21 +133,19 @@ function Review() {
                 setFail(false);
               }}
             />
-            {fail && (
-              <p className="text-red-500 text-xs italic">
-                Please fill out this field to review.
-              </p>
-            )}
+            {fail && <p className="text-red-500 text-xs italic">{alertMSG}</p>}
           </div>
           <div className="mt-5">
             <button
               className="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-              onClick={(e) => resetForm(e)}>
+              onClick={(e) => resetForm(e)}
+            >
               Reset
             </button>
             <button
               className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-              onClick={(e) => submitReview(e)}>
+              onClick={(e) => submitReview(e)}
+            >
               Submit
             </button>
           </div>
@@ -132,18 +154,21 @@ function Review() {
               return (
                 <div
                   key={rIndex}
-                  className="bg-white shadow-md rounded-lg p-4 mb-4">
+                  className="bg-white shadow-md rounded-lg p-4 mb-4"
+                >
                   {[...Array(r.rating)].map((s, sIndex) => {
                     return (
                       <i
                         key={sIndex}
-                        className="fas fa-star text-yellow-500"></i>
+                        className="fas fa-star text-yellow-500"
+                      ></i>
                     );
                   })}
                   <p>{r.description}</p>
                   <button
                     className="bg-red-500 text-white py-1 px-2 rounded-md focus:outline-none mt-2"
-                    onClick={(e) => deleteReview(e, rIndex)}>
+                    onClick={(e) => deleteReview(e, rIndex)}
+                  >
                     Delete
                   </button>
                 </div>

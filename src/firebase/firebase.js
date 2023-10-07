@@ -23,6 +23,8 @@ import {
   updateDoc,
   deleteDoc,
   orderBy,
+  limit,
+  Firestore,
 } from "firebase/firestore";
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -367,10 +369,16 @@ export const sendMessage = async (data) => {
   }
 };
 
-export const getMessage = async (email) => {
+export const getMessage = async (senderEmail, recieverEmail) => {
   try {
     const messageCollectionRef = collection(db, "messages");
-    const q = query(messageCollectionRef, where("sender.email", "==", email));
+    const q = query(
+      messageCollectionRef,
+      where("sender.email", "==", senderEmail),
+      where("receiver.email", "==", recieverEmail),
+      orderBy("createdAt"),
+      limit(50)
+    );
 
     const querySnapshot = await getDocs(q);
 
@@ -382,6 +390,31 @@ export const getMessage = async (email) => {
     return messages;
   } catch (error) {
     console.error("Error fetching messages:", error.message);
+    return null;
+  }
+};
+
+export const createReview = async (newReview) => {
+  try {
+    const reviewsCollection = collection(db, "reviews");
+    await addDoc(reviewsCollection, newReview);
+  } catch (error) {
+    console.error("Error creating on review:", error.message);
+  }
+};
+
+export const getReviewsByEmail = async (email) => {
+  try {
+    const reviewsCollection = collection(db, "reviews");
+    const querySnapshot = await getDocs(
+      query(reviewsCollection, where("recieverEmail", "==", email))
+    );
+
+    const reviews = querySnapshot.docs.map((doc) => doc.data());
+
+    return reviews;
+  } catch (error) {
+    console.error("Error fetching reviews by email:", error.message);
     return null;
   }
 };
