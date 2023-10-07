@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 
 import { UserContext } from "../../context/user-context";
 
-const Message = ({ message }) => {
+const SendingMessages = ({ message }) => {
   const { currentUser } = useContext(UserContext);
 
   return (
@@ -29,4 +29,4 @@ const Message = ({ message }) => {
   );
 };
 
-export default Message;
+export default SendingMessages;
