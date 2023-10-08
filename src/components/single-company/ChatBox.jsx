@@ -70,7 +70,6 @@ const ChatBox = () => {
     setValue("");
     await sendMessage(data);
 
-    // Scroll to the bottom of the messages container
     const messagesContainer = document.getElementById("messages");
     if (messagesContainer) {
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
