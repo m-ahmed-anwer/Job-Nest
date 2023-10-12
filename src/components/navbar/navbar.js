@@ -58,6 +58,15 @@ function Navbar() {
           },
         ]
       : []),
+    ...(databaseUser
+      ? [
+          {
+            id: 5,
+            title: "Chats",
+            link: "/chat",
+          },
+        ]
+      : []),
   ];
 
   const close = () => {
