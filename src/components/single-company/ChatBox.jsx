@@ -70,7 +70,6 @@ const ChatBox = () => {
     setValue("");
     await sendMessage(data);
 
-    // Scroll to the bottom of the messages container
     const messagesContainer = document.getElementById("messages");
     if (messagesContainer) {
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
@@ -81,8 +80,6 @@ const ChatBox = () => {
     <>
       <div className=" border border-gray-300  max-sm:mx-3 container mx-auto mb-10">
         <div className="flex justify-between flex-col  mx-36 p-3">
-          {/* {isLoading ? (<Loading loading={isLoading} />) : (<>
-            </>)} */}
           <div className="flex sm:items-center justify-between py-3 border-b-2 border-gray-200">
             <div className="relative flex items-center space-x-4">
               <ArrowLeftIcon
@@ -107,6 +104,7 @@ const ChatBox = () => {
           <div
             id="messages"
             className=" flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch"
+            style={{ height: 500 }}
           >
             {Array.isArray(allMessage.send) &&
               Array.isArray(allMessage.receive) &&
