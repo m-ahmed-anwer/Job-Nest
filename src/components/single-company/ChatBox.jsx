@@ -80,8 +80,6 @@ const ChatBox = () => {
     <>
       <div className=" border border-gray-300  max-sm:mx-3 container mx-auto mb-10">
         <div className="flex justify-between flex-col  mx-36 p-3">
-          {/* {isLoading ? (<Loading loading={isLoading} />) : (<>
-            </>)} */}
           <div className="flex sm:items-center justify-between py-3 border-b-2 border-gray-200">
             <div className="relative flex items-center space-x-4">
               <ArrowLeftIcon
