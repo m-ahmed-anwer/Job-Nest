@@ -62,8 +62,8 @@ function Navbar() {
       ? [
           {
             id: 5,
-            title: "Chats",
-            link: "/chat",
+            title: "Chat",
+            link: `/chat`,
           },
         ]
       : []),
