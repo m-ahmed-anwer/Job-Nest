@@ -154,6 +154,26 @@ export const getCompanyUsers = async () => {
     return [];
   }
 };
+
+export const getUsers = async () => {
+  try {
+    const usersCollectionRef = collection(db, "users");
+    const querySnapshot = await getDocs(
+      query(usersCollectionRef, where("emailVerified", "==", true))
+    );
+
+    const users = [];
+    querySnapshot.forEach((doc) => {
+      users.push({ id: doc.id, ...doc.data() });
+    });
+
+    return users;
+  } catch (error) {
+    console.error("Error fetching verified company users:", error);
+    return [];
+  }
+};
+
 export const getCompanyUserById = async (userId) => {
   try {
     const userDocRef = doc(db, "users", userId);
