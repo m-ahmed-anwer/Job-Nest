@@ -155,21 +155,26 @@ export const getCompanyUsers = async () => {
   }
 };
 
-export const getUsers = async () => {
+export const getChatUsers = async (userAuth) => {
   try {
     const usersCollectionRef = collection(db, "users");
     const querySnapshot = await getDocs(
       query(usersCollectionRef, where("emailVerified", "==", true))
     );
-
     const users = [];
+    const currentUserUid = userAuth.uid; // assuming 'uid' is the identifier
+
     querySnapshot.forEach((doc) => {
-      users.push({ id: doc.id, ...doc.data() });
+      const userData = { id: doc.id, ...doc.data() };
+      // Exclude the current user
+      if (userData.id !== currentUserUid) {
+        users.push(userData);
+      }
     });
 
     return users;
   } catch (error) {
-    console.error("Error fetching verified company users:", error);
+    console.error("Error fetching verified users:", error);
     return [];
   }
 };
@@ -184,6 +189,23 @@ export const getCompanyUserById = async (userId) => {
       userDocSnapshot.data().category === "company" &&
       userDocSnapshot.data().emailVerified
     ) {
+      return { id: userDocSnapshot.id, ...userDocSnapshot.data() };
+    } else {
+      console.log("Company user not found or not verified");
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching company user details:", error);
+    return null;
+  }
+};
+
+export const getChatUserById = async (userId) => {
+  try {
+    const userDocRef = doc(db, "users", userId);
+    const userDocSnapshot = await getDoc(userDocRef);
+
+    if (userDocSnapshot.exists() && userDocSnapshot.data().emailVerified) {
       return { id: userDocSnapshot.id, ...userDocSnapshot.data() };
     } else {
       console.log("Company user not found or not verified");

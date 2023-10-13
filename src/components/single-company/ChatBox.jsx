@@ -6,10 +6,11 @@ import {
   PencilIcon,
 } from "@heroicons/react/24/outline";
 import {
-  getCompanyUserById,
+  getChatUserById,
   getMessage,
-  getUsers,
+  getChatUsers,
   sendMessage,
+  auth,
 } from "../../firebase/firebase";
 import { UserContext } from "../../context/user-context";
 import { useNavigate } from "react-router";
@@ -33,7 +34,7 @@ const ChatBox = () => {
     const fetchData = async () => {
       setIsLoading(true);
       if (chatId != null) {
-        const list = await getCompanyUserById(chatId);
+        const list = await getChatUserById(chatId);
 
         if (currentUser?.email) {
           const sendMSG = await getMessage(currentUser.email, list.email);
@@ -87,7 +88,8 @@ const ChatBox = () => {
 
   useEffect(() => {
     const getUser = async () => {
-      const users = await getUsers();
+      const user = auth.currentUser;
+      const users = await getChatUsers(user);
       setUsersCollection(users);
     };
     getUser();
@@ -229,7 +231,7 @@ const ChatBox = () => {
                           )
                         )}
                   </div>
-                  <div className="border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0">
+                  <div className="px-4 pt-4 mb-2 sm:mb-0 border-t border-black">
                     <form
                       className="relative flex"
                       onSubmit={handleSendMessage}
@@ -239,12 +241,12 @@ const ChatBox = () => {
                         value={value}
                         onChange={(e) => setValue(e.target.value)}
                         placeholder="Write your message!"
-                        className="w-full focus:outline-none focus:placeholder-gray-400  text-gray-600 placeholder-gray-600 pl-12 bg-gray-200 rounded-md py-3"
+                        className="w-full focus:outline-none focus:placeholder-gray-400  text-gray-600 placeholder-gray-600 pl-12 bg-gray-200 rounded-full py-3"
                       />
-                      <div className="absolute right-0 items-center inset-y-0  sm:flex">
+                      <div className="absolute right-0 items-center inset-y-0  sm:flex ">
                         <button
                           type="submit"
-                          className="inline-flex items-center justify-center rounded-lg px-4 py-3 transition duration-500 ease-in-out text-white bg-blue-500 hover:bg-blue-400 focus:outline-none"
+                          className="inline-flex items-center justify-center rounded-full px-4 py-3 transition duration-500 ease-in-out text-white bg-blue-500 hover:bg-blue-400 focus:outline-none"
                         >
                           <span className="font-bold">Send</span>
                           <PaperAirplaneIcon className="h-6 w-6 ml-2 transform rotate-90" />
