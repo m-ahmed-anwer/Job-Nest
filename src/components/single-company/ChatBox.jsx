@@ -6,34 +6,35 @@ import {
   PencilIcon,
 } from "@heroicons/react/24/outline";
 import {
-  getCompanyUserById,
+  getChatUserById,
   getMessage,
-  getUsers,
+  getChatUsers,
   sendMessage,
+  auth,
 } from "../../firebase/firebase";
 import { UserContext } from "../../context/user-context";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate } from "react-router";
 
 import SendingMessages from "./SendingMessages";
 import RecievingMessage from "./RecievingMessage";
 import { Link } from "react-router-dom";
 import Loading from "../alert/loading";
+import { ChatContext } from "../../context/chat-context";
 
 const ChatBox = () => {
   const [value, setValue] = useState("");
   const { currentUser } = useContext(UserContext);
-  const [chatId, setChatId] = useState(null);
+  const { chatId, setChatId } = useContext(ChatContext);
   const [companies, setCompanies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [allMessage, setAllMessages] = useState({ send: [], receive: [] });
-  const navigate = useNavigate();
   const [usersCollection, setUsersCollection] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
       if (chatId != null) {
-        const list = await getCompanyUserById(chatId);
+        const list = await getChatUserById(chatId);
 
         if (currentUser?.email) {
           const sendMSG = await getMessage(currentUser.email, list.email);
@@ -51,7 +52,6 @@ const ChatBox = () => {
 
         setCompanies(list);
       }
-
       setIsLoading(false);
     };
 
@@ -88,7 +88,8 @@ const ChatBox = () => {
 
   useEffect(() => {
     const getUser = async () => {
-      const users = await getUsers();
+      const user = auth.currentUser;
+      const users = await getChatUsers(user);
       setUsersCollection(users);
     };
     getUser();
@@ -152,7 +153,10 @@ const ChatBox = () => {
 
                       <div
                         className="w-full  cursor-pointer"
-                        onClick={() => setChatId(index.id)}
+                        onClick={() => {
+                          setChatId(index.id);
+                          setIsLoading(true);
+                        }}
                       >
                         <div className="text-md font-semibold mx-5 text-blue-700">
                           {index.displayName}
@@ -168,67 +172,90 @@ const ChatBox = () => {
 
           {chatId != null ? (
             <div className="flex justify-between flex-col  mx-36 p-3 w-full">
-              <Loading loading={isLoading} />
-              <div className="flex sm:items-center justify-between py-3 border-b-2 border-gray-200">
-                <div className="relative flex items-center space-x-4">
-                  <ArrowLeftIcon
-                    className="h-6 mr-10 cursor-pointer"
-                    onClick={() => {
-                      setChatId(null);
-                    }}
-                  />
-                  <div className="relative">
-                    {companies && (
-                      <img src={companies.photoURL} alt="" className="w-16 " />
-                    )}
-                  </div>
-                  <div className="flex flex-col leading-tight">
-                    <div className="text-2xl mt-1 flex items-center">
-                      <span className="text-gray-700 mr-3">
-                        {companies && companies.displayName}
-                      </span>
+              {isLoading ? (
+                <Loading loading={isLoading} />
+              ) : (
+                <>
+                  <div className="flex sm:items-center justify-between py-3 border-b-2 border-gray-200">
+                    <div className="relative flex items-center space-x-4">
+                      <ArrowLeftIcon
+                        className="h-6 mr-10 cursor-pointer"
+                        onClick={() => {
+                          setChatId(null);
+                        }}
+                      />
+                      <div className="relative">
+                        {companies && (
+                          <img
+                            src={companies.photoURL}
+                            alt=""
+                            className="w-16 "
+                          />
+                        )}
+                      </div>
+                      <div className="flex flex-col leading-tight">
+                        <div className="text-2xl mt-1 flex items-center">
+                          <Link
+                            to={`/companies/${companies.id}`}
+                            className="text-gray-700 mr-3"
+                          >
+                            {companies && companies.displayName}
+                          </Link>
+                        </div>
+                        <span className="text-sm text-gray-600">
+                          {companies.category}
+                        </span>
+                      </div>
                     </div>
-                    <span className="text-sm text-gray-600">Company</span>
                   </div>
-                </div>
-              </div>
-              <div
-                id="messages"
-                className=" flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch"
-                style={{ height: 500 }}
-              >
-                {Array.isArray(allMessage.send) &&
-                  Array.isArray(allMessage.receive) &&
-                  [...allMessage.send, ...allMessage.receive]
-                    .sort((a, b) => a.createdAt - b.createdAt)
-                    .map((message) =>
-                      message.sender.email === currentUser.email ? (
-                        <SendingMessages key={message.id} message={message} />
-                      ) : (
-                        <RecievingMessage key={message.id} message={message} />
-                      )
-                    )}
-              </div>
-              <div className="border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0">
-                <form className="relative flex" onSubmit={handleSendMessage}>
-                  <input
-                    type="text"
-                    value={value}
-                    onChange={(e) => setValue(e.target.value)}
-                    placeholder="Write your message!"
-                    className="w-full focus:outline-none focus:placeholder-gray-400  text-gray-600 placeholder-gray-600 pl-12 bg-gray-200 rounded-md py-3"
-                  />
-                  <div className="absolute right-0 items-center inset-y-0  sm:flex">
-                    <button
-                      type="submit"
-                      className="inline-flex items-center justify-center rounded-lg px-4 py-3 transition duration-500 ease-in-out text-white bg-blue-500 hover:bg-blue-400 focus:outline-none"
+                  <div
+                    id="messages"
+                    className=" flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch"
+                    style={{ height: 500 }}
+                  >
+                    {Array.isArray(allMessage.send) &&
+                      Array.isArray(allMessage.receive) &&
+                      [...allMessage.send, ...allMessage.receive]
+                        .sort((a, b) => a.createdAt - b.createdAt)
+                        .map((message) =>
+                          message.sender.email === currentUser.email ? (
+                            <SendingMessages
+                              key={message.id}
+                              message={message}
+                            />
+                          ) : (
+                            <RecievingMessage
+                              key={message.id}
+                              message={message}
+                            />
+                          )
+                        )}
+                  </div>
+                  <div className="px-4 pt-4 mb-2 sm:mb-0 border-t border-black">
+                    <form
+                      className="relative flex"
+                      onSubmit={handleSendMessage}
                     >
-                      <span className="font-bold">Send</span>
-                      <PaperAirplaneIcon className="h-6 w-6 ml-2 transform rotate-90" />
-                    </button>
+                      <input
+                        type="text"
+                        value={value}
+                        onChange={(e) => setValue(e.target.value)}
+                        placeholder="Write your message!"
+                        className="w-full focus:outline-none focus:placeholder-gray-400  text-gray-600 placeholder-gray-600 pl-12 bg-gray-200 rounded-full py-3"
+                      />
+                      <div className="absolute right-0 items-center inset-y-0  sm:flex ">
+                        <button
+                          type="submit"
+                          className="inline-flex items-center justify-center rounded-full px-4 py-3 transition duration-500 ease-in-out text-white bg-blue-500 hover:bg-blue-400 focus:outline-none"
+                        >
+                          <span className="font-bold">Send</span>
+                          <PaperAirplaneIcon className="h-6 w-6 ml-2 transform rotate-90" />
+                        </button>
+                      </div>
+                    </form>
                   </div>
-                </form>
-              </div>
+                </>
+              )}
             </div>
           ) : (
             <div className="flex justify-between flex-col  mx-36 p-3 w-full">

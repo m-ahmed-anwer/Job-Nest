@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import { ChatContext } from "../../context/chat-context";
 
 export default function Company({ item }) {
   const { displayName, email, photoURL, id } = item;
+  const { setChatId } = useContext(ChatContext);
   return (
     <div>
       {" "}
@@ -19,15 +21,18 @@ export default function Company({ item }) {
             <p className="text-gray-600 text-sm">{email}</p>
           </div>
           <Link
-            to={`/chat/${id}`}
-            className="text-gray-700 text-sm border rounded-lg  px-3 py-2 duration-150 hover:bg-gray-100">
+            to={`/chat`}
+            onClick={() => setChatId(id)}
+            className="text-gray-700 text-sm border rounded-lg  px-3 py-2 duration-150 hover:bg-gray-100"
+          >
             Connect
           </Link>
         </div>
         <div className="py-5 px-4 border-t text-right">
           <Link
             to={`/companies/${id}`}
-            className="text-indigo-600 hover:text-indigo-500 text-sm font-medium">
+            className="text-indigo-600 hover:text-indigo-500 text-sm font-medium"
+          >
             View company
           </Link>
         </div>
