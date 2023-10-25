@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { getCompanyUserById } from "../../firebase/firebase";
 import Loading from "../../components/alert/loading";
 import { ChatContext } from "../../context/chat-context";
+import { UserContext } from "../../context/user-context";
 
 function SingleCompany() {
   const { companyId } = useParams();
@@ -20,6 +21,7 @@ function SingleCompany() {
     };
     fetchData();
   }, []);
+  const { currentUser } = useContext(UserContext);
 
   return (
     <div>
@@ -41,16 +43,18 @@ function SingleCompany() {
                   free to browse the company, if you have any clarification
                   please chat with us
                 </p>
-                <Link
-                  className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800"
-                  type="submit"
-                  to={`/chat`}
-                  onClick={() => setChatId(company.id)}
-                >
-                  <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-                    CHAT
-                  </span>
-                </Link>
+                {company.id != currentUser.uid && (
+                  <Link
+                    className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800"
+                    type="submit"
+                    to={`/chat`}
+                    onClick={() => setChatId(company.id)}
+                  >
+                    <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                      CHAT
+                    </span>
+                  </Link>
+                )}
               </div>
             </div>
             <div class="text-gray-700 sm:mt-28 mt-11">
