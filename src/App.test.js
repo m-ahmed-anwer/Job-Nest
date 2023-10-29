@@ -1,12 +1,20 @@
-// src/App.test.js
-import { render, screen } from "@testing-library/react";
-import { BrowserRouter as Router } from "react-router-dom"; // Import BrowserRouter
-import App from "./App";
+const googleDatabase = [
+  "cats.com",
+  "souprecepies.com",
+  "flowers.com",
+  "animals.com",
+  "catpictures.com",
+  "myfavouritecats.com",
+];
 
-test("renders learn react link", () => {
-  render(
-    <Router>
-      <App />
-    </Router>
-  );
-});
+const googleSearch = (searchInput) => {
+  const matches = googleDatabase.filter((website) => {
+    return website.includes(searchInput);
+  });
+  return matches.length > 3 ? matches.slice(0, 3) : matches;
+};
+
+console.log(googleSearch("cats"));
+
+module.exports = googleSearch;
+
