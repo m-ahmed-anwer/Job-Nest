@@ -1,11 +1,7 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { ChatContext } from "../../context/chat-context";
-import { UserContext } from "../../context/user-context";
 
-export default function Company({ item }) {
-  const { displayName, email, photoURL, id } = item;
-  const { currentUser } = useContext(UserContext);
   const { setChatId } = useContext(ChatContext);
   return (
     <div>
@@ -22,15 +18,6 @@ export default function Company({ item }) {
             <h4 className="text-gray-800 font-semibold">{displayName}</h4>
             <p className="text-gray-600 text-sm">{email}</p>
           </div>
-          {id != currentUser.uid && (
-            <Link
-              to={`/chat`}
-              onClick={() => setChatId(id)}
-              className="text-gray-700 text-sm border rounded-lg  px-3 py-2 duration-150 hover:bg-gray-100"
-            >
-              Connect
-            </Link>
-          )}
         </div>
         <div className="py-5 px-4 border-t text-right">
           <Link
