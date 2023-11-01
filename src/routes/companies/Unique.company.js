@@ -1,20 +1,17 @@
 import React, { useContext, useEffect, useState } from "react";
+
 import { Link, useParams } from "react-router-dom";
 import { getCompanyUserById } from "../../firebase/firebase";
 import Loading from "../../components/alert/loading";
 import { ChatContext } from "../../context/chat-context";
-import {
-  EnvelopeIcon,
-  MapPinIcon,
-  PhoneIcon,
-} from "@heroicons/react/24/outline";
+
 
 function SingleCompany() {
   const { companyId } = useParams();
   const [company, setCompany] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const { setChatId } = useContext(ChatContext);
-  const [address, setAddress] = useState({});
+
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
@@ -25,6 +22,7 @@ function SingleCompany() {
     };
     fetchData();
   }, []);
+  const { currentUser } = useContext(UserContext);
 
   return (
     <div>
@@ -49,18 +47,11 @@ function SingleCompany() {
                   accusantium doloremque laudantium, totam rem aperiam, eaque
                   ipsa quae. explicabo.
                 </p>
-                <div className="mb-5 text-center">
-                  <Link
-                    className=" inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800"
                     type="submit"
                     to={`/chat`}
                     onClick={() => setChatId(company.id)}
                   >
-                    <span className=" px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-                      CHAT
-                    </span>
-                  </Link>
-                </div>
+
               </div>
             </div>
           </div>

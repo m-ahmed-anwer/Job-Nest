@@ -31,10 +31,6 @@ const ChatBox = () => {
   const [usersCollection, setUsersCollection] = useState([]);
   const messageEndRef = useRef(null);
 
-  const fetchData = async () => {
-    if (chatId != null) {
-      const list = await getChatUserById(chatId);
-
       if (currentUser?.email) {
         const sendMSG = await getMessage(currentUser.email, list.email);
         setAllMessages((prevMessages) => ({
@@ -43,16 +39,6 @@ const ChatBox = () => {
         }));
       }
 
-      const receiveMSG = await getMessage(list.email, currentUser.email);
-      setAllMessages((prevMessages) => ({
-        ...prevMessages,
-        receive: receiveMSG,
-      }));
-
-      setCompanies(list);
-    }
-  };
-
   useEffect(() => {
     messageEndRef.current?.scrollIntoView();
   }, [sendMessage]);
@@ -60,7 +46,6 @@ const ChatBox = () => {
   useEffect(() => {
     setIsLoading(true);
     fetchData();
-    setIsLoading(false);
   }, [currentUser, chatId]);
 
   const handleSendMessage = async (e) => {
@@ -115,7 +100,7 @@ const ChatBox = () => {
             >
               <div className="w-1/4 ">
                 <img
-                  src="https://source.unsplash.com/_7LbC5J-jw4/600x600"
+                  src={databaseUser.photoURL}
                   className="object-cover  h-12 w-12 rounded-full"
                   alt=""
                 />
@@ -123,14 +108,18 @@ const ChatBox = () => {
               <div className="w-full">
                 <div className="flex">
                   <div className="text-lg text-blue-800 font-semibold">
-                    Ahmed Anwer
+                    {databaseUser.displayName}
                   </div>
                   <Link to={"/profile"}>
                     <PencilIcon className="h-5 mt-1  cursor-pointer " />
                   </Link>
                 </div>
 
-                <span class="text-gray-500 ">company</span>
+                <span class="text-gray-500 ">
+                  {" "}
+                  {databaseUser.category.charAt(0).toUpperCase() +
+                    databaseUser.category.slice(1)}
+                </span>
               </div>
             </div>
 
@@ -260,8 +249,6 @@ const ChatBox = () => {
                       </div>
                     </form>
                   </div>
-
-                  <div ref={messageEndRef}></div>
                 </>
               )}
             </div>
