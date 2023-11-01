@@ -444,6 +444,15 @@ export const createReview = async (newReview) => {
     console.error("Error creating on review:", error.message);
   }
 };
+export const deleteReview = async (reviewId) => {
+  try {
+    const reviewRef = doc(db, "reviews", reviewId);
+    await deleteDoc(reviewRef);
+  } catch (error) {
+    console.error("Error deleting review:", error.message);
+    throw error;
+  }
+};
 
 export const getReviewsByEmail = async (email) => {
   try {
