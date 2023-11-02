@@ -7,6 +7,7 @@ export default function Company({ item }) {
   const { displayName, email, photoURL, id } = item;
   const { currentUser } = useContext(UserContext);
   const { setChatId } = useContext(ChatContext);
+
   return (
     <div>
       {" "}
