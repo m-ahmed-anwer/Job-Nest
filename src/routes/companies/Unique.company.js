@@ -36,7 +36,7 @@ function SingleCompany() {
           <div className="gap-8 items-center py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6">
             <div className="mt-4 md:mt-0">
               <h2 className="mb-5 font-sans text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl sm:leading-none md:text-center">
-                MICROSOFT
+                {company.displayName}
               </h2>
               <p className="mb-5 text-base text-gray-700 md:text-lg md:text-center">
                 Sed ut perspiciatis unde omnis iste natus error sit voluptatem
