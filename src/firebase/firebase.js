@@ -302,6 +302,7 @@ export const getJob = async () => {
     return null;
   }
 };
+
 export const getJobByUserEmail = async (email) => {
   try {
     const jobsCollectionRef = collection(db, "jobs");
@@ -310,6 +311,7 @@ export const getJobByUserEmail = async (email) => {
 
     const jobs = querySnapshot.docs.map((doc) => ({
       id: doc.id,
+      
       job: doc.data().job,
       company: doc.data().company,
     }));
