@@ -183,7 +183,7 @@ function Review({ company }) {
                     );
                   })}
                   <p>{r.description}</p>
-                  {currentUser.email === r.userEmail && (
+                  {currentUser && currentUser.email === r.userEmail && (
                     <button
                       className="bg-red-500 text-white py-1 px-2 rounded-md focus:outline-none mt-2"
                       onClick={(e) => deleteReview(e, rIndex)}
