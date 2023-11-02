@@ -23,7 +23,7 @@ import { ChatContext } from "../../context/chat-context";
 
 const ChatBox = () => {
   const [value, setValue] = useState("");
-  const { currentUser } = useContext(UserContext);
+  const { currentUser, databaseUser } = useContext(UserContext);
   const { chatId, setChatId } = useContext(ChatContext);
   const [companies, setCompanies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -56,7 +56,7 @@ const ChatBox = () => {
     };
 
     fetchData();
-  }, [value, currentUser, chatId]);
+  }, [currentUser, chatId]);
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
@@ -109,7 +109,7 @@ const ChatBox = () => {
             >
               <div className="w-1/4 ">
                 <img
-                  src="https://source.unsplash.com/_7LbC5J-jw4/600x600"
+                  src={databaseUser.photoURL}
                   className="object-cover  h-12 w-12 rounded-full"
                   alt=""
                 />
@@ -117,14 +117,18 @@ const ChatBox = () => {
               <div className="w-full">
                 <div className="flex">
                   <div className="text-lg text-blue-800 font-semibold">
-                    Ahmed Anwer
+                    {databaseUser.displayName}
                   </div>
                   <Link to={"/profile"}>
                     <PencilIcon className="h-5 mt-1  cursor-pointer " />
                   </Link>
                 </div>
 
-                <span class="text-gray-500 ">company</span>
+                <span class="text-gray-500 ">
+                  {" "}
+                  {databaseUser.category.charAt(0).toUpperCase() +
+                    databaseUser.category.slice(1)}
+                </span>
               </div>
             </div>
 

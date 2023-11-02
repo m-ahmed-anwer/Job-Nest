@@ -14,21 +14,6 @@ function ContactUs() {
     window.scrollTo(0, 0);
   }, []);
 
-  const contactMethods = [
-    {
-      icon: <EnvelopeIcon className="w-6 h-6" />,
-      contact: "ahmedanwer0094@gmail.com",
-    },
-    {
-      icon: <PhoneIcon className="w-6 h-6" />,
-      contact: "+94 76 824 2884",
-    },
-    {
-      icon: <MapPinIcon className="w-6 h-6" />,
-      contact: "Kurunegala, North Western, Sri Lanka.",
-    },
-  ];
-
   const submitHandler = async (event) => {
     event.preventDefault();
 
@@ -76,12 +61,26 @@ function ContactUs() {
             </p>
             <div>
               <ul className="mt-6 flex flex-wrap gap-x-10 gap-y-6 items-center">
-                {contactMethods.map((item, idx) => (
-                  <li key={idx} className="flex items-center gap-x-3">
-                    <div className="flex-none text-gray-400">{item.icon}</div>
-                    <p>{item.contact}</p>
-                  </li>
-                ))}
+                <li className="flex items-center gap-x-3">
+                  <div className="flex-none text-gray-400">
+                    <EnvelopeIcon className="w-6 h-6" />
+                  </div>
+                  <a href="mailto:jobnest0094@gmail.com">
+                    jobnest0094@gmail.com
+                  </a>
+                </li>
+                <li className="flex items-center gap-x-3">
+                  <div className="flex-none text-gray-400">
+                    <PhoneIcon className="w-6 h-6" />
+                  </div>
+                  <a href="tel:+94768242884">+94 76 824 2884</a>
+                </li>
+                <li className="flex items-center gap-x-3">
+                  <div className="flex-none text-gray-400">
+                    <MapPinIcon className="w-6 h-6" />
+                  </div>
+                  <p>Kurunegala, North Western, Sri Lanka.</p>
+                </li>
               </ul>
             </div>
           </div>

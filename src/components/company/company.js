@@ -1,9 +1,11 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { ChatContext } from "../../context/chat-context";
+import { UserContext } from "../../context/user-context";
 
 export default function Company({ item }) {
   const { displayName, email, photoURL, id } = item;
+  const { currentUser } = useContext(UserContext);
   const { setChatId } = useContext(ChatContext);
   return (
     <div>
@@ -20,6 +22,7 @@ export default function Company({ item }) {
             <h4 className="text-gray-800 font-semibold">{displayName}</h4>
             <p className="text-gray-600 text-sm">{email}</p>
           </div>
+
           <Link
             to={`/chat`}
             onClick={() => setChatId(id)}
