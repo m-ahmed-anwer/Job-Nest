@@ -29,6 +29,7 @@ const ChatBox = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [allMessage, setAllMessages] = useState({ send: [], receive: [] });
   const [usersCollection, setUsersCollection] = useState([]);
+  const [changeValue, setChangeValue] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,7 +57,7 @@ const ChatBox = () => {
     };
 
     fetchData();
-  }, [currentUser, chatId]);
+  }, [currentUser, chatId, changeValue]);
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
@@ -78,7 +79,8 @@ const ChatBox = () => {
       createdAt: serverTimestamp(),
     };
     setValue("");
-    await sendMessage(data);
+    const valueSet = await sendMessage(data);
+    setChangeValue(valueSet);
 
     const messagesContainer = document.getElementById("messages");
     if (messagesContainer) {

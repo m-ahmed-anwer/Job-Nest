@@ -311,7 +311,7 @@ export const getJobByUserEmail = async (email) => {
 
     const jobs = querySnapshot.docs.map((doc) => ({
       id: doc.id,
-      
+
       job: doc.data().job,
       company: doc.data().company,
     }));
@@ -408,8 +408,10 @@ export const getJobFilter = async (sectionId, optionValue) => {
 export const sendMessage = async (data) => {
   try {
     await addDoc(collection(db, "messages"), data);
+    return true;
   } catch (error) {
     console.error("Error updating document: ", error);
+    return false;
   }
 };
 
