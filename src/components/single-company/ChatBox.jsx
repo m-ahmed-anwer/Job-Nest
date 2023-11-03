@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { serverTimestamp } from "firebase/firestore";
 import {
   ArrowLeftIcon,
@@ -22,6 +22,7 @@ import Loading from "../alert/loading";
 import { ChatContext } from "../../context/chat-context";
 
 const ChatBox = () => {
+  const messagesContainerRef = useRef(null);
   const [value, setValue] = useState("");
   const { currentUser, databaseUser } = useContext(UserContext);
   const { chatId, setChatId } = useContext(ChatContext);
@@ -80,9 +81,27 @@ const ChatBox = () => {
     };
     setValue("");
     const valueSet = await sendMessage(data);
-    setChangeValue(valueSet);
+    if (chatId != null) {
+      const list = await getChatUserById(chatId);
 
-    const messagesContainer = document.getElementById("messages");
+      if (currentUser?.email) {
+        const sendMSG = await getMessage(currentUser.email, list.email);
+        setAllMessages((prevMessages) => ({
+          ...prevMessages,
+          send: sendMSG,
+        }));
+      }
+
+      const receiveMSG = await getMessage(list.email, currentUser.email);
+      setAllMessages((prevMessages) => ({
+        ...prevMessages,
+        receive: receiveMSG,
+      }));
+
+      setCompanies(list);
+    }
+
+    const messagesContainer = messagesContainerRef.current;
     if (messagesContainer) {
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
@@ -216,6 +235,7 @@ const ChatBox = () => {
                   </div>
                   <div
                     id="messages"
+                    ref={messagesContainerRef}
                     className=" flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch"
                     style={{ height: 500 }}
                   >
