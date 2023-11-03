@@ -11,6 +11,7 @@ import {
 } from "../../firebase/firebase";
 import { updateProfile } from "firebase/auth";
 import { UserDetailsContext } from "../../context/user-details";
+import { generateReportProfile } from "../../pdf/nasmi.pdf";
 
 const check = {
   company: false,
@@ -219,6 +220,10 @@ function MyProfile() {
     setButtonMesage("OK");
     setErrorMessage("error");
   };
+  const reportGenerate = () => {
+    generateReportProfile(currentUser);
+  };
+
   return (
     <>
       {isLoading ? (
@@ -590,6 +595,12 @@ function MyProfile() {
                 </form>
               </div>
             </div>
+            <button
+              className="ml-4 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg"
+              onClick={reportGenerate}
+            >
+              Download Profile Report
+            </button>
           </div>
         </section>
       )}
