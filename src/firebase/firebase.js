@@ -154,6 +154,31 @@ export const getCompanyUsers = async () => {
     return [];
   }
 };
+
+export const getChatUsers = async (userAuth) => {
+  try {
+    const usersCollectionRef = collection(db, "users");
+    const querySnapshot = await getDocs(
+      query(usersCollectionRef, where("emailVerified", "==", true))
+    );
+    const users = [];
+    const currentUserUid = userAuth.uid; // assuming 'uid' is the identifier
+
+    querySnapshot.forEach((doc) => {
+      const userData = { id: doc.id, ...doc.data() };
+      // Exclude the current user
+      if (userData.id !== currentUserUid) {
+        users.push(userData);
+      }
+    });
+
+    return users;
+  } catch (error) {
+    console.error("Error fetching verified users:", error);
+    return [];
+  }
+};
+
 export const getCompanyUserById = async (userId) => {
   try {
     const userDocRef = doc(db, "users", userId);
@@ -164,6 +189,23 @@ export const getCompanyUserById = async (userId) => {
       userDocSnapshot.data().category === "company" &&
       userDocSnapshot.data().emailVerified
     ) {
+      return { id: userDocSnapshot.id, ...userDocSnapshot.data() };
+    } else {
+      console.log("Company user not found or not verified");
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching company user details:", error);
+    return null;
+  }
+};
+
+export const getChatUserById = async (userId) => {
+  try {
+    const userDocRef = doc(db, "users", userId);
+    const userDocSnapshot = await getDoc(userDocRef);
+
+    if (userDocSnapshot.exists() && userDocSnapshot.data().emailVerified) {
       return { id: userDocSnapshot.id, ...userDocSnapshot.data() };
     } else {
       console.log("Company user not found or not verified");
@@ -260,6 +302,7 @@ export const getJob = async () => {
     return null;
   }
 };
+
 export const getJobByUserEmail = async (email) => {
   try {
     const jobsCollectionRef = collection(db, "jobs");
@@ -268,6 +311,7 @@ export const getJobByUserEmail = async (email) => {
 
     const jobs = querySnapshot.docs.map((doc) => ({
       id: doc.id,
+
       job: doc.data().job,
       company: doc.data().company,
     }));
@@ -364,8 +408,10 @@ export const getJobFilter = async (sectionId, optionValue) => {
 export const sendMessage = async (data) => {
   try {
     await addDoc(collection(db, "messages"), data);
+    return true;
   } catch (error) {
     console.error("Error updating document: ", error);
+    return false;
   }
 };
 
@@ -402,12 +448,38 @@ export const createReview = async (newReview) => {
     console.error("Error creating on review:", error.message);
   }
 };
+export const deleteReview = async (reviewId) => {
+  try {
+    const reviewRef = doc(db, "reviews", reviewId);
+    await deleteDoc(reviewRef);
+  } catch (error) {
+    console.error("Error deleting review:", error.message);
+    throw error;
+  }
+};
 
 export const getReviewsByEmail = async (email) => {
   try {
     const reviewsCollection = collection(db, "reviews");
     const querySnapshot = await getDocs(
       query(reviewsCollection, where("recieverEmail", "==", email))
+    );
+
+    const reviews = querySnapshot.docs.map((doc) => doc.data());
+
+    return reviews;
+  } catch (error) {
+    console.error("Error fetching reviews by email:", error.message);
+    return null;
+  }
+};
+
+
+export const getReviewsByEmailReport = async (email) => {
+  try {
+    const reviewsCollection = collection(db, "reviews");
+    const querySnapshot = await getDocs(
+      query(reviewsCollection, where("userEmail", "==", email))
     );
 
     const reviews = querySnapshot.docs.map((doc) => doc.data());

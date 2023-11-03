@@ -45,10 +45,6 @@ function App() {
         <Route path="/contact" element={<ContactUs />} />
 
         <Route
-          path="/chat/:chatId"
-          element={!currentUser ? <Navigate to="/login" /> : <Chat />}
-        />
-        <Route
           path="/login"
           element={currentUser ? <Navigate to="/" /> : <Login />}
         />
@@ -62,9 +58,23 @@ function App() {
           element={currentUser ? <Navigate to="/" /> : <Signup />}
         />
 
-        {currentUser && <Route path="/profile/*" element={<ProfileRoute />} />}
-        {currentUser && <Route path="/post" element={<JobPost1 />} />}
-        {currentUser && <Route path="/post/details" element={<JobPost />} />}
+        <Route
+          path="/profile/*"
+          element={currentUser ? <ProfileRoute /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/post"
+          element={currentUser ? <JobPost1 /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/post/details"
+          element={currentUser ? <JobPost /> : <Navigate to="/login" />}
+        />
+
+        <Route
+          path="/chat"
+          element={currentUser ? <Chat /> : <Navigate to="/login" />}
+        />
 
         <Route path="*" element={<NotFound />} />
       </Route>
