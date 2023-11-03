@@ -5,6 +5,7 @@ import { getJobByUserEmail } from "../../firebase/firebase";
 import { UserContext } from "../../context/user-context";
 import EditJob from "../jobs/edit-job";
 import { generateReport } from "../../pdf/asjedh.pdf";
+import { handleGenerateReport } from "../../pdf/ahmed.pdf";
 
 function UploadPost() {
   const [jobs, setJobs] = useState([]);
@@ -24,7 +25,7 @@ function UploadPost() {
   }, [update]);
 
   const reportGenerate = async () => {
-    generateReport(currentUser.email);
+    handleGenerateReport(currentUser.email);
   };
 
   return (

@@ -34,7 +34,7 @@ const generatePDF = (jobs) => {
     yPos += 10;
   });
 
-  pdf.save("job_report.pdf");
+  pdf.save("company_report.pdf");
 };
 
 export const generateReport = async () => {
