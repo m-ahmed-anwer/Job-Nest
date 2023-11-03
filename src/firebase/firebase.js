@@ -473,3 +473,20 @@ export const getReviewsByEmail = async (email) => {
     return null;
   }
 };
+
+
+export const getReviewsByEmailReport = async (email) => {
+  try {
+    const reviewsCollection = collection(db, "reviews");
+    const querySnapshot = await getDocs(
+      query(reviewsCollection, where("userEmail", "==", email))
+    );
+
+    const reviews = querySnapshot.docs.map((doc) => doc.data());
+
+    return reviews;
+  } catch (error) {
+    console.error("Error fetching reviews by email:", error.message);
+    return null;
+  }
+};
