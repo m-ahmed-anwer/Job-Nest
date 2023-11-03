@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { getJobByUserEmail } from "../../firebase/firebase";
 import { UserContext } from "../../context/user-context";
 import EditJob from "../jobs/edit-job";
+import { generateReport } from "../../pdf/asjedh.pdf";
 import { handleGenerateReport } from "../../pdf/ahmed.pdf";
 
 function UploadPost() {
@@ -23,7 +24,7 @@ function UploadPost() {
     fetchJobs();
   }, [update]);
 
-  const reportGeneraate = async () => {
+  const reportGenerate = async () => {
     handleGenerateReport(currentUser.email);
   };
 
@@ -37,7 +38,7 @@ function UploadPost() {
             </h1>
             <button
               className="ml-4 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg"
-              onClick={reportGeneraate}
+              onClick={reportGenerate}
             >
               Download PDF of Jobs
             </button>

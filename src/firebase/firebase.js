@@ -311,7 +311,7 @@ export const getJobByUserEmail = async (email) => {
 
     const jobs = querySnapshot.docs.map((doc) => ({
       id: doc.id,
-      
+
       job: doc.data().job,
       company: doc.data().company,
     }));
@@ -408,8 +408,10 @@ export const getJobFilter = async (sectionId, optionValue) => {
 export const sendMessage = async (data) => {
   try {
     await addDoc(collection(db, "messages"), data);
+    return true;
   } catch (error) {
     console.error("Error updating document: ", error);
+    return false;
   }
 };
 
@@ -461,6 +463,23 @@ export const getReviewsByEmail = async (email) => {
     const reviewsCollection = collection(db, "reviews");
     const querySnapshot = await getDocs(
       query(reviewsCollection, where("recieverEmail", "==", email))
+    );
+
+    const reviews = querySnapshot.docs.map((doc) => doc.data());
+
+    return reviews;
+  } catch (error) {
+    console.error("Error fetching reviews by email:", error.message);
+    return null;
+  }
+};
+
+
+export const getReviewsByEmailReport = async (email) => {
+  try {
+    const reviewsCollection = collection(db, "reviews");
+    const querySnapshot = await getDocs(
+      query(reviewsCollection, where("userEmail", "==", email))
     );
 
     const reviews = querySnapshot.docs.map((doc) => doc.data());

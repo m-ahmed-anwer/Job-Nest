@@ -5,6 +5,7 @@ import {
   getReviewsByEmail,
   deleteReview,
 } from "../../firebase/firebase";
+import { generateReportReview } from "../../pdf/nashan.pdf";
 
 function Review({ company }) {
   const { currentUser } = useContext(UserContext);
@@ -110,6 +111,9 @@ function Review({ company }) {
       console.error("Error deleting review:", error.message);
     }
   };
+  const reportGenerate = () => {
+    generateReportReview(currentUser.email);
+  };
 
   return (
     <div className=" p-4">
@@ -118,6 +122,12 @@ function Review({ company }) {
           <h1 className="text-xl  font-bold mb-8">
             Hello what do you think about our company 🤔 Review Us
           </h1>
+          <button
+            className="ml-4 bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded-lg"
+            onClick={reportGenerate}
+          >
+            Download All Reviews
+          </button>
         </div>
         <div className="md:w-1/2 mx-auto">
           <div className="mt-5">

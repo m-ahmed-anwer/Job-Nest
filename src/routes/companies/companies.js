@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Company from "../../components/company/company";
 import { getCompanyUsers } from "../../firebase/firebase";
 import LoadingCompany from "../../components/loading-company/loading.comapny";
+import { generateReport } from "../../pdf/asjedh.pdf";
 
 function Companies() {
   const [companies, setCompanies] = useState([]);
@@ -25,6 +26,10 @@ function Companies() {
     fetchCompanies();
   }, []);
 
+  const reportGenerate = async () => {
+    generateReport();
+  };
+
   return (
     <div className="bg-white">
       <div>
@@ -36,9 +41,12 @@ function Companies() {
           </div>
 
           <section aria-labelledby="products-heading" className="pb-24 pt-6">
-            <h2 id="products-heading" className="sr-only">
-              Products
-            </h2>
+            <button
+              className="ml-4 bg-blue-600 hover:bg-blue-700 text-white py-2 px-2 rounded-lg"
+              onClick={reportGenerate}
+            >
+              Download
+            </button>
 
             <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
               {/* Product grid */}
