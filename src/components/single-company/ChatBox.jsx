@@ -30,7 +30,6 @@ const ChatBox = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [allMessage, setAllMessages] = useState({ send: [], receive: [] });
   const [usersCollection, setUsersCollection] = useState([]);
-  const [changeValue, setChangeValue] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -80,7 +79,7 @@ const ChatBox = () => {
       createdAt: serverTimestamp(),
     };
     setValue("");
-    const valueSet = await sendMessage(data);
+    await sendMessage(data);
     if (chatId != null) {
       const list = await getChatUserById(chatId);
 
