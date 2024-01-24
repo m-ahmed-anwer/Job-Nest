@@ -105,7 +105,11 @@ function Review({ company }) {
     try {
       const reviewIdToDelete = reviews[reviewIndex].id; // Adjust this line based on your data structure
       await deleteReview(reviewIdToDelete);
-      const newState = reviews.filter((r) => r.id !== reviewIdToDelete);
+
+      const clone = [...reviews];
+
+      const newState = clone.filter((x, i) => i !== reviewIndex);
+      setReviews(newState);
       setReviews(newState);
     } catch (error) {
       console.error("Error deleting review:", error.message);

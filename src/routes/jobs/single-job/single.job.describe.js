@@ -149,12 +149,13 @@ function JobDescribe() {
 
                   {getDate(currentDate) <
                     getDate(jobDetail.job.applicationDeadline) && (
-                    <button
+                    <Link
                       type="submit"
                       className="mt-16 flex w-full sm:w-3/4 items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                      to={`mailto:${jobDetail.company.email}`}
                     >
                       Apply for Job
-                    </button>
+                    </Link>
                   )}
                 </form>
               </div>
