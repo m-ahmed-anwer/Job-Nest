@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom/client";
+import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
@@ -7,6 +7,7 @@ import { BrowserRouter } from "react-router-dom";
 import { UserProvider } from "./context/user-context";
 import { UserDetailsProvider } from "./context/user-details";
 import { SearchProvider } from "./context/search.context";
+import { ChatProvider } from "./context/chat-context";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -15,7 +16,9 @@ root.render(
       <UserProvider>
         <SearchProvider>
           <UserDetailsProvider>
-            <App />
+            <ChatProvider>
+              <App />
+            </ChatProvider>
           </UserDetailsProvider>
         </SearchProvider>
       </UserProvider>

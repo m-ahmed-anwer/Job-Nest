@@ -4,46 +4,35 @@ import {
   MapPinIcon,
   PhoneIcon,
 } from "@heroicons/react/24/outline";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Modal from "../alert/dialog-modal";
-
-const formFeild = {
-  name: "",
-  email: "",
-  message: "",
-};
+import emailjs from "@emailjs/browser";
 
 function ContactUs() {
+  const form = useRef();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  const contactMethods = [
-    {
-      icon: <EnvelopeIcon className="w-6 h-6" />,
-      contact: "ahmedanwer0094@gmail.com",
-    },
-    {
-      icon: <PhoneIcon className="w-6 h-6" />,
-      contact: "+94 76 824 2884",
-    },
-    {
-      icon: <MapPinIcon className="w-6 h-6" />,
-      contact: "Kurunegala, North Western, Sri Lanka.",
-    },
-  ];
-
-  const [data, setData] = useState(formFeild);
-
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setData({ [name]: value });
-  };
-
-  const submitHandler = (event) => {
+  const submitHandler = async (event) => {
     event.preventDefault();
-    setData(formFeild);
-    setOpen(true);
+
+    emailjs
+      .sendForm(
+        "service_r6hvccc",
+        "template_jx4576b",
+        form.current,
+        "hQhPWFs4OHjzQIaXJ"
+      )
+      .then(
+        () => {
+          setOpen(true);
+          event.target.reset();
+        },
+        (error) => {
+          console.log(error.text);
+        }
+      );
   };
 
   const [open, setOpen] = useState(false);
@@ -72,24 +61,37 @@ function ContactUs() {
             </p>
             <div>
               <ul className="mt-6 flex flex-wrap gap-x-10 gap-y-6 items-center">
-                {contactMethods.map((item, idx) => (
-                  <li key={idx} className="flex items-center gap-x-3">
-                    <div className="flex-none text-gray-400">{item.icon}</div>
-                    <p>{item.contact}</p>
-                  </li>
-                ))}
+                <li className="flex items-center gap-x-3">
+                  <div className="flex-none text-gray-400">
+                    <EnvelopeIcon className="w-6 h-6" />
+                  </div>
+                  <a href="mailto:jobnest0094@gmail.com">
+                    jobnest0094@gmail.com
+                  </a>
+                </li>
+                <li className="flex items-center gap-x-3">
+                  <div className="flex-none text-gray-400">
+                    <PhoneIcon className="w-6 h-6" />
+                  </div>
+                  <a href="tel:+94768242884">+94 76 824 2884</a>
+                </li>
+                <li className="flex items-center gap-x-3">
+                  <div className="flex-none text-gray-400">
+                    <MapPinIcon className="w-6 h-6" />
+                  </div>
+                  <p>Kurunegala, North Western, Sri Lanka.</p>
+                </li>
               </ul>
             </div>
           </div>
           <div className="flex-1 mt-12 sm:max-w-lg lg:max-w-md">
-            <form onSubmit={submitHandler} className="space-y-5">
+            <form ref={form} onSubmit={submitHandler} className="space-y-5">
               <div>
                 <label className="font-medium">Full name</label>
                 <input
                   type="text"
                   required
-                  onChange={handleChange}
-                  value={data.name}
+                  name="user_name"
                   className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-blue-600 shadow-sm rounded-lg"
                 />
               </div>
@@ -97,8 +99,7 @@ function ContactUs() {
                 <label className="font-medium">Email</label>
                 <input
                   type="email"
-                  onChange={handleChange}
-                  value={data.email}
+                  name="user_email"
                   required
                   className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-blue-600 shadow-sm rounded-lg"
                 />
@@ -107,8 +108,7 @@ function ContactUs() {
                 <label className="font-medium">Message</label>
                 <textarea
                   required
-                  onChange={handleChange}
-                  value={data.message}
+                  name="message"
                   className="w-full mt-2 h-36 px-3 py-2 resize-none appearance-none bg-transparent outline-none border focus:border-blue-600 shadow-sm rounded-lg"
                 ></textarea>
               </div>

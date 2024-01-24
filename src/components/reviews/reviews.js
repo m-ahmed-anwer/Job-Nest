@@ -1,6 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../context/user-context";
-import { createReview, getReviewsByEmail } from "../../firebase/firebase";
+import {
+  createReview,
+  getReviewsByEmail,
+  deleteReview,
+} from "../../firebase/firebase";
+import { generateReportReview } from "../../pdf/nashan.pdf";
 
 function Review({ company }) {
   const { currentUser } = useContext(UserContext);
@@ -72,6 +77,7 @@ function Review({ company }) {
       if (review) {
         const newReview = {
           userEmail: currentUser.email,
+          userName: currentUser.displayName,
           recieverEmail: company.email,
           rating: stars,
           description: review,
@@ -91,11 +97,26 @@ function Review({ company }) {
     }
   };
 
-  const deleteReview = (e, index) => {
-    e.preventDefault();
-    const clone = [...reviews];
-    const newState = clone.filter((x, i) => i !== index);
-    setReviews(newState);
+  const deleteReview = async (event, reviewIndex) => {
+    if (event) {
+      event.preventDefault();
+    }
+
+    try {
+      const reviewIdToDelete = reviews[reviewIndex].id; // Adjust this line based on your data structure
+      await deleteReview(reviewIdToDelete);
+
+      const clone = [...reviews];
+
+      const newState = clone.filter((x, i) => i !== reviewIndex);
+      setReviews(newState);
+      setReviews(newState);
+    } catch (error) {
+      console.error("Error deleting review:", error.message);
+    }
+  };
+  const reportGenerate = () => {
+    generateReportReview(currentUser.email);
   };
 
   return (
@@ -105,6 +126,12 @@ function Review({ company }) {
           <h1 className="text-xl  font-bold mb-8">
             Hello what do you think about our company 🤔 Review Us
           </h1>
+          <button
+            className="ml-4 bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded-lg"
+            onClick={reportGenerate}
+          >
+            Download All Reviews
+          </button>
         </div>
         <div className="md:w-1/2 mx-auto">
           <div className="mt-5">
@@ -125,6 +152,7 @@ function Review({ company }) {
           </div>
           <div className="mt-5">
             <textarea
+              disabled={!currentUser && true}
               className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
               rows={3}
               value={review}
@@ -156,6 +184,10 @@ function Review({ company }) {
                   key={rIndex}
                   className="bg-white shadow-md rounded-lg p-4 mb-4"
                 >
+                  <div className="text-sm text-yellow-950">
+                    {r.userName} - {r.userEmail}
+                  </div>
+
                   {[...Array(r.rating)].map((s, sIndex) => {
                     return (
                       <i
@@ -165,12 +197,15 @@ function Review({ company }) {
                     );
                   })}
                   <p>{r.description}</p>
-                  <button
-                    className="bg-red-500 text-white py-1 px-2 rounded-md focus:outline-none mt-2"
-                    onClick={(e) => deleteReview(e, rIndex)}
-                  >
-                    Delete
-                  </button>
+
+                  {currentUser && currentUser.email === r.userEmail && (
+                    <button
+                      className="bg-red-500 text-white py-1 px-2 rounded-md focus:outline-none mt-2"
+                      onClick={(e) => deleteReview(e, rIndex)}
+                    >
+                      Delete
+                    </button>
+                  )}
                 </div>
               );
             })}
