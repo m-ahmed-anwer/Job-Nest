@@ -34,6 +34,7 @@ function App() {
     <Routes>
       <Route path="/" element={<Outlayer />}>
         <Route index element={<Home />} />
+        {/** */}
         <Route path="/jobs" element={<Jobs />} />
         <Route path="/jobs/:jobId" element={<JobDescribe />} />
         <Route path="/companies" element={<Companies />} />
